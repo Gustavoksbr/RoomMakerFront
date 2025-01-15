@@ -32,7 +32,6 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
   public stompClient : Client = new Client();
   public jogos : string[] = ['chat','tictactoe','forca','coup','xadrez'];
   @Output() enviarParticipantes = new EventEmitter<string[]>();
-
   sairSala(){
     this.salaService.sairDaSala(this.sala.usernameDono,this.sala.nome,this.username).subscribe((sala :  any)=>{
       console.log("saiu da sala");

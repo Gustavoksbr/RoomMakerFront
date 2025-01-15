@@ -38,7 +38,6 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
       console.log("o pai enviou o app: " + this.app);
       console.log("o pai enviou o topic: " + this.topic);
       this.websocketService.subscribe(this.stompClient, this.topic + "/chat", (msg: MessageResponseWs) => {
@@ -47,7 +46,6 @@ export class ChatComponent implements OnInit {
         console.log("do usuário:" + msg.from);
         this.chat.push(msg);
       });
-    },1500);
   }
 
   public sendMessage() {

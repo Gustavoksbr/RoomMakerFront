@@ -3,5 +3,8 @@
 @for(u of sala.usernameParticipantes.concat(sala.usernameDono) ; track $index) {
   <p>{{u}}</p>
 }
-<app-chat [topic]="topic" [app]="app" [stompClient]="stompClient" />
-<button (click)="sairSala()" >> sair da sala</button>
+@if (stompClient.connected) {
+
+  <app-chat [topic]="topic" [app]="app" [stompClient]="stompClient" />
+}
+<button (click)="sairSala()" > sair da sala</button>
