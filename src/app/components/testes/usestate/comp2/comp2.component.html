@@ -1,0 +1,11 @@
+<p>text</p>
+<input type="text" [(ngModel)]="text">
+<p>{{text}}</p>
+
+<p>text 2</p>
+<input type="text" id="t2" (input)="setText2($event)">
+<p>{{getText2()}}</p>
+
+<p>text 3</p>
+<input type="text" [(ngModel)]="text3">
+<p>{{text3()}}</p>

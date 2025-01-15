@@ -1,0 +1,45 @@
+<app-home/>
+<label for="salaNome">Sala</label>
+    <input
+      id="salaNome"
+      type="text"
+      class="input"
+      placeholder="Digite o nome da sala"
+      [(ngModel)]="sala.nome"
+      name="nome"
+      required
+    >
+    <label for="salaCategoria">Categoria</label>
+    <input
+      id="salaCategoria"
+      type="text"
+      class="input"
+      placeholder="Digite a categoria"
+      [(ngModel)]="sala.categoria"
+      name="categoria"
+      required
+    >
+    <label for="salaSenha">Senha</label>
+    <input
+      id="salaSenha"
+      type="password"
+      class="input"
+      placeholder="Digite a senha"
+      [(ngModel)]="sala.senha"
+      name="senha"
+      required
+    >
+    <label for="salaQtdCapacidade">Capacidade</label>
+    <input
+      id="salaQtdCapacidade"
+      type="number"
+      class="input"
+      placeholder="Digite a capacidade"
+      [(ngModel)]="sala.qtdCapacidade"
+      name="qtdCapacidade"
+      required
+    >
+    <div class="acoes">
+      <button (click)="criarSalaRequest()" class="botao">Salvar</button>
+      <button routerLink="sala" class="botao">Cancelar</button>
+    </div>

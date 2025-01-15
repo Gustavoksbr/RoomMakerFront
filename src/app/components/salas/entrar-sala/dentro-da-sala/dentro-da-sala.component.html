@@ -1,0 +1,7 @@
+<p>dentro-da-sala works!</p>
+<p>Participantes:</p>
+@for(u of sala.usernameParticipantes.concat(sala.usernameDono) ; track $index) {
+  <p>{{u}}</p>
+}
+<app-chat [topic]="topic" [app]="app" />
+<button (click)="sairSala()" >> sair da sala</button>

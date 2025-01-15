@@ -1,0 +1,24 @@
+<div>
+  <h2>WebSocket Demo</h2>
+  <div>
+    <button (click)="connect()" [disabled]="connected">Connect</button>
+    <button (click)="disconnect()" [disabled]="!connected">Disconnect</button>
+  </div>
+  @if (connected)
+  {
+    <div >
+      <table>
+        <thead>
+        <tr>
+          <th>Greetings</th>
+        </tr>
+        </thead>
+        <tbody> <tr *ngFor="let greeting of messages">
+          <td>{{ greeting }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

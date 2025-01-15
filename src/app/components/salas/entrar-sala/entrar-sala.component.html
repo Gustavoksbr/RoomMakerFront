@@ -1,0 +1,14 @@
+<app-home/>
+<section class="container">
+  <header class="header d-flex">
+  </header>
+  <button routerLink="/salas" class="btn btn btn-secondary">Voltar a lista</button>
+@if(sala.usernameParticipantes.includes(username) || (sala.usernameDono == username))
+{
+  <app-dentro-da-sala [sala] ="sala" (enviarParticipantes)="validarParticipantes($event)" />
+}
+@else
+{
+<app-fora-da-sala [salaParaEntrar]="sala" (enviarSala)="entrarSala($event)"/>
+}
+</section>
