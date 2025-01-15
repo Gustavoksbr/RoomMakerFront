@@ -7,10 +7,11 @@ import {HomeComponent} from './components/home/home.component';
 import {ListarSalasComponent} from './components/salas/listar-salas/listar-salas.component';
 import {EntrarSalaComponent} from './components/salas/entrar-sala/entrar-sala.component';
 import {CriarSalaComponent} from './components/salas/criar-sala/criar-sala.component';
-import {WsComponent} from './components/testes/ws/ws.component';
-import {Ws2Component} from './components/testes/ws2/ws2.component';
-import {UsestateComponent} from './components/testes/usestate/usestate.component';
-import {ChatTesteComponent} from './components/testes/chat-teste/chat-teste.component';
+// import {WsComponent} from './components/testes/ws/ws.component';
+// import {Ws2Component} from './components/testes/ws2/ws2.component';
+// import {UsestateComponent} from './components/testes/usestate/usestate.component';
+// import {ChatTesteComponent} from './components/testes/chat-teste/chat-teste.component';
+// import {MultiplecomponentsComponent} from './components/testes/multiplecomponents/multiplecomponents.component';
 
 
 export  const routes: Routes = [
@@ -25,10 +26,11 @@ export  const routes: Routes = [
 
 
 
-  {path:"testes/ws", component: WsComponent},
-  {path:"testes/ws2",component:Ws2Component},
-  {path:"testes/useState",component:UsestateComponent},
-  {path:"testes/chatTeste",component:ChatTesteComponent}
+  // {path:"testes/ws", component: WsComponent},
+  // {path:"testes/ws2",component:Ws2Component},
+  // {path:"testes/useState",component:UsestateComponent},
+  // {path:"testes/chatTeste",component:ChatTesteComponent},
+  // {path:"testes/ws3", component: MultiplecomponentsComponent}
 ];
 
 @NgModule({

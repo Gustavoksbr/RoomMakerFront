@@ -3,6 +3,7 @@ import {WebSocketService} from '../../../../../services/websocket/websocket.serv
 import {MessageResponseWs} from './MessageResponseWs';
 import {MessageRequestWs} from './MessageRequestWs';
 import {FormsModule} from '@angular/forms';
+import {Client} from '@stomp/stompjs';
 
 @Component({
   selector: 'app-chat',
@@ -12,9 +13,11 @@ import {FormsModule} from '@angular/forms';
   ],
   templateUrl: './chat.component.html'
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit {
   @Input() public app: string = '';
   @Input() public topic: string = '';
+  @Input() public stompClient: Client= new Client();
+
   public chat: MessageResponseWs[] = [
   { message: 'Hello!', from: 'User1' },
   { message: 'How are you?', from: 'User2' },
@@ -27,6 +30,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   { message: 'Yes, it is.', from: 'User9' },
   { message: 'Good luck with your project!', from: 'User10' }
 ];
+
   public message: MessageRequestWs = {
     message: ''};
 
@@ -34,28 +38,22 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("o pai enviou o app: " + this.app);
-    console.log("o pai enviou o topic: " + this.topic);
-    this.websocketService.connect(
-      () => {
-        console.log("Conectado ao websocket do chat")
-      },
-      this.topic + "/chat",
-      (msg: MessageResponseWs) => {
+    setTimeout(() => {
+      console.log("o pai enviou o app: " + this.app);
+      console.log("o pai enviou o topic: " + this.topic);
+      this.websocketService.subscribe(this.stompClient, this.topic + "/chat", (msg: MessageResponseWs) => {
         console.log("recebeu mensagem do chat:" + msg);
         console.log("a mensagem é:" + msg.message);
         console.log("do usuário:" + msg.from);
         this.chat.push(msg);
       });
+    },1500);
   }
 
   public sendMessage() {
     console.log("Enviando mensagem: " + this.message.message);
     console.log("com destination: " + this.app + "/chat");
-    this.websocketService.sendMessage(this.app + "/chat", JSON.stringify(this.message));
+    this.websocketService.sendMessage(this.stompClient, this.app + "/chat", JSON.stringify(this.message));
   }
 
-  ngOnDestroy(): void {
-    this.websocketService.disconnect();
-  }
 }

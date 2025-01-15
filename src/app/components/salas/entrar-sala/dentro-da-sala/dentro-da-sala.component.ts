@@ -4,6 +4,7 @@ import {WebSocketService} from '../../../../services/websocket/websocket.service
 import {AuthService} from '../../../../services/auth.service';
 import {SalasService} from '../../../../services/salas/salas.service';
 import {ChatComponent} from './chat/chat.component';
+import {Client} from '@stomp/stompjs';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -28,6 +29,7 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
   private username : string = '';
   protected topic : string = '';
   protected app : string = '';
+  public stompClient : Client = new Client();
   public jogos : string[] = ['chat','tictactoe','forca','coup','xadrez'];
   @Output() enviarParticipantes = new EventEmitter<string[]>();
 
@@ -48,7 +50,8 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
 
     let topicForThis = this.topic + "/sala";
     console.log("topicForThis: " + topicForThis);
-    this.websocketService.connect(
+    this.stompClient = this.websocketService.connect(
+      this.stompClient,
       () => {console.log("Conectado ao websocket da sala")},
       topicForThis,
       (msg : string[]) => {
@@ -60,7 +63,7 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.websocketService.disconnect();
+    this.websocketService.disconnect(this.stompClient);
   }
 
 
