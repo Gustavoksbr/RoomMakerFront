@@ -2,6 +2,9 @@
 import { Injectable } from '@angular/core';
 import { Client } from '@stomp/stompjs';
 import {AuthService} from '../auth.service';
+import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
+import {ErrorHandlerPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
+import {ErrorPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
 
 @Injectable({
   providedIn: 'root',
@@ -10,13 +13,31 @@ export class WebSocketService {
   // public stompClient: Client;
   private authService: AuthService;
 
-  constructor(authService: AuthService) {
+  constructor(authService: AuthService,private globalErrorHandler: GlobalErrorHandler) {
     this.authService = authService;
   }
-  private convertToObject(message: any): any {
+  private convertToObject(message: any,topic:string): any {
+    let parsed;
+    try {
+      parsed = JSON.parse(message.body);
+    } catch (error) {
+      console.error('Failha to parse message body as JSON:', error);
+      return null;
+    }
+    const erroInterface : ErrorPersonalizado={
+      status: message.body.status,
+      error: message.body.error
+    }
+    if(parsed.error){
+      console.log("nao e nulo");
+      this.globalErrorHandler.handleError(parsed);
+
+    }
     console.log('z  message: ' + message);
-    console.log('z  message.body: ' + message.body);
+    console.log('z no topico ('+topic+') message.body: ' + message.body);
     console.log('z  JSON.parse(message.body): ' + JSON.parse(message.body));
+    console.log('z  JSON.strinfy(message.body): ' + JSON.stringify(message.body));
+
     return JSON.parse(message.body);
   }
   connect(
@@ -33,7 +54,7 @@ export class WebSocketService {
       console.log('Connected: ' + frame);
       onConnectCallback(frame);
       stompClient.subscribe(topic, (messageBeforeConvertionToType) =>
-          onMessageCallback(this.convertToObject(messageBeforeConvertionToType)),
+          onMessageCallback(this.convertToObject(messageBeforeConvertionToType,topic)),
         {Authorization: `Bearer ${this.authService.getToken()}`});
     //   stompClient.subscribe(topic+"/chat", (messageBeforeConvertionToType) =>
     //       onMessageCallback(this.convertToObject(messageBeforeConvertionToType)),
@@ -52,7 +73,7 @@ export class WebSocketService {
 subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any) => void) {
     console.log("stompCliente is connected: " + stompClient.connected);
     stompClient.subscribe(topic, (messageBeforeConvertionToType) =>
-        onMessageCallback(this.convertToObject(messageBeforeConvertionToType)),
+        onMessageCallback(this.convertToObject(messageBeforeConvertionToType,topic)),
       {Authorization: `Bearer ${this.authService.getToken()}`});
 }
   disconnect(stompClient : Client) {

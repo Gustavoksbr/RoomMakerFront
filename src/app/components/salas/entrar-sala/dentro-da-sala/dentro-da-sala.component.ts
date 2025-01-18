@@ -5,12 +5,14 @@ import {AuthService} from '../../../../services/auth.service';
 import {SalasService} from '../../../../services/salas/salas.service';
 import {ChatComponent} from './chat/chat.component';
 import {Client} from '@stomp/stompjs';
+import {TictactoeComponentimplements} from './jogos/tictactoe/tictactoe.component';
 
 @Component({
   selector: 'app-dentro-da-sala',
   standalone: true,
   imports: [
-    ChatComponent
+    ChatComponent,
+    TictactoeComponentimplements
   ],
   templateUrl: './dentro-da-sala.component.html',
   styleUrl: './dentro-da-sala.component.scss'

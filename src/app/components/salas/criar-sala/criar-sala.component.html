@@ -9,16 +9,18 @@
       name="nome"
       required
     >
-    <label for="salaCategoria">Categoria</label>
-    <input
-      id="salaCategoria"
-      type="text"
-      class="input"
-      placeholder="Digite a categoria"
-      [(ngModel)]="sala.categoria"
-      name="categoria"
-      required
-    >
+<label for="salaCategoria">Categoria</label>
+<select
+  id="salaCategoria"
+  class="input"
+  [(ngModel)]="sala.categoria"
+  name="categoria"
+  required
+>
+  <option value="chat">Chat</option>
+  <option value="tictactoe">Tic Tac Toe</option>
+  <option value="coup">Coup</option>
+</select>
     <label for="salaSenha">Senha</label>
     <input
       id="salaSenha"

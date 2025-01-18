@@ -1,0 +1,27 @@
+﻿.tictactoe-board{
+
+
+}
+
+.row-personalizada{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.col-personalizada{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.letra{
+  border: 1px solid black;
+  width: 100px;
+  align-items: center;
+}
+
+.letra p{
+  font-size: 50px;
+  text-align: center;
+}

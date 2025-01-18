@@ -1,1 +1,36 @@
-<p>tictactoe works!</p>
+<div class="tictactoe-component">
+
+  @if (!jogadorOponente){
+    <p>Esperando oponente...</p>
+  } @else {
+    <p>Vitórias de {{jogadorDono}}: {{vitoriasDono}}</p>
+    <p>Vitórias de {{jogadorOponente}}: {{vitoriasOponente}}</p>
+    <p>Empates:{{empates}}</p>
+
+    <p>Sua letra é:
+      @if(username == tictactoe.x)
+      {
+        X
+      }
+      @else if(username == tictactoe.o)
+      {
+        O
+      }
+    </p>
+    <p>{{verificarStatus()}}</p>
+    <div class="tictactoe-board">
+      <div class="row-personalizada">
+        @for (row of [0,1,2];track $index) {
+          <div class="col-personalizada">
+            @for (col of [0,1,2];track $index) {
+              <div (click)="enviarLance(row * 3 + col)" class="letra">
+                <p>{{ tictactoe.posicao[row * 3 + col] }} </p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+</div>

@@ -1,10 +1,28 @@
-<p>dentro-da-sala works!</p>
-<p>Participantes:</p>
-@for(u of sala.usernameParticipantes.concat(sala.usernameDono) ; track $index) {
-  <p>{{u}}</p>
-}
-@if (stompClient.connected) {
+<div class="card"><div class="card-header">
+  <p >{{sala.usernameDono}}/<b style="font-size: 1.5em">{{sala.nome}}</b></p>
+  </div>
+  <div class="card-header">
 
-  <app-chat [topic]="topic" [app]="app" [stompClient]="stompClient" />
-}
-<button (click)="sairSala()" > sair da sala</button>
+    <p>Participantes ({{sala.usernameParticipantes.length + 1}}/{{sala.qtdCapacidade}}):</p>
+    <div class="participants">
+      <p>{{sala.usernameDono}} (dono)</p>
+      @for (u of sala.usernameParticipantes; track $index) {
+        <p>{{u}}</p>
+      }
+    </div>
+  </div>
+  <div class="card-body">
+
+    @if (stompClient.connected) {
+      <div class="game-section">
+        @if (sala.categoria == 'tictactoe') {
+        <app-tictactoe [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]" />
+          }
+        <app-chat [topic]="topic" [app]="app" [stompClient]="stompClient" />
+      </div>
+    }
+  </div>
+  <div class="card-footer">
+    <button (click)="sairSala()">Sair da sala</button>
+  </div>
+</div>
