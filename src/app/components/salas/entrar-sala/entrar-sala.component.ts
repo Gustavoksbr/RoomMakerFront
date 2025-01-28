@@ -63,7 +63,7 @@ export class EntrarSalaComponent implements OnInit {
 ;
    this.usernameDono  = this.route.snapshot.paramMap.get('usernameDono');
    this.salaNome =this.route.snapshot.paramMap.get('nomeSala');
-    this.url = this.usernameDono! + "/" + this.salaNome!;g
+    this.url = this.usernameDono! + "/" + this.salaNome!;
       console.log("dono é:"+this.usernameDono);
    console.log(this.username);
    this.service.buscarPorUsernameDonoESalaNome((this.usernameDono)!,(this.salaNome)!).subscribe((sala)=>{
