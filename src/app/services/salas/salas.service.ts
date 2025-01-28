@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {SalaResponse} from '../../models/salas/response/SalaResponse';
 import {AuthService} from '../auth.service';
@@ -20,6 +20,30 @@ export class SalasService {
  listar(): Observable<SalaResponse[]> {
   return this.http.get<SalaResponse[]>(this.API, { headers: this.getHeaders() });
 }
+  listarEspecifico(usernameDono: string = '', nome: string = '', categoria: string = ''): Observable<SalaResponse[]> {
+    const params = new HttpParams()
+      .set('usernameDono', usernameDono)
+      .set('nome', nome)
+      .set('categoria', categoria);
+    return this.http.get<SalaResponse[]>(this.API, { headers: this.getHeaders(), params });
+  }
+
+  listarPorUsernameDono(usernameDono:string):Observable<SalaResponse[]>{
+    const url = `${this.API}/_dono`;
+    console.log("url é:"+url);
+    const params = new HttpParams()
+      .set('usernameDono', usernameDono);
+    return this.http.get<SalaResponse[]>(url,{ headers: this.getHeaders(),params });
+  }
+
+  listarPorUsernameParticipante(usernameParticipante:string):Observable<SalaResponse[]>{
+    const url = `${this.API}/_convidado`;
+    console.log("url é:"+url);
+    const params = new HttpParams()
+      .set('usernameParticipante', usernameParticipante);
+    return this.http.get<SalaResponse[]>(url,{ headers: this.getHeaders(),params });
+  }
+
   criar(sala:CriarSalaRequest):Observable<SalaResponse>{
     return this.http.post<SalaResponse>(this.API,sala,{ headers: this.getHeaders() });
 
@@ -37,6 +61,10 @@ export class SalasService {
 
   sairDaSala(usernameDono:string,salaNome:string,username:string):Observable<SalaResponse>{
     const url = `${this.API}/${usernameDono}/${salaNome}/${username}`;
+    return this.http.delete<SalaResponse>(url,{ headers: this.getHeaders() });
+  }
+  deletarSala(usernameDono:string,salaNome:string):Observable<SalaResponse>{
+    const url = `${this.API}/${usernameDono}/${salaNome}`;
     return this.http.delete<SalaResponse>(url,{ headers: this.getHeaders() });
   }
 

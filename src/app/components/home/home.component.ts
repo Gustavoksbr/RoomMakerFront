@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {NgOptimizedImage} from '@angular/common';
+import {NgClass, NgOptimizedImage} from '@angular/common';
 import {ErrorHandlerPersonalizado, ErrorPersonalizado} from './ErrorHandlerPersonalizado';
 import {Observable} from 'rxjs';
 import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
@@ -12,7 +12,8 @@ import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler'
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgClass
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -25,7 +26,6 @@ export class HomeComponent {
 }
   constructor(private authService: AuthService,private errorHandler: GlobalErrorHandler) {
    this.username =  localStorage.getItem('username')!;
-
   }
 
   logout() {

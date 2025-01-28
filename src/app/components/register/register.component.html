@@ -1,6 +1,20 @@
-<form (submit)="register()">
-  <input type="text" [(ngModel)]="user.username" placeholder="Username" required />
-  <input type="email" [(ngModel)]="user.email" placeholder="Email" required />
-  <input type="password" [(ngModel)]="user.password" placeholder="Password" required />
-  <button type="submit">Register</button>
+<app-home>
+  <div class=" container-cadastro">
+    <div class=" panel cadastro">
+  <h3>Cadastre-se</h3>
+<form (submit)="register()" class="form-group">
+  <div class="mb-3">
+  <input type="text" [(ngModel)]="user.username" placeholder="Username"  class="form-control" required name="username" />
+  </div>
+  <div class="mb-3">
+  <input type="email" [(ngModel)]="user.email" placeholder="Email" class="form-control" required  name="email" />
+  </div>
+  <div class="mb-3">
+  <input type="password" [(ngModel)]="user.password" placeholder="Password" class="form-control" required name="password" />
+  </div>
+  <button type="submit" class="btn btn-primary">Register</button>
 </form>
+  <p>Já possui conta? <a class="a" (click)="logar()">Login</a> </p>
+    </div>
+  </div>
+</app-home>

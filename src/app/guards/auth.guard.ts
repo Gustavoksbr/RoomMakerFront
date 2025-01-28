@@ -13,13 +13,16 @@ import { AuthService } from '../services/auth.service';
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.authService.isLoggedIn()) {
+      // Se o usuário estiver autenticado e na rota "default", redireciona para "salas"
+      if (state.url === '/default') {
+        this.router.navigate(['/salas']);
+        return false;
+      }
       return true;
     } else {
+      // Se não estiver autenticado, redireciona para "login"
       this.router.navigate(['/login']);
       return false;
     }

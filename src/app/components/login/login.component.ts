@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ToastrModule, ToastrService} from 'ngx-toastr';
+import {HomeComponent} from '../home/home.component';
 
 
 @Component({
@@ -11,6 +12,7 @@ import {ToastrModule, ToastrService} from 'ngx-toastr';
   styleUrls: ['./login.component.scss'],
   imports: [
     FormsModule,
+    HomeComponent,
   ],
   standalone: true
 })
@@ -34,5 +36,9 @@ export class LoginComponent {
         throw err;
       },
     });
+  }
+
+  cadastrar(){
+    this.router.navigate(['/register']);
   }
 }

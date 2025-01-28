@@ -1,14 +1,26 @@
-<app-home/>
+<app-home>
+<app-navbar>
+<!--  <app-navbar [paginaAtual]="returnPaginaAtual()" >-->
 <section class="container">
   <header class="header d-flex">
   </header>
-  <button routerLink="/salas" class="btn btn btn-secondary">Voltar a lista</button>
-@if(sala.usernameParticipantes.includes(username) || (sala.usernameDono == username))
-{
-  <app-dentro-da-sala [sala] ="sala" (enviarParticipantes)="validarParticipantes($event)" />
-}
-@else
-{
-<app-fora-da-sala [salaParaEntrar]="sala" (enviarSala)="entrarSala($event)"/>
+  <button routerLink="/salas" class="btn btn btn-secondary voltar-a-lista">Voltar a lista</button>
+@if(sala.id==""){
+  <div class="pagina-not-found">
+    <h3>Sala com nome <b>{{url}}</b> não encontrada!</h3>
+  </div>
+
+} @else {
+  @if(usuarioEstaNaSala())
+  {
+    <app-dentro-da-sala [sala] ="sala" (enviarParticipantes)="validarParticipantes($event)" />
+  }
+  @else
+  {
+    <app-fora-da-sala [salaParaEntrar]="sala" (enviarSala)="entrarSala($event)"/>
+  }
+
 }
 </section>
+</app-navbar>
+</app-home>

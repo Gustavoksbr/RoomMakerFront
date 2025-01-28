@@ -1,3 +1,7 @@
+<app-home>
+  <div class="card container-login">
+    <div class="login">
+  <h3>Login</h3>
 <form (submit)="login()" class="form-group">
   <div class="mb-3">
     <input type="text" [(ngModel)]="credentials.username" class="form-control" placeholder="Username" required name="username" />
@@ -6,6 +10,11 @@
     <input type="password" [(ngModel)]="credentials.password" class="form-control" placeholder="Password" required name="password" />
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
+
 </form>
+  <p>Não possui conta? <a class="a" (click)="cadastrar()">Cadastre-se</a> </p>
+  </div>
+  </div>
+</app-home>
 <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
 

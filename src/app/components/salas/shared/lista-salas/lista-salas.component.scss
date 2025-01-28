@@ -1,0 +1,76 @@
+table{
+  border-collapse: collapse;
+}
+
+
+
+
+tr th input{
+
+  width: 20%;
+  height: 20%;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+thead{
+  position:sticky;
+  top:0;
+}
+
+th{
+  padding: 0;
+}
+
+.lista{
+  overflow-y:auto;
+  height:500px;
+  min-width: 500px;
+  border: 3px solid black;
+  border-radius: 5px;
+}
+.lista-suas-salas{
+  overflow-y:auto;
+  min-height:50px;
+  max-height: 250px;
+  min-width: 500px;
+  border: 3px solid black;
+  border-radius: 5px;
+}
+
+.table-responsive {
+}
+
+
+.lista-container{
+  display: flex;
+  justify-content: center;
+}
+
+table thead tr th{
+  background: cornflowerblue;
+}
+
+.pode-entrar td{
+  background-color: white;
+
+}
+.ja-esta-na-sala td{
+  background-color: lightblue;
+}
+.nao-pode-entrar td{
+  background-color: lightgray;
+}
+
+.nao-pode-entrar-botao{
+  background-color: lightgray;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+cursor: default;
+}
+
+.emojis{
+  cursor: default;
+}

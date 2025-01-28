@@ -7,6 +7,32 @@
     <p>Vitórias de {{jogadorOponente}}: {{vitoriasOponente}}</p>
     <p>Empates:{{empates}}</p>
 
+    @if(tictactoeAnterior.status!=TicTacToeStatus.WAITING){
+      <div class="card">
+      @if (tictactoeAnterior.status==TicTacToeStatus.DRAW){
+        <p>Empate!</p>
+      } @else if (tictactoeAnterior.status==TicTacToeStatus.x_WIN){
+        <p>{{tictactoeAnterior.x}} venceu!</p>
+      } @else if (tictactoeAnterior.status==TicTacToeStatus.o_WIN){
+        <p>{{tictactoeAnterior.o}} venceu!</p>
+      }
+      <div class="tictactoe-board-2">
+      <div class="row-personalizada">
+        @for (row of [0,1,2];track $index) {
+          <div class="col-personalizada">
+            @for (col of [0,1,2];track $index) {
+              <div class="letra" >
+                <p>{{ tictactoeAnterior.posicao[row * 3 + col] }} </p>
+              </div>
+            }
+          </div>
+    }
+  </div>
+      </div>
+      </div>
+    }
+
+
     <p>Sua letra é:
       @if(username == tictactoe.x)
       {
@@ -23,7 +49,7 @@
         @for (row of [0,1,2];track $index) {
           <div class="col-personalizada">
             @for (col of [0,1,2];track $index) {
-              <div (click)="enviarLance(row * 3 + col)" class="letra">
+              <div (click)="enviarLance(row * 3 + col)" class="letra" [ngClass]="{'nao-e-sua-vez':!verificarVez()}">
                 <p>{{ tictactoe.posicao[row * 3 + col] }} </p>
               </div>
             }

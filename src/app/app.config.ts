@@ -20,3 +20,7 @@ export const appConfig: ApplicationConfig = {
   ]
 
 };
+
+//{ provide: ErrorHandler, useClass: GlobalErrorHandler, multi: true, deps: [HttpErrorHandler] },
+
+//{provide: ErrorHandler, useClass: GlobalErrorHandler},

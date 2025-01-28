@@ -76,6 +76,7 @@ subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any)
         onMessageCallback(this.convertToObject(messageBeforeConvertionToType,topic)),
       {Authorization: `Bearer ${this.authService.getToken()}`});
 }
+
   disconnect(stompClient : Client) {
     stompClient.deactivate();
     console.log('Disconnected');
@@ -88,4 +89,23 @@ subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any)
       stompClient.publish({ destination, body, headers: { Authorization: `Bearer ${this.authService.getToken()}` } });
     }
   }
+
+  //testes para hacker
+  connectHacker(
+    stompClient : Client)//o q fazer sempre que receber uma mensagem
+  {
+    stompClient.configure({
+      brokerURL: 'ws://localhost:8080/socket',
+    });
+    stompClient.onConnect = (frame) => {
+      console.log('Connected via hack: ' + frame);
+    };
+
+    stompClient.activate();
+    return stompClient;
+  }
+  unsubscribe(stompClient : Client, topic: string) {
+    stompClient.unsubscribe(topic);
+  }
+
 }

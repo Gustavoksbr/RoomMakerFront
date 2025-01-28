@@ -1,7 +1,19 @@
-﻿.tictactoe-board{
-
-
+﻿.tictactoe-board p{
+  font-size: 50px;
 }
+
+.tictactoe-board .letra{
+  width: 100px;
+}
+
+.tictactoe-board-2 p{
+  font-size: 25px;
+}
+
+.tictactoe-board-2 .letra{
+  width: 50px;
+}
+
 
 .row-personalizada{
   display: flex;
@@ -17,11 +29,17 @@
 
 .letra{
   border: 1px solid black;
-  width: 100px;
   align-items: center;
 }
 
 .letra p{
-  font-size: 50px;
+
   text-align: center;
 }
+
+.nao-e-sua-vez{
+  background-color: rgba(142, 137, 137, 0.59);
+}
+
+
+

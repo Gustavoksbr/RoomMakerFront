@@ -1,0 +1,89 @@
+.container-listar-salas{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+
+}
+
+.listar-salas{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 9%;
+}
+
+.header-listar-salas h2{
+  margin-bottom: 1rem;
+  //font-style: normal;
+  font-size: 60px;
+  color: blue;
+}
+
+.titulo-listar-salas{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+
+.barra-pesquisa{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+background: rgb(240, 240, 240);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  //max-width: 200px;
+}
+
+//table{
+//  border-collapse: collapse;
+//}
+//
+//
+//
+//
+//tr th input{
+//
+//  width: 20%;
+//  height: 20%;
+//  border-radius: 5px;
+//  border: 1px solid black;
+//}
+//
+//thead{
+//  position:sticky;
+//  top:0;
+//}
+//
+//th{
+//padding: 0;
+//}
+//
+//.lista{
+//  overflow-y:auto;
+//  height:500px;
+//  min-width: 500px;
+//border: 3px solid black;
+//border-radius: 5px;
+//}
+//
+//.table-responsive {
+//}
+//
+//
+//.lista-container{
+//  display: flex;
+//  justify-content: center;
+//}
+//
+//table thead tr th{
+//  background: cornflowerblue;
+//}
+//
+//

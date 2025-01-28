@@ -1,0 +1,17 @@
+
+<div class="container">
+  <div class=" quadrado-principal">
+    <div class="container-nav">
+<nav>
+  <div id="salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.SALAS}" routerLink="/salas"><p>Lista de salas</p></div>
+  <div id="suas-salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.SUAS_SALAS}" routerLink="/suas-salas"><p>Suas salas</p></div>
+  <div id="criar-salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.CRIAR_SALA}" routerLink="/criar-sala"><p>Criar sala</p></div>
+<!--  <div id="jogando" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.JOGANDO}" routerLink="/suas-salas"><p>Jogando</p></div>-->
+  <div id="historico" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.HISTORICO}" routerLink="/criar-sala"><p>Histórico</p></div>
+</nav>
+    </div>
+    <div class="container-conteudo">
+    <ng-content></ng-content>
+    </div>
+  </div>
+</div>

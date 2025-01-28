@@ -1,0 +1,36 @@
+.container-fora-da-sala{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.fora-da-sala{
+padding: 4%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.fora-da-sala p{
+  padding: 3%;
+}
+
+.entrar{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.fora-da-sala p{
+  display: flex;
+  flex-direction: column;
+}
+
+//.participantes{
+//  display: flex;
+//  flex-direction: row;
+//}

@@ -1,0 +1,16 @@
+.suas-salas{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.suas-salas div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  //border-bottom: 1px solid black;
+}

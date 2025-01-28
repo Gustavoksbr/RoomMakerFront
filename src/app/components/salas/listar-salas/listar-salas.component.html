@@ -1,45 +1,112 @@
-<app-home/>
-<section class="container">
-  <header class="header d-flex flex-wrap">
-    <div class="col-6 col-md-3">
-      <h2 class="ff-inter">Mural de salas</h2>
+<app-home>
+<!--<section class="container-listar-salas">-->
+
+<!--  <div class=" card listar-salas">-->
+<!--  <header class="header-listar-salas header d-flex flex-wrap">-->
+<!--    <div class="col-6 col-md-3 titulo-listar-salas">-->
+<!--      <h2 class="ff-inter">Mural de salas</h2>-->
+<!--    </div>-->
+<!--    <div class="col-6 col-md-3">-->
+<!--      <button routerLink="criarSala" class="btn btn-primary">Adicionar sala</button>-->
+<!--      </div>-->
+
+
+<!--  </header>-->
+  <app-navbar [paginaAtual]=PaginaAtual.SALAS>
+  <div class="row mb-3 barra-pesquisa">
+    <h3>Procurar</h3>
+    <div class="col">
+      <label for="searchUsernameDono">Dono</label>
+      <input id="searchUsernameDono" type="text" class="form-control"  [(ngModel)]="searchUsernameDono">
     </div>
-    <div class="col-6 col-md-3">
-      <button routerLink="criarSala" class="btn btn-primary">Adicionar sala</button>
-      <button (click)="ngOnInit()" class="btn btn-secondary">Atualizar</button>
+    <div class="col">
+      <label for="searchNomeSala">Nome da Sala</label>
+      <input id="searchNomeSala" type="text" class="form-control" [(ngModel)]="searchNomeSala">
     </div>
-  </header>
-  <table class="table" *ngIf="ListaSalas.length > 0; else semSalas">
-    <thead>
-      <tr>
-        <th>Dono/Sala</th>
-        <th>Categoria</th>
-        <th>Disponível</th>
-        <th>Privacidade</th>
-        <th>Participantes</th>
-        <th>Ação</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let p of ListaSalas">
-        <td>{{ p.usernameDono }}/{{ p.nome }}</td>
-        <td>{{ p.categoria }}</td>
-        <td>{{ p.disponivel ? 'Sim' : 'Não' }}</td>
-        <td>{{ p.publica ? 'Pública' : 'Privada' }}</td>
-        <td>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</td>
-        <td>
-          <button
-            class="btn"
-            [ngClass]="{'btn-success': p.publica, 'btn-warning': !p.publica}"
-            [routerLink]="['/salas', p.usernameDono, p.nome]"
-          >
-            {{ p.publica ? 'Entrar' : 'Entrar com senha' }}
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</section>
+    <div class="col">
+      <label for="searchCategoria">Categoria</label>
+      <select
+        [(ngModel)]="searchCategoria"
+        id="searchCategoria"
+        class="form-select selecionarCategoria"
+        name="categoria"
+        required
+      >
+        <option value="" selected ></option>
+        <option value="chat" >Chat</option>
+        <option value="jokenpo">Jo-ken-pô</option>
+        <option value="tictactoe">Jogo da velha</option>
+        <option value="coup">Coup</option>
+      </select>
+    </div>
+<!--    <div class="col">-->
+<!--      <label for="searchEspecifico">Específico</label>-->
+<!--      <select-->
+<!--        [(ngModel)]="searchEspecifico"-->
+<!--        id="searchEspecifico"-->
+<!--        class="form-select selecionarCategoria"-->
+<!--        name="especifico"-->
+<!--        required>-->
+<!--        <option value="" selected ></option>-->
+<!--        <option>Salas que eu participo</option>-->
+<!--        <option>Salas que eu sou dono</option>-->
+<!--        <option>Salas que eu sou convidado</option>-->
+<!--        <option>Salas que eu não participo</option>-->
+
+<!--      </select>-->
+<!--    </div>-->
+    <div class="col">
+      <button (click)="search()" class="btn btn-primary">🔎</button>
+      </div>
+    <div class="col">
+      <button (click)="limpar()" class="btn btn-secondary">Limpar</button>
+    </div>
+  </div>
+
+
+    <app-lista-salas [ListaSalas]="ListaSalas">
+    </app-lista-salas>
+<!--  <div class="lista-container">-->
+<!--  <div class="lista">-->
+<!--  <table *ngIf="ListaSalas.length > 0; else semSalas" class="table table-bordered " >-->
+<!--    <thead>-->
+<!--      <tr>-->
+<!--        <th><div>Nome</div></th>-->
+<!--        <th>Categoria</th>-->
+<!--        <th>Disponível</th>-->
+<!--        <th>Privacidade</th>-->
+<!--        <th>Participantes</th>-->
+<!--        <th>Ação</th>-->
+<!--      </tr>-->
+<!--    </thead>-->
+
+<!--    <tbody  class=""  >-->
+
+<!--      <tr *ngFor="let p of ListaSalas" >-->
+<!--&lt;!&ndash;        <div class="card opcao-sala" >&ndash;&gt;-->
+<!--        <td>{{ p.usernameDono }}/{{ p.nome }}</td>-->
+<!--        <td>{{ p.categoria }}</td>-->
+<!--        <td>{{ p.disponivel ? 'Sim' : 'Não' }}</td>-->
+<!--        <td>{{ p.publica ? 'Pública' : 'Privada' }}</td>-->
+<!--        <td>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</td>-->
+<!--        <td>-->
+<!--          <button-->
+<!--            class="btn"-->
+<!--            [ngClass]="{'btn-success': p.publica, 'btn-warning': !p.publica}"-->
+<!--            [routerLink]="['/salas', p.usernameDono, p.nome]"-->
+<!--          >-->
+<!--            {{ p.publica ? 'Entrar' : 'Entrar com senha' }}-->
+<!--          </button>-->
+<!--        </td>-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--      </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
+<!--  </div>-->
+<!--  </div>-->
+  </app-navbar>
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</section>&ndash;&gt;-->
 
 
 
@@ -47,7 +114,7 @@
 
 <ng-template #semSalas>
   <div class="ff-inter sem-salas">
-    <p>Ainda não há salas cadastrados!</p>
+    <p>Nenhuma sala encontrada!</p>
   </div>
 </ng-template>
 <ng-container *ngIf="showParticipantsPopup">
@@ -79,3 +146,4 @@
   </div>
 </ng-container>
 <!--<div class="mural" *ngIf="ListaSalas.length > 0; else semSalas">-->
+</app-home>

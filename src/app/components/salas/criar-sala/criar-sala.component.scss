@@ -1,0 +1,35 @@
+
+.criar-sala{
+
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-forms{
+  width: 600px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.formulario{
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.selecionarCategoria{
+  width: 30%;
+}
+
+.acoes{
+  display: flex;
+  justify-content: space-around;
+}

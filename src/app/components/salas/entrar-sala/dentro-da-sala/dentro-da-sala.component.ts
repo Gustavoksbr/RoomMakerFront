@@ -6,13 +6,15 @@ import {SalasService} from '../../../../services/salas/salas.service';
 import {ChatComponent} from './chat/chat.component';
 import {Client} from '@stomp/stompjs';
 import {TictactoeComponentimplements} from './jogos/tictactoe/tictactoe.component';
+import {JokenpoComponent} from './jogos/jokenpo/jokenpo.component';
 
 @Component({
   selector: 'app-dentro-da-sala',
   standalone: true,
   imports: [
     ChatComponent,
-    TictactoeComponentimplements
+    TictactoeComponentimplements,
+    JokenpoComponent
   ],
   templateUrl: './dentro-da-sala.component.html',
   styleUrl: './dentro-da-sala.component.scss'
@@ -28,7 +30,7 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
     publica: false,
     usernameParticipantes: []
   }
-  private username : string = '';
+  protected username : string = '';
   protected topic : string = '';
   protected app : string = '';
   public stompClient : Client = new Client();
@@ -42,7 +44,11 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
   constructor(private websocketService : WebSocketService, private authService : AuthService, private salaService : SalasService) {
     this.username = authService.getStorage("username")!;
   }
-
+  deletarSala(){
+    this.salaService.deletarSala(this.sala.usernameDono,this.sala.nome).subscribe((sala : any)=>{
+      console.log("sala deletada");
+    });
+  }
   ngOnInit(): void {
     this.topic = `/topic/sala/${this.sala.usernameDono}/${this.sala.nome}/${this.username}`;
     console.log("u topicoococc: " +this.topic);

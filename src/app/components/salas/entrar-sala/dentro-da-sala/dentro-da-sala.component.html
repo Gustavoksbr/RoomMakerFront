@@ -1,4 +1,5 @@
-<div class="card"><div class="card-header">
+<div class="card">
+  <div class="card-header">
   <p >{{sala.usernameDono}}/<b style="font-size: 1.5em">{{sala.nome}}</b></p>
   </div>
   <div class="card-header">
@@ -18,11 +19,19 @@
         @if (sala.categoria == 'tictactoe') {
         <app-tictactoe [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]" />
           }
+        @else if (sala.categoria == 'jokenpo') {
+          <app-jokenpo [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]"/>
+        }
         <app-chat [topic]="topic" [app]="app" [stompClient]="stompClient" />
       </div>
     }
   </div>
   <div class="card-footer">
-    <button (click)="sairSala()">Sair da sala</button>
-  </div>
+  @if (sala.usernameDono == username) {
+      <button class="btn btn-danger" (click)="deletarSala()">Deletar sala</button>
+  }@else{
+    <button class="btn btn-warning" (click)="sairSala()">Sair da sala</button>
+  }
+</div>
+
 </div>

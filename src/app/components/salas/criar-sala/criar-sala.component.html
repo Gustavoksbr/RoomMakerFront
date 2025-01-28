@@ -1,47 +1,80 @@
-<app-home/>
-<label for="salaNome">Sala</label>
+<app-home>
+  <app-navbar [paginaAtual]=PaginaAtual.CRIAR_SALA>
+<div class="criar-sala">
+<h3>Crie sua sala!</h3>
+  <div class="card container-forms">
+<div class="formulario">
+  <div class="form-group">
+<label for="salaNome">Nome da sala</label>
     <input
       id="salaNome"
       type="text"
-      class="input"
-      placeholder="Digite o nome da sala"
+      class="form-control"
+
       [(ngModel)]="sala.nome"
       name="nome"
       required
     >
+  </div>
+  <div class="form-group">
 <label for="salaCategoria">Categoria</label>
 <select
   id="salaCategoria"
-  class="input"
+  class="form-select selecionarCategoria"
   [(ngModel)]="sala.categoria"
   name="categoria"
   required
 >
-  <option value="chat">Chat</option>
-  <option value="tictactoe">Tic Tac Toe</option>
+  <option value="chat" >Chat</option>
+  <option value="jokenpo">Jo-ken-pô</option>
+  <option value="tictactoe">Jogo da velha</option>
   <option value="coup">Coup</option>
 </select>
-    <label for="salaSenha">Senha</label>
-    <input
-      id="salaSenha"
-      type="password"
-      class="input"
-      placeholder="Digite a senha"
-      [(ngModel)]="sala.senha"
-      name="senha"
-      required
-    >
+  </div>
+  <div class="form-group">
+
     <label for="salaQtdCapacidade">Capacidade</label>
     <input
       id="salaQtdCapacidade"
       type="number"
-      class="input"
+      class="form-control"
+      style=""
       placeholder="Digite a capacidade"
+      [ngStyle]="soPodeDois() ? {'background-color': '#f0f0f0'} : {}"
       [(ngModel)]="sala.qtdCapacidade"
       name="qtdCapacidade"
+      [readonly]="soPodeDois()"
+      [value]="soPodeDois() ? 2 : sala.qtdCapacidade"
       required
     >
-    <div class="acoes">
-      <button (click)="criarSalaRequest()" class="botao">Salvar</button>
-      <button routerLink="sala" class="botao">Cancelar</button>
-    </div>
+  </div>
+  <div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" [(ngModel)]="publica">
+    <label class="form-check-label" for="flexSwitchCheckDefault">Publica</label>
+  </div>
+  <div class="form-group">
+    <label for="salaSenha">Senha</label>
+    <input
+      id="salaSenha"
+      type="password"
+      class="form-control"
+      placeholder="Digite a senha"
+      [(ngModel)]="sala.senha"
+      name="senha"
+      required
+      [ngStyle]="publica ? {'background-color': '#f0f0f0'} : {}"
+      [readOnly]="publica"
+      [value]="publica ? '' : sala.senha"
+    >
+  </div>
+
+  <div class="acoes">
+    <button (click)="criarSalaRequest()" class="btn btn-primary">Salvar</button>
+    <button (click)="cancelar()" class="btn btn-secondary">Limpar</button>
+  </div>
+</div>
+
+</div>
+</div>
+  </app-navbar>
+</app-home>

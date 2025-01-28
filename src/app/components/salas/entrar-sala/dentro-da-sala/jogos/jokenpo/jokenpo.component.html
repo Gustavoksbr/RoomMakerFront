@@ -1,0 +1,41 @@
+<div>
+  @if (!jogadorOponente){
+    <p>Esperando oponente...</p>
+  } @else {
+    <p>Vitórias de <b>{{jogadorDono}}</b>: {{vitoriasDono}}</p>
+    <p>Vitórias de <b>{{jogadorOponente}}</b>: {{vitoriasOponente}}</p>
+    <p>Empates:{{empates}}</p>
+    @if (jokenpoAnterior.status!=JokenpoStatus.WAITING){
+      <div class="card">
+        @if(jokenpoAnterior.status==JokenpoStatus.DRAW){
+          <p>Empate!</p>
+        } @else if(jokenpoAnterior.status==JokenpoStatus.DONO_WIN) {
+          <p><b>{{jogadorDono}}</b> venceu!</p>
+        }
+        @else if(jokenpoAnterior.status==JokenpoStatus.OPONENTE_WIN) {
+          <p><b>{{jogadorOponente}}</b> venceu!</p>
+        }
+        <p>lance do <b>{{jogadorDono}}</b>: {{jokenpoAnterior.lanceDono}}</p>
+        <p>lance do <b>{{jogadorOponente}}</b>: {{jokenpoAnterior.lanceOponente}}</p>
+      </div>
+    }
+    <div class="card">
+      <p>Escolha uma jogada:</p>
+      <button class="escolha-jokenpo" [ngClass]="{'escolhido-jokenpo': lanceRequest.lance == JokenpoLance.PEDRA}" (click)="enviarLance(JokenpoLance.PEDRA)">Pedra 🗿</button>
+      <button class="escolha-jokenpo" [ngClass]="{'escolhido-jokenpo': lanceRequest.lance == JokenpoLance.PAPEL}" (click)="enviarLance(JokenpoLance.PAPEL)">Papel 📄</button>
+      <button class="escolha-jokenpo" [ngClass]="{'escolhido-jokenpo': lanceRequest.lance == JokenpoLance.TESOURA}" (click)="enviarLance(JokenpoLance.TESOURA)">Tesoura ✂️</button>
+      @if(jokenpo.lanceDono!=JokenpoLance.ESPERANDO){
+        <p><b>{{jogadorDono}}</b> já fez o lance</p>
+      } @else {
+        <p>Esperando <b>{{jogadorDono}}</b> fazer o lance</p>
+      }
+      @if (jokenpo.lanceOponente !=JokenpoLance.ESPERANDO){
+        <p><b>{{jogadorOponente}}</b> já fez o lance</p>
+      } @else{
+        <p>Esperando <b>{{jogadorOponente}}</b> fazer o lance</p>
+      }
+    </div>
+
+  }
+
+    </div>

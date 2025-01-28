@@ -1,0 +1,7 @@
+﻿export enum JokenpoLance {
+  PAPEL= 'PAPEL',
+  PEDRA= 'PEDRA',
+  TESOURA= 'TESOURA',
+  ESPERANDO= 'ESPERANDO',
+  SEGREDO= 'SEGREDO'
+}

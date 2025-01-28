@@ -1,0 +1,104 @@
+.header-perso{
+  background-color: rgba(64, 118, 255, 0.71);
+  justify-content: space-around;
+  width: 100%;
+  height: 100px;
+  //box-shadow: 0 10px 10px 0 rgba(0,0,0,0.1);
+}
+.logo-container{
+  //background-color: rgba(64, 118, 255, 0.71);
+}
+
+.logo-container img{
+  width: 180%;
+}
+
+//.homecard{
+//  width: 130px;
+//  //background-color: transparent;
+//}
+
+.homecard {
+  margin-right: 5%;
+  //background-color: rgba(64, 118, 255, 0.71);
+}
+
+.homecard p{
+  font-size: 150%;
+  color: white;
+}
+
+.sair{
+  background-color: rgba(64, 118, 255, 0.71);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100px;
+  height: 45px;
+
+
+}
+.sair p{
+  //width: 20%;
+}
+.sair img{
+  width: 40%;
+
+}
+.sair:hover{
+  cursor: pointer;
+  background-color: grey;
+}
+//#sair p:hover{
+//  color:blue;
+//
+//}
+
+.with-ng-content{
+  flex:1;
+  width: 100%;
+  height: 100%;
+  //display: flex;
+  //justify-content: center;
+  //align-items: center;
+}
+
+//ng-content{
+//  flex: 1;
+//  width: 100%;
+//  height: 100%;
+//  padding-top: 100px;
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//}
+
+
+footer{
+  position: absolute;
+  bottom: 0;
+  //padding: 1rem;
+  width: 100%;
+  background-color: rgb(64, 118, 255);
+  //box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.5);
+}
+
+.home{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer p{
+  color: white;
+}
+
+footer a{
+  color: white;
+}
+
+//.with-ng-content{
+//  bottom:0;
+//}

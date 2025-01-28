@@ -11,6 +11,8 @@ import {io} from 'socket.io-client';
 import {ForaDaSalaComponent} from './fora-da-sala/fora-da-sala.component';
 import {DentroDaSalaComponent} from './dentro-da-sala/dentro-da-sala.component';
 import {HomeComponent} from '../../home/home.component';
+import {NavbarComponent} from '../../navbar/navbar.component';
+import {PaginaAtual} from '../../navbar/PaginaAtual';
 
 @Component({
   selector: 'app-entrar-sala',
@@ -24,7 +26,8 @@ import {HomeComponent} from '../../home/home.component';
     FormsModule,
     ForaDaSalaComponent,
     DentroDaSalaComponent,
-    HomeComponent
+    HomeComponent,
+    NavbarComponent
   ],
   templateUrl: './entrar-sala.component.html',
   styleUrl: './entrar-sala.component.scss'
@@ -44,26 +47,39 @@ export class EntrarSalaComponent implements OnInit {
   username: string = "";
   usernameDono: string | null = "";
   salaNome: string | null = "";
+  public url: string = ''
   constructor(
     private authService: AuthService,
     private service:SalasService,
     private router:Router,
     private route:ActivatedRoute
 
+
   ) {}
 
 
   ngOnInit(): void {
    this.username = this.authService.getStorage("username")!;
+;
    this.usernameDono  = this.route.snapshot.paramMap.get('usernameDono');
    this.salaNome =this.route.snapshot.paramMap.get('nomeSala');
-   console.log("dono é:"+this.usernameDono);
+    this.url = this.usernameDono! + "/" + this.salaNome!;g
+      console.log("dono é:"+this.usernameDono);
    console.log(this.username);
    this.service.buscarPorUsernameDonoESalaNome((this.usernameDono)!,(this.salaNome)!).subscribe((sala)=>{
    this.sala = sala;
+
     })
   }
-
+  usuarioEstaNaSala(){
+    return this.sala.usernameParticipantes.includes(this.username) || this.sala.usernameDono === this.username;
+  }
+  returnPaginaAtual(){
+    if(this.usuarioEstaNaSala()){
+      return PaginaAtual.SUAS_SALAS
+    }
+    return PaginaAtual.SALAS;
+  }
   entrarSala(salaRequest:EntrarSalaRequest){
    this.service.entrarNaSala(salaRequest).subscribe((salaResponse: SalaResponse)=>{
      this.sala = salaResponse;

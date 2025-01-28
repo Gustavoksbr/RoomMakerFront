@@ -1,70 +1,26 @@
-<div class="container mt-4">
+<div class="container mt-4 container-fora-da-sala">
   <p class="h4">Entre na sala!</p>
-  <div class="form-group">
-    <label for="salaNome">Sala</label>
-    <input
-      id="salaNome"
-      type="text"
-      [(ngModel)]="salaParaEntrar.nome"
-      class="form-control"
-      name="nome"
-      readonly style="background-color: #f8f9fa;"
-    >
-  </div>
-  <div class="form-group">
-    <label for="usernameDono">Dono</label>
-    <input
-      id="usernameDono"
-      type="text"
-      [(ngModel)]="salaParaEntrar.usernameDono"
-      class="form-control"
-      name="usernameDono"
-      readonly style="background-color: #f8f9fa;"
-    >
-  </div>
-  <div class="form-group">
-    <label for="categoria">Categoria</label>
-    <input
-      id="categoria"
-      type="text"
-      [(ngModel)]="salaParaEntrar.categoria"
-      class="form-control"
-      name="categoria"
-      readonly style="background-color: #f8f9fa;"
-    >
-  </div>
-  <div class="form-group">
-    <label for="qtdCapacidade">Capacidade</label>
-    <input
-      id="qtdCapacidade"
-      type="number"
-      [(ngModel)]="salaParaEntrar.qtdCapacidade"
-      class="form-control"
-      name="qtdCapacidade"
-      readonly style="background-color: #f8f9fa;"
-    >
-  </div>
-  <div class="form-group">
-    <label for="publica">Privacidade</label>
-    <input
-      id="publica"
-      type="text"
-      [value]="salaParaEntrar.publica ? 'Pública' : 'Privada'"
-      class="form-control"
-      name="publica"
-      readonly style="background-color: #f8f9fa;"
-    >
-  </div>
-  <div class="form-group">
-    <label for="usernameParticipantes">Participantes</label>
-    <textarea
-      id="usernameParticipantes"
-      class="form-control"
-      [(ngModel)]="salaParaEntrar.usernameParticipantes"
-      name="usernameParticipantes"
-      readonly style="background-color: #f8f9fa;"
-    ></textarea>
-  </div>
+  <div class ="fora-da-sala card">
+
+
+<p>Sala:<b> {{salaParaEntrar.usernameDono}}/{{salaParaEntrar.nome}}</b></p>
+
+<p>Categoria: <b>{{salaParaEntrar.categoria}}</b></p>
+<p>Capacidade: <b>{{salaParaEntrar.qtdCapacidade}}</b></p>
+<p>Privacidade:<b> {{salaParaEntrar.publica ? 'Pública' : 'Privada'}}</b></p>
+<div class="participantes"><p>Participantes:</p>
+  <ul>
+    <li>
+      <b> {{salaParaEntrar.usernameDono}}(dono)</b>
+    </li>
+    @for (participante of salaParaEntrar.usernameParticipantes; track $index) {
+       <li>
+      <b>{{salaParaEntrar.usernameParticipantes}}</b>
+    </li>
+    }
+  </ul>
+</div>
+  @if (!salaParaEntrar.publica) {
   <div class="form-group">
     <label for="salaSenha">Senha</label>
     <input
@@ -77,7 +33,10 @@
       required
     >
   </div>
-  <div class="form-group mt-3">
+  }
+  <div class="form-group mt-3 entrar">
     <button (click)="entrarSala()" class="btn btn-primary">Entrar</button>
   </div>
-</div>
+  </div>
+  </div>
+
