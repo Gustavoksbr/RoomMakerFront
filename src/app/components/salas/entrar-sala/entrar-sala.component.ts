@@ -48,6 +48,7 @@ export class EntrarSalaComponent implements OnInit {
   usernameDono: string | null = "";
   salaNome: string | null = "";
   public url: string = ''
+  public participantesMaisDono: string[] = [];
   constructor(
     private authService: AuthService,
     private service:SalasService,
@@ -68,18 +69,18 @@ export class EntrarSalaComponent implements OnInit {
    console.log(this.username);
    this.service.buscarPorUsernameDonoESalaNome((this.usernameDono)!,(this.salaNome)!).subscribe((sala)=>{
    this.sala = sala;
-
+   this.participantesMaisDono = this.sala.usernameParticipantes.concat(this.sala.usernameDono);
     })
   }
   usuarioEstaNaSala(){
-    return this.sala.usernameParticipantes.includes(this.username) || this.sala.usernameDono === this.username;
+    return this.sala.usernameParticipantes.concat(this.sala.usernameDono).includes(this.username);
   }
-  returnPaginaAtual(){
-    if(this.usuarioEstaNaSala()){
-      return PaginaAtual.SUAS_SALAS
-    }
-    return PaginaAtual.SALAS;
-  }
+  // returnPaginaAtual(){
+  //   if(this.usuarioEstaNaSala()){
+  //     return PaginaAtual.SUAS_SALAS
+  //   }
+  //   return PaginaAtual.SALAS;
+  // }
   entrarSala(salaRequest:EntrarSalaRequest){
    this.service.entrarNaSala(salaRequest).subscribe((salaResponse: SalaResponse)=>{
      this.sala = salaResponse;
@@ -89,5 +90,6 @@ export class EntrarSalaComponent implements OnInit {
 
   validarParticipantes(participantes:string[]){
     this.sala.usernameParticipantes = participantes;
+    this.participantesMaisDono = this.sala.usernameParticipantes.concat(this.sala.usernameDono);
   }
 }

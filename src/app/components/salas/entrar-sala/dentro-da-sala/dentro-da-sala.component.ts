@@ -7,6 +7,7 @@ import {ChatComponent} from './chat/chat.component';
 import {Client} from '@stomp/stompjs';
 import {TictactoeComponentimplements} from './jogos/tictactoe/tictactoe.component';
 import {JokenpoComponent} from './jogos/jokenpo/jokenpo.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -41,10 +42,11 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
       console.log("saiu da sala");
     });
   }
-  constructor(private websocketService : WebSocketService, private authService : AuthService, private salaService : SalasService) {
+  constructor(private websocketService : WebSocketService, private authService : AuthService, private salaService : SalasService,private router : Router) {
     this.username = authService.getStorage("username")!;
   }
   deletarSala(){
+    this.router.navigate(['/salas']);
     this.salaService.deletarSala(this.sala.usernameDono,this.sala.nome).subscribe((sala : any)=>{
       console.log("sala deletada");
     });

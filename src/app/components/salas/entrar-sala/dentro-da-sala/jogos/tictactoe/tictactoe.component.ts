@@ -66,6 +66,7 @@ public verificarStatus(){
   }
 }
 public username = "";
+public historico: TicTacToeResponse [] = [];
 public vitoriasDono = 0;
 public vitoriasOponente = 0;
 public empates = 0;
@@ -80,32 +81,40 @@ public empates = 0;
       status:TicTacToeStatus.WAITING
     }
   }
+
+  private verificarResultado(jogo:TicTacToeResponse){
+    if(jogo.status == TicTacToeStatus.x_WIN || jogo.status == TicTacToeStatus.o_WIN){
+      if(jogo.x == this.username){
+        this.vitoriasDono++;
+      }else{
+        this.vitoriasOponente++;
+      }
+    }else if(jogo.status == TicTacToeStatus.DRAW){
+      this.empates++;
+    }
+  }
   ngOnInit(): void {
     this.username= this.authService.getStorage("username")!
-    this.websocketService.subscribe(this.stompClient, this.topic + "/tictactoe", (msg: TicTacToeResponse) => {
+    this.websocketService.subscribe(this.stompClient, this.topic + "/tictactoe", (msg: any) => {
         console.log("recebeu mensagem do tictactoe:" + msg);
-        this.tictactoe = msg;
-        if(this.tictactoe.status == TicTacToeStatus.DRAW || this.tictactoe.status == TicTacToeStatus.x_WIN || this.tictactoe.status == TicTacToeStatus.o_WIN) {
-          // this.tictactoeAnterior = msg;
-          if (this.tictactoe.status == TicTacToeStatus.x_WIN ||  this.tictactoe.status == TicTacToeStatus.o_WIN) {
-            const vencedor = this.tictactoe.status == TicTacToeStatus.x_WIN ? this.tictactoe.x : this.tictactoe.o;
-            if (vencedor == this.jogadorDono) {
-              this.vitoriasDono++;
-            } else {
-              this.vitoriasOponente++;
-            }
+        if(msg.usernameDono!=null){
+          console.log("TicTaCTOE DA TicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAATicTaCTOE DA SALAAAAA")
+          this.tictactoe = msg.jogoAtual;
+          this.historico = msg.historico;
+          this.vitoriasOponente = 0;
+          this.vitoriasDono = 0;
+          for(let i = 0; i < this.historico.length; i++){
+            this.verificarResultado(this.historico[i]);
           }
-          else if(this.tictactoe.status == TicTacToeStatus.DRAW){
-            this.empates++;
+        }else if(msg.posicao!=null){
+          this.tictactoe = msg;
+          if(this.tictactoe.status == TicTacToeStatus.DRAW || this.tictactoe.status == TicTacToeStatus.x_WIN || this.tictactoe.status == TicTacToeStatus.o_WIN) {
+            this.verificarResultado(this.tictactoe);
+            this.zerar();
           }
-          this.zerar();
-          // this.tictactoe.status = TicTacToeStatus.WAITING;
-          // this.tictactoe.x = '';
-          // this.tictactoe.o = '';
-          // this.tictactoe.posicao = '_________';
-          // this.websocketService.sendMessage(this.stompClient,this.app+"/tictactoe",JSON.stringify(this.ticTacToeComecarRequest));
           this.websocketService.sendMessage(this.stompClient,this.app+"/tictactoe",null);
         }
+
     });
     //this.websocketService.sendMessage(this.stompClient,this.app+"/tictactoe",JSON.stringify(this.ticTacToeComecarRequest));
     this.websocketService.sendMessage(this.stompClient,this.app+"/tictactoe",null);

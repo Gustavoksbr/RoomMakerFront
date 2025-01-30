@@ -32,7 +32,7 @@ export class ListarSalasComponent implements OnInit {
  }
 
 ngOnInit() {
-  this.service.listar().subscribe((salas) => {
+  this.service.listar().subscribe((salas: any) => {
     this.ListaSalas = salas;
     console.log(this.ListaSalas);
   });
@@ -47,7 +47,7 @@ limpar(): void {
   this.searchNomeSala = '';
   this.searchCategoria = '';
   this.searchEspecifico = '';
-  this.service.listar().subscribe((salas) => {
+  this.service.listar().subscribe((salas:any) => {
     this.ListaSalas = salas;
   });
 }

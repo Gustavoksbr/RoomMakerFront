@@ -1,12 +1,20 @@
-<div>
+<!--<div>-->
+<!--  <h3>Jokenpo </h3>-->
+
   @if (!jogadorOponente){
+    <div class="card-header">
     <p>Esperando oponente...</p>
+    </div>
   } @else {
-    <p>Vitórias de <b>{{jogadorDono}}</b>: {{vitoriasDono}}</p>
-    <p>Vitórias de <b>{{jogadorOponente}}</b>: {{vitoriasOponente}}</p>
-    <p>Empates:{{empates}}</p>
+    <div class="card-header">
+    <div class="tabela-jokenpo">
+    <div>
+      <p>Vitórias de <b>{{jogadorDono}}</b>: {{vitoriasDono}}</p>
+      <p>Vitórias de <b>{{jogadorOponente}}</b>: {{vitoriasOponente}}</p>
+      <p>Empates:{{empates}}</p>
+    </div>
     @if (jokenpoAnterior.status!=JokenpoStatus.WAITING){
-      <div class="card">
+      <div class="card jogo-anterior">
         @if(jokenpoAnterior.status==JokenpoStatus.DRAW){
           <p>Empate!</p>
         } @else if(jokenpoAnterior.status==JokenpoStatus.DONO_WIN) {
@@ -19,11 +27,16 @@
         <p>lance do <b>{{jogadorOponente}}</b>: {{jokenpoAnterior.lanceOponente}}</p>
       </div>
     }
-    <div class="card">
-      <p>Escolha uma jogada:</p>
+    </div>
+    </div>
+    <div class="card-body">
+      <div><p style="font-size: 20px">Escolha uma jogada: </p><p style="font-size: 14px">(Você pode mudar enquanto seu oponente não fizer o lance)</p></div>
+      <div class="opcoes">
       <button class="escolha-jokenpo" [ngClass]="{'escolhido-jokenpo': lanceRequest.lance == JokenpoLance.PEDRA}" (click)="enviarLance(JokenpoLance.PEDRA)">Pedra 🗿</button>
       <button class="escolha-jokenpo" [ngClass]="{'escolhido-jokenpo': lanceRequest.lance == JokenpoLance.PAPEL}" (click)="enviarLance(JokenpoLance.PAPEL)">Papel 📄</button>
       <button class="escolha-jokenpo" [ngClass]="{'escolhido-jokenpo': lanceRequest.lance == JokenpoLance.TESOURA}" (click)="enviarLance(JokenpoLance.TESOURA)">Tesoura ✂️</button>
+      </div>
+
       @if(jokenpo.lanceDono!=JokenpoLance.ESPERANDO){
         <p><b>{{jogadorDono}}</b> já fez o lance</p>
       } @else {
@@ -38,4 +51,4 @@
 
   }
 
-    </div>
+<!--    </div>-->

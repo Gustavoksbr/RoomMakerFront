@@ -33,6 +33,9 @@ export class ListaSalasComponent implements OnInit {
   ordenarSalas() {
     let listaOrdenada: SalaResponse[] = [];
     console.log("lista salas: ", this.ListaSalas);
+    this.ListaSalas = this.ListaSalas.reverse();
+
+
     listaOrdenada = this.ListaSalas.sort((a, b) => {
       const disponivelA = this.classificarOrdemDeSalas(a);
       const disponivelB = this.classificarOrdemDeSalas(b);

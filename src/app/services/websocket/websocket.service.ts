@@ -5,6 +5,7 @@ import {AuthService} from '../auth.service';
 import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
 import {ErrorHandlerPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
 import {ErrorPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
+import {API_CONFIG} from '../../config/api.config';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +49,8 @@ export class WebSocketService {
   {
     stompClient.configure({
       connectHeaders: {Authorization: `Bearer ${this.authService.getToken()}`},
-      brokerURL: 'ws://localhost:8080/socket',
+      brokerURL: API_CONFIG.BASE_URL+'/socket',
+      // brokerURL: 'ws://localhost:8080/socket',
     });
     stompClient.onConnect = (frame) => {
       console.log('Connected: ' + frame);

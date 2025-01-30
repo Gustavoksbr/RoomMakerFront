@@ -1,20 +1,24 @@
-<div class="tictactoe-component">
-
+<!--<div class="tictactoe-component">-->
+<!--  <h3>Jogo da velha</h3>-->
   @if (!jogadorOponente){
+    <div class="card">
     <p>Esperando oponente...</p>
+    </div>
   } @else {
-    <p>Vitórias de {{jogadorDono}}: {{vitoriasDono}}</p>
-    <p>Vitórias de {{jogadorOponente}}: {{vitoriasOponente}}</p>
-    <p>Empates:{{empates}}</p>
-
+    <div class="card-header jogo-da-velha-cabecalho">
+      <div>
+        <p>Vitórias de {{jogadorDono}}: {{vitoriasDono}}</p>
+        <p>Vitórias de {{jogadorOponente}}: {{vitoriasOponente}}</p>
+        <p>Empates:{{empates}}</p>
+      </div>
     @if(tictactoeAnterior.status!=TicTacToeStatus.WAITING){
-      <div class="card">
+      <div class="card resultado-anterior">
       @if (tictactoeAnterior.status==TicTacToeStatus.DRAW){
-        <p>Empate!</p>
+        <h5>Empate!</h5>
       } @else if (tictactoeAnterior.status==TicTacToeStatus.x_WIN){
-        <p>{{tictactoeAnterior.x}} venceu!</p>
+        <h5>{{tictactoeAnterior.x}} venceu!</h5>
       } @else if (tictactoeAnterior.status==TicTacToeStatus.o_WIN){
-        <p>{{tictactoeAnterior.o}} venceu!</p>
+        <h5>{{tictactoeAnterior.o}} venceu!</h5>
       }
       <div class="tictactoe-board-2">
       <div class="row-personalizada">
@@ -31,8 +35,8 @@
       </div>
       </div>
     }
-
-
+    </div>
+<div class="card-body">
     <p>Sua letra é:
       @if(username == tictactoe.x)
       {
@@ -57,6 +61,8 @@
         }
       </div>
     </div>
+</div>
   }
 
-</div>
+
+<!--</div>-->

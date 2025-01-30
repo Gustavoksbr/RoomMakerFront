@@ -1,4 +1,11 @@
-﻿.tictactoe-board p{
+﻿.jogo-da-velha-cabecalho{
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+}
+
+.tictactoe-board p{
   font-size: 50px;
 }
 
@@ -41,5 +48,12 @@
   background-color: rgba(142, 137, 137, 0.59);
 }
 
+.resultado-anterior{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 3%;
+  padding: 3%;
+}
 
 

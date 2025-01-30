@@ -1,8 +1,30 @@
+.tabela-jokenpo{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .escolha-jokenpo{
-  background: blue;
+  width: 20%;
+}
+
+.opcoes{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 3%;
+  margin-bottom: 3%;
 }
 
 .escolhido-jokenpo{
   border: 2px solid #000;
   background: grey;
+}
+
+.jogo-anterior{
+  display: flex;
+  flex-direction: column;
+  margin: 3%;
+  padding: 3%;
 }

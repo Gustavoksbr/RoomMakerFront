@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {CookieService} from 'ngx-cookie-service';
+import {API_CONFIG} from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080'; // Substitua pelo endpoint do backend
+  private apiUrl = API_CONFIG.BASE_URL;
 
+  // private apiUrl = 'http://localhost:8080';
   constructor(private http: HttpClient, private router: Router,private cookieService:CookieService) {}
 
   getUsername(): Observable<any>{

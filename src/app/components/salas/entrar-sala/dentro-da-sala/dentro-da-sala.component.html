@@ -1,28 +1,44 @@
 <div class="card">
   <div class="card-header">
-  <p >{{sala.usernameDono}}/<b style="font-size: 1.5em">{{sala.nome}}</b></p>
+    <h4>Sala</h4> <p>  {{sala.usernameDono}}/<b style="font-size: 1.2em">{{sala.nome}}</b></p>
   </div>
   <div class="card-header">
 
-    <p>Participantes ({{sala.usernameParticipantes.length + 1}}/{{sala.qtdCapacidade}}):</p>
-    <div class="participants">
-      <p>{{sala.usernameDono}} (dono)</p>
+    <h5>Participantes ({{sala.usernameParticipantes.length + 1}}/{{sala.qtdCapacidade}}):</h5>
+    <ul>
+      <li>{{sala.usernameDono}} (dono)</li>
       @for (u of sala.usernameParticipantes; track $index) {
-        <p>{{u}}</p>
+        <li>{{u}}</li>
       }
-    </div>
+    </ul>
   </div>
   <div class="card-body">
 
     @if (stompClient.connected) {
       <div class="game-section">
         @if (sala.categoria == 'tictactoe') {
-        <app-tictactoe [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]" />
-          }
+          <div>
+            <h2>Jogo da velha</h2>
+
+            <div class="card">
+              <app-tictactoe [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]" />
+            </div>
+          </div>
+            }
         @else if (sala.categoria == 'jokenpo') {
-          <app-jokenpo [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]"/>
-        }
-        <app-chat [topic]="topic" [app]="app" [stompClient]="stompClient" />
+          <div>
+            <h2>Jo-Ken-Po</h2>
+            <div class="card">
+              <app-jokenpo [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]"/>
+            </div>
+          </div>
+            }
+        <div>
+          <h2>Chat</h2>
+          <div class="card">
+            <app-chat [topic]="topic" [app]="app" [stompClient]="stompClient" />
+          </div>
+        </div>
       </div>
     }
   </div>

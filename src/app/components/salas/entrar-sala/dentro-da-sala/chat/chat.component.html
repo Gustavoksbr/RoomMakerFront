@@ -1,7 +1,6 @@
 
-
-<div class="card">
-  <div class="card-body">
+<!--  <button (click)="scrollToBottom()">ROlar pra baixo</button>-->
+  <div class="card-body chat-perso">
     @for (mensagem of chat; track $index) {
       <p><b>{{ mensagem.from }}</b>: {{ mensagem.message }}</p>
     }
@@ -14,4 +13,4 @@
       </div>
     </div>
   </div>
-</div>
+

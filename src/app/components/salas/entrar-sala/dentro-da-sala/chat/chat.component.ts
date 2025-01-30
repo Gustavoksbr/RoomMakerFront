@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit,ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import {WebSocketService} from '../../../../../services/websocket/websocket.service';
 import {MessageResponseWs} from './MessageResponseWs';
 import {MessageRequestWs} from './MessageRequestWs';
@@ -11,12 +11,14 @@ import {Client} from '@stomp/stompjs';
   imports: [
     FormsModule
   ],
-  templateUrl: './chat.component.html'
+  templateUrl: './chat.component.html',
+  styleUrl: './chat.component.scss'
 })
 export class ChatComponent implements OnInit {
   @Input() public app: string = '';
   @Input() public topic: string = '';
   @Input() public stompClient: Client= new Client();
+
 
   public chat: MessageResponseWs[] = [
   // { message: 'Hello!', from: 'User1' },
@@ -40,23 +42,36 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
       console.log("o pai enviou o app: " + this.app);
       console.log("o pai enviou o topic: " + this.topic);
-    this.websocketService.subscribe(this.stompClient, this.topic + "/chat", (msg: MessageResponseWs) => {
-      if (msg.message && msg.message.trim() !== '') {
-        console.log("recebeu mensagem do chat:" + msg);
-        console.log("a mensagem é:" + msg.message);
-        console.log("do usuário:" + msg.from);
-        this.chat.push(msg);
-      } else {
-        console.log("Mensagem recebida é nula ou vazia e não será adicionada ao chat.");
+    this.websocketService.subscribe(this.stompClient, this.topic + "/chat", (msg: any) => {
+      if(msg.usernameDono==null){
+        if (msg.message && msg.message.trim() !== '') {
+          console.log("recebeu mensagem do chat:" + msg);
+          console.log("a mensagem é:" + msg.message);
+          console.log("do usuário:" + msg.from);
+          this.chat.push(msg);
+        } else {
+          console.log("Mensagem recebida é nula ou vazia e não será adicionada ao chat.");
+        }
+      }else{
+        this.chat = msg.messages;
+        setTimeout(() => this.scrollToBottom(), 10);
       }
     });
+    this.websocketService.sendMessage(this.stompClient, this.app + "/chat");
+    // this.scrollToBottom()
   }
 
   public sendMessage() {
     console.log("Enviando mensagem: " + this.message.message);
-    console.log("com destination: " + this.app + "/chat");
-    this.websocketService.sendMessage(this.stompClient, this.app + "/chat", JSON.stringify(this.message));
+    console.log("com destination: " + this.app + "/chat/message");
+    this.websocketService.sendMessage(this.stompClient, this.app + "/chat/message", JSON.stringify(this.message));
     this.message.message = '';
+    setTimeout(() => this.scrollToBottom(), 10);
   }
-
+  scrollToBottom() {
+    const tableContainer = document.getElementsByClassName('chat-perso')[0];
+    console.log("tableContainer: " + tableContainer);
+    console.log("tableContainer.scrollHeight: " + tableContainer.scrollHeight);
+    tableContainer.scrollTop = tableContainer.scrollHeight+9000000;
+  }
 }

@@ -57,29 +57,46 @@ export class JokenpoComponent implements OnInit {
       lance: JokenpoLance.ESPERANDO
    }
 }
+private verificarResultado(jokenpo:JokenpoResponse){
+  if (jokenpo.status == JokenpoStatus.DONO_WIN) {
+    this.vitoriasDono++;
+
+  } else if (jokenpo.status == JokenpoStatus.OPONENTE_WIN) {
+    this.vitoriasOponente++;
+
+  } else if (jokenpo.status == JokenpoStatus.DRAW) {
+    this.empates++;
+
+  }
+}
   constructor(private websocketService: WebSocketService, private authService: AuthService) {
   }
   ngOnInit(): void {
     this.username= this.authService.getStorage("username")!
-    this.websocketService.subscribe(this.stompClient, this.topic + "/jokenpo", (msg: JokenpoResponse) => {
+    this.websocketService.subscribe(this.stompClient, this.topic + "/jokenpo", (msg: any) => {
       console.log("recebeu mensagem do jokenpo:\n" + JSON.stringify(msg));
-      this.jokenpo = msg;
-      if (this.jokenpo.status == JokenpoStatus.DONO_WIN) {
-        this.vitoriasDono++;
-        this.zerar();
-      } else if (this.jokenpo.status == JokenpoStatus.OPONENTE_WIN) {
-        this.vitoriasOponente++;
-        this.zerar();
-      } else if (this.jokenpo.status == JokenpoStatus.DRAW) {
-        this.empates++;
-        this.zerar();
+      if(msg.historico != null){
+        this.vitoriasOponente = 0;
+        this.vitoriasDono = 0;
+        this.empates = 0;
+        for(let i = 0; i < msg.historico.length; i++){
+          this.verificarResultado(msg.historico[i]);
+        }
+      }else if(msg.status != null){
+        this.jokenpo = msg;
+        if(this.jokenpo.status == JokenpoStatus.DONO_WIN || this.jokenpo.status == JokenpoStatus.OPONENTE_WIN || this.jokenpo.status == JokenpoStatus.DRAW) {
+          this.verificarResultado(this.jokenpo);
+          this.zerar();
+        }
       }
     });
+
+    this.websocketService.sendMessage(this.stompClient, this.app + "/jokenpo", null);
   }
 
   public enviarLance(jokenpoLance: JokenpoLance) {
     this.lanceRequest.lance = jokenpoLance;
-    this.websocketService.sendMessage(this.stompClient, this.app + "/jokenpo", JSON.stringify(this.lanceRequest));
+    this.websocketService.sendMessage(this.stompClient, this.app + "/jokenpo/lance", JSON.stringify(this.lanceRequest));
   }
 
   protected readonly JokenpoStatus = JokenpoStatus;

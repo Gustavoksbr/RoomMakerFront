@@ -6,12 +6,14 @@ import {AuthService} from '../auth.service';
 import {Sala} from '../../models/salas/domain/Sala';
 import {CriarSalaRequest} from '../../models/salas/request/CriarSalaRequest';
 import {EntrarSalaRequest} from '../../models/salas/request/EntrarSalaRequest';
+import {API_CONFIG} from '../../config/api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SalasService {
-  private readonly API = 'http://localhost:8080/sala';
+  private readonly API = API_CONFIG.BASE_URL+'/sala';
+  // private readonly API = 'http://localhost:8080/sala';
   constructor(private http: HttpClient,private authService:AuthService) {
   }
   private getHeaders(): HttpHeaders {
