@@ -24,6 +24,16 @@ export class HackerComponent implements OnInit{
   constructor(private websocketService : WebSocketService, private http : HttpClient, private salaService: SalasService, private authService: AuthService) {
 
   }
+
+  fetchSemAuth(): void {
+    this.http.get("https://roommaker.onrender.com"+"/sala").subscribe((data: any) => {
+      this.salaContent = data;
+    });
+  }
+
+  // wsSemAuth(): void {
+  //   this.client = this.websocketService.connect("https://roommaker.onrender.com", this.client);
+  // }
   ngOnInit(): void {
     this.client = this.websocketService.connectHacker(this.client);
   }

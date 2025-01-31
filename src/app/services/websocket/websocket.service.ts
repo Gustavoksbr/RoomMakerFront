@@ -97,7 +97,7 @@ subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any)
     stompClient : Client)//o q fazer sempre que receber uma mensagem
   {
     stompClient.configure({
-      brokerURL: 'ws://localhost:8080/socket',
+      brokerURL: 'https://roommaker.onrender.com/socket',
     });
     stompClient.onConnect = (frame) => {
       console.log('Connected via hack: ' + frame);

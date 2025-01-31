@@ -1,3 +1,3 @@
 ﻿export const API_CONFIG = {
-  BASE_URL: 'http://localhost:8080'
+  BASE_URL: 'https://roommaker.onrender.com'
 };

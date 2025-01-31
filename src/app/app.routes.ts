@@ -46,7 +46,7 @@ export  const routes: Routes = [
   // {path:"testes/useState",component:UsestateComponent},
   // {path:"testes/chatTeste",component:ChatTesteComponent},
   // {path:"testes/ws3", component: MultiplecomponentsComponent}
-  {path:"testes/hacker", component: HackerComponent}
+  // {path:"testes/hacker", component: HackerComponent}
 ];
 
 @NgModule({
