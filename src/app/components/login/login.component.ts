@@ -17,6 +17,7 @@ import {HomeComponent} from '../home/home.component';
   standalone: true
 })
 export class LoginComponent {
+  tentandoLogar = false;
   credentials = { username: '', password: '' };
 
   constructor(
@@ -25,17 +26,22 @@ export class LoginComponent {
   private toastr : ToastrService) {}
 
   login() {
-    console.log("tentando logar"+this.credentials.username + this.credentials.password);
-    this.authService.login(this.credentials).subscribe({
-      next: (response: { token: any; }) => {
-        this.authService.saveToken(response.token);
-        this.authService.saveStorage("username",this.credentials.username);
-        this.router.navigate(['/salas']);
-      },
-      error: (err: any) => {
-        throw err;
-      },
-    });
+    // console.log("chegou aqui no login")
+    this.tentandoLogar = true;
+    // setTimeout(() => {
+      console.log("tentando logar" + this.credentials.username + this.credentials.password);
+      this.authService.login(this.credentials).subscribe({
+        next: (response: { token: any; }) => {
+          this.authService.saveToken(response.token);
+          this.authService.saveStorage("username",this.credentials.username);
+          this.router.navigate(['/salas']);
+        },
+        error: (err: any) => {
+          this.tentandoLogar = false;
+          throw err;
+        },
+      });
+    // }, 5000);
   }
 
   cadastrar(){

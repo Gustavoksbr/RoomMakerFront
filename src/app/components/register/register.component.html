@@ -12,7 +12,15 @@
   <div class="mb-3">
   <input type="password" [(ngModel)]="user.password" placeholder="Password" class="form-control" required name="password" />
   </div>
-  <button type="submit" class="btn btn-primary">Register</button>
+  @if (!tentandoCadastrar){
+    <button type="submit" class="btn btn-primary">Register</button>
+  } @else {
+    <button type="submit" class="btn btn-secondary" disabled>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span class="sr-only">Carregando</span>
+    </button>
+  }
+
 </form>
   <p>Já possui conta? <a class="a" (click)="logar()">Login</a> </p>
     </div>

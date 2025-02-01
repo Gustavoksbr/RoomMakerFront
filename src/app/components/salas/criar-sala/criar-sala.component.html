@@ -69,7 +69,19 @@
   </div>
 
   <div class="acoes">
-    <button (click)="criarSalaRequest()" class="btn btn-primary">Salvar</button>
+    @if (!tentandoCriar){
+      <button (click)="criarSalaRequest()" class="btn btn-primary">
+        Salvar
+      </button>
+    } @else {
+      <button type="submit" class="btn btn-secondary" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span class="sr-only">Carregando</span>
+      </button>
+    }
+
+
+
     <button (click)="cancelar()" class="btn btn-secondary">Limpar</button>
   </div>
 </div>

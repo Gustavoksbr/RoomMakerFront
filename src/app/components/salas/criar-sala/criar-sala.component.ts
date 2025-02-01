@@ -25,6 +25,7 @@ export class CriarSalaComponent {
     qtdCapacidade: 2
   }
   public publica :boolean = false;
+  public tentandoCriar :boolean = false;
   public soPodeDois() :boolean {
     if(this.sala.categoria=="tictactoe"|| this.sala.categoria=="jokenpo"){
       return true;
@@ -38,9 +39,16 @@ export class CriarSalaComponent {
   }
 
   criarSalaRequest() {
-    this.service.criar(this.sala).subscribe(() => {
-      this.router.navigate([`/salas/${this.username}/${this.sala.nome}`])
-    })
+    this.tentandoCriar = true;
+    this.service.criar(this.sala).subscribe({
+      next: (response: any) => {
+        this.router.navigate([`/salas/${this.username}/${this.sala.nome}`]);
+      },
+        error: (err: any) => {
+          this.tentandoCriar = false;
+          throw err;
+        },
+    });
   }
 
 cancelar() {

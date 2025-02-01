@@ -15,11 +15,13 @@ import {Router} from '@angular/router';
   standalone: true
 })
 export class RegisterComponent {
+  public tentandoCadastrar = false;
   user = { username: '', email:'', password: '' };
 
   constructor(private authService: AuthService,  private router:Router) {}
 
   register() {
+    this.tentandoCadastrar = true;
     this.authService.register(this.user).subscribe({
       next: (response: { token: any; }) => {
         this.authService.saveToken(response.token);
@@ -27,6 +29,7 @@ export class RegisterComponent {
         this.router.navigate(['/salas']);
       },
       error: (err: any) => {
+        this.tentandoCadastrar = false;
         throw err;
       },
     });
