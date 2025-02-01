@@ -83,11 +83,14 @@ public empates = 0;
   }
 
   private verificarResultado(jogo:TicTacToeResponse){
-    if(jogo.status == TicTacToeStatus.x_WIN){
+    console.log("verificando "+JSON.stringify(jogo));
+    console.log("sendo que o dono é "+this.jogadorDono);
+    console.log("e o oponente é "+this.jogadorOponente);
+    if(jogo.status == TicTacToeStatus.x_WIN ){
       if(jogo.x == this.jogadorDono){
           this.vitoriasDono++;
         }
-      }else if(jogo.x == this.jogadorOponente){ {
+      else if(jogo.x == this.jogadorOponente){
         this.vitoriasOponente++;
       }
     }else if(jogo.status == TicTacToeStatus.o_WIN){
@@ -99,6 +102,8 @@ public empates = 0;
     }else if(jogo.status == TicTacToeStatus.DRAW){
       this.empates++;
     }
+    console.log("vitorias do dono: "+this.vitoriasDono);
+    console.log("vitorias do oponente: "+this.vitoriasOponente);
   }
   ngOnInit(): void {
     this.username= this.authService.getStorage("username")!
@@ -114,12 +119,13 @@ public empates = 0;
             this.verificarResultado(this.historico[i]);
           }
         }else if(msg.posicao!=null){
+          console.log("chegou aquiaaa");
           this.tictactoe = msg;
           if(this.tictactoe.status == TicTacToeStatus.DRAW || this.tictactoe.status == TicTacToeStatus.x_WIN || this.tictactoe.status == TicTacToeStatus.o_WIN) {
             this.verificarResultado(this.tictactoe);
             this.zerar();
           }
-          this.websocketService.sendMessage(this.stompClient,this.app+"/tictactoe",null);
+          // this.websocketService.sendMessage(this.stompClient,this.app+"/tictactoe",null);
         }
 
     });
@@ -130,17 +136,17 @@ public empates = 0;
   verificarVez(){
     if(this.tictactoe.status == TicTacToeStatus.x_TURN){
       if(this.username != this.tictactoe.x){
-        console.log("não é sua vez");
+        // console.log("não é sua vez");
         return false;
 
       }
     }else if(this.tictactoe.status == TicTacToeStatus.o_TURN){
       if(this.username != this.tictactoe.o){
-        console.log("não é sua vez");
+        // console.log("não é sua vez");
         return false;
       }
     }
-    console.log("é sua vez");
+    // console.log("é sua vez");
     return true;
   }
   enviarLance(posicao:number){
