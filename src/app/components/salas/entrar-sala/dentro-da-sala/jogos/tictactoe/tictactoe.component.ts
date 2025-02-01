@@ -93,7 +93,7 @@ public empates = 0;
     }else if(jogo.status == TicTacToeStatus.o_WIN){
       if(jogo.o == this.jogadorDono){
         this.vitoriasDono++;
-      }else if(jogo.x == this.jogadorOponente){
+      }else if(jogo.o == this.jogadorOponente){
         this.vitoriasOponente++;
       }
     }else if(jogo.status == TicTacToeStatus.DRAW){
