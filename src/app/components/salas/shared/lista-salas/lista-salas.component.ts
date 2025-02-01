@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {SalaResponse} from '../../../../models/salas/response/SalaResponse';
@@ -16,33 +16,38 @@ import {AuthService} from '../../../../services/auth.service';
   templateUrl: './lista-salas.component.html',
   styleUrl: './lista-salas.component.scss'
 })
-export class ListaSalasComponent implements OnInit {
+export class ListaSalasComponent implements OnInit, OnChanges {
   @Input() ListaSalas: SalaResponse[] = [];
   @Input() suasSalas: boolean = false;
   public username: string = '';
+
+  // ListaOrdenada: SalaResponse[] = [];
 
   constructor(private authService: AuthService) {
     this.username = this.authService.getStorage("username")!;
   }
   ngOnInit() {
-    // this.ordenarSalas();
+    this.ordenarSalas();
   }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['ListaSalas']) {
+      this.ordenarSalas();
+    }}
 // mostrarOrdenacao(){
 //     console.log("lista salas ordenadaaaaas: ", this.ListaOrdenada);
 // }
   ordenarSalas() {
-    let listaOrdenada: SalaResponse[] = [];
     console.log("lista salas: ", this.ListaSalas);
     this.ListaSalas = this.ListaSalas.reverse();
 
 
-    listaOrdenada = this.ListaSalas.sort((a, b) => {
+    this.ListaSalas = this.ListaSalas.sort((a, b) => {
       const disponivelA = this.classificarOrdemDeSalas(a);
       const disponivelB = this.classificarOrdemDeSalas(b);
       return disponivelA - disponivelB;
     });
-    console.log("lista ordenada: ", listaOrdenada);
-    return listaOrdenada;
+    console.log("lista ordenada: ", this.ListaSalas);
+
   }
 
   participantesComDono(sala: SalaResponse): string {
@@ -65,7 +70,7 @@ export class ListaSalasComponent implements OnInit {
   }
 
   classificarOrdemDeSalas(sala: SalaResponse): number {
-    console.log("alo");
+    // console.log("alo");
     if(this.jaEstaNaSala(sala)){
       return 3;
     }

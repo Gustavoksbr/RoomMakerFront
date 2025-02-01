@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit {
   // { message: 'Yes, it is.', from: 'User9' },
   // { message: 'Good luck with your project!', from: 'User10' }
 ];
-
+public enviandoMensagem: boolean = false;
   public message: MessageRequestWs = {
     message: ''};
 
@@ -62,11 +62,14 @@ export class ChatComponent implements OnInit {
   }
 
   public sendMessage() {
-    console.log("Enviando mensagem: " + this.message.message);
+    this.enviandoMensagem = true;
+  setTimeout(() => { console.log("Enviando mensagem: " + this.message.message);
     console.log("com destination: " + this.app + "/chat/message");
     this.websocketService.sendMessage(this.stompClient, this.app + "/chat/message", JSON.stringify(this.message));
     this.message.message = '';
     setTimeout(() => this.scrollToBottom(), 10);
+    this.enviandoMensagem = false;}, 1000);
+
   }
   scrollToBottom() {
     const tableContainer = document.getElementsByClassName('chat-perso')[0];

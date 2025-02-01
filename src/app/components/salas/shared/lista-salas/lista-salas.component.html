@@ -16,7 +16,8 @@
 <!--      <p (click)="ordenarSalas()"> ordenaaar</p>-->
 <!--<p (click)="mostrarOrdenacao()" > testeeee</p>-->
         @if (ListaSalas.length > 0){
-      <tr *ngFor="let p of ordenarSalas()" [ngClass]="{'ja-esta-na-sala':classificarOrdemDeSalas(p)==3,
+          @for (p of ListaSalas; track $index) {
+      <tr [ngClass]="{'ja-esta-na-sala':classificarOrdemDeSalas(p)==3,
       'nao-pode-entrar':classificarOrdemDeSalas(p)==2,
       'pode-entrar':classificarOrdemDeSalas(p)==1}">
         <!--        <div class="card opcao-sala" >-->
@@ -54,6 +55,7 @@
         }
         <!--        </div>-->
       </tr>
+          }
         }
       </tbody>
     </table>

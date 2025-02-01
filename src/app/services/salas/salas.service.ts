@@ -20,9 +20,11 @@ export class SalasService {
     return  this.authService.getHeaders();
   }
  listar(): Observable<SalaResponse[]> {
+    console.log("fazendo http get em "+this.API);
   return this.http.get<SalaResponse[]>(this.API, { headers: this.getHeaders() });
 }
   listarEspecifico(usernameDono: string = '', nome: string = '', categoria: string = ''): Observable<SalaResponse[]> {
+    console.log("fazendo http get em "+this.API+"?usernameDono="+usernameDono+"&nome="+nome+"&categoria="+categoria);
     const params = new HttpParams()
       .set('usernameDono', usernameDono)
       .set('nome', nome)

@@ -20,13 +20,16 @@ import {ListaSalasComponent} from '../shared/lista-salas/lista-salas.component';
 })
 export class ListarSalasComponent implements OnInit {
   ListaSalas: SalaResponse[] = [];
-  showParticipantsPopup: boolean = false;
-  participants: string[] = [];
+  ListaSalasCompartilhada : SalaResponse[] = [];
+
   searchUsernameDono: string = '';
   searchNomeSala: string = '';
   searchCategoria: string = '';
-  searchEspecifico: string = '';
   username: string ="";
+
+  // showParticipantsPopup: boolean = false;
+  // participants: string[] = [];
+  // searchEspecifico: string = '';
  constructor(private service: SalasService) {
     this.username = localStorage.getItem('username')!;
  }
@@ -34,10 +37,12 @@ export class ListarSalasComponent implements OnInit {
 ngOnInit() {
   this.service.listar().subscribe((salas: any) => {
     this.ListaSalas = salas;
-    console.log(this.ListaSalas);
+    this.ListaSalasCompartilhada = salas;
+    console.log("ngOninit: "+this.ListaSalas);
   });
 }
 search(): void {
+   console.log("fez search")
   this.service.listarEspecifico(this.searchUsernameDono,this.searchNomeSala,this.searchCategoria).subscribe((salas) => {
     this.ListaSalas = salas;
   });
@@ -46,18 +51,18 @@ limpar(): void {
   this.searchUsernameDono = '';
   this.searchNomeSala = '';
   this.searchCategoria = '';
-  this.searchEspecifico = '';
+  // this.searchEspecifico = '';
   this.service.listar().subscribe((salas:any) => {
     this.ListaSalas = salas;
   });
 }
 
-  toggleParticipants(sala?: SalaResponse): void {
-    if (sala) {
-      this.participants = [sala.usernameDono, ...sala.usernameParticipantes];
-    }
-    this.showParticipantsPopup = !this.showParticipantsPopup;
-  }
+  // toggleParticipants(sala?: SalaResponse): void {
+  //   if (sala) {
+  //     this.participants = [sala.usernameDono, ...sala.usernameParticipantes];
+  //   }
+  //   this.showParticipantsPopup = !this.showParticipantsPopup;
+  // }
 
   protected readonly PaginaAtual = PaginaAtual;
 }

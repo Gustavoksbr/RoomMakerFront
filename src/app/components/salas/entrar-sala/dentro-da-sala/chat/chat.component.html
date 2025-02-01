@@ -9,7 +9,14 @@
     <div class="input-group">
       <input type="text" class="form-control" [(ngModel)]="message.message" placeholder="Digite sua mensagem">
       <div class="input-group-append">
-        <button class="btn btn-primary" (click)="sendMessage()">Enviar</button>
+        @if (!enviandoMensagem){
+          <button class="btn btn-primary" (click)="sendMessage()">Enviar</button>
+        } @else {
+          <button class="btn btn-secondary" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="sr-only">Carregando</span>
+          </button>
+        }
       </div>
     </div>
   </div>
