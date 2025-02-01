@@ -1,10 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {NgClass, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {ErrorHandlerPersonalizado, ErrorPersonalizado} from './ErrorHandlerPersonalizado';
 import {Observable} from 'rxjs';
 import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
+
 
 @Component({
   selector: 'app-home',
@@ -18,17 +19,49 @@ import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler'
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   public username: string = '';
- public  throwErro() {
-  const error: ErrorPersonalizado = { status: '500', error: 'Internal Server Error' };
-  this.errorHandler.handleError(error);
-}
+  public escuro: boolean = false;
+//  public  throwErro() {
+//   const error: ErrorPersonalizado = { status: '500', error: 'Internal Server Error' };
+//   this.errorHandler.handleError(error);
+// }
   constructor(private authService: AuthService,private errorHandler: GlobalErrorHandler) {
    this.username =  localStorage.getItem('username')!;
   }
 
   logout() {
     this.authService.logout();
+  }
+
+  changeTheme() {
+    console.log("mudou tema");
+   if(localStorage.getItem("tema") == "claro" || localStorage.getItem("tema") == null){
+     localStorage.setItem("tema", "escuro");
+   }else if (localStorage.getItem("tema") == "escuro"){
+      localStorage.setItem("tema","claro");
+   }
+    this.colorir();
+  }
+
+  colorir() {
+    console.log("colorindo");
+    if (localStorage.getItem("tema") == "claro" || localStorage.getItem("tema") == null) {
+      this.escuro = false;
+      // document.getElementById('home')!.style.backgroundColor = 'white';
+
+    } else if (localStorage.getItem("tema") == "escuro") {
+// setTimeout(() => {
+  this.escuro = true;
+  // document.getElementById('home')!.style.backgroundColor = 'black';
+
+//
+// },500);
+    }
+  }
+
+  ngOnInit(): void {
+   this.colorir();
+   console.log("home carregou");
   }
 }

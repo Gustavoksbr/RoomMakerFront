@@ -37,7 +37,7 @@ export class ListaSalasComponent implements OnInit, OnChanges {
 //     console.log("lista salas ordenadaaaaas: ", this.ListaOrdenada);
 // }
   ordenarSalas() {
-    console.log("lista salas: ", this.ListaSalas);
+    // console.log("lista salas: ", this.ListaSalas);
     this.ListaSalas = this.ListaSalas.reverse();
 
 
@@ -46,7 +46,7 @@ export class ListaSalasComponent implements OnInit, OnChanges {
       const disponivelB = this.classificarOrdemDeSalas(b);
       return disponivelA - disponivelB;
     });
-    console.log("lista ordenada: ", this.ListaSalas);
+    // console.log("lista ordenada: ", this.ListaSalas);
 
   }
 

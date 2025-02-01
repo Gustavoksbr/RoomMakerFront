@@ -103,6 +103,7 @@ public empates = 0;
           this.historico = msg.historico;
           this.vitoriasOponente = 0;
           this.vitoriasDono = 0;
+          this.empates = 0;
           for(let i = 0; i < this.historico.length; i++){
             this.verificarResultado(this.historico[i]);
           }
