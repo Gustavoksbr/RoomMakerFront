@@ -1,3 +1,28 @@
 .game-section h2{
   margin-top: 3%;
 }
+
+.container-dentro-sala{
+  background-color: var(--background-color);
+  color: var(--text-color);
+  //border: 1px solid var(--text-color) ;
+  border: 1px solid var(--border-color-sem-tema-claro);
+}
+
+.header-dentro-sala{
+  //display: flex;
+  //flex-direction: row;
+  //justify-content: space-between;
+}
+
+.header-dentro-sala, .participantes-dentro-sala, .sair-dentro-sala{
+  background-color: var(--background-color3);
+  //color: var(--text-color);
+  border: 1px solid var(--border-color-sem-tema-claro);
+}
+
+.categoria{
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color-sem-tema-claro);
+}

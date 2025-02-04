@@ -1,7 +1,8 @@
 <!--<div class="tictactoe-component">-->
 <!--  <h3>Jogo da velha</h3>-->
+<div class="tictactoe-container">
   @if (!jogadorOponente){
-    <div class="card">
+    <div class="card-header esperando-oponente">
     <p>Esperando oponente...</p>
     </div>
   } @else {
@@ -26,6 +27,7 @@
           <div class="col-personalizada">
             @for (col of [0,1,2];track $index) {
               <div class="letra" >
+
                 <p>{{ tictactoeAnterior.posicao[row * 3 + col] }} </p>
               </div>
             }
@@ -64,5 +66,5 @@
 </div>
   }
 
-
+</div>
 <!--</div>-->

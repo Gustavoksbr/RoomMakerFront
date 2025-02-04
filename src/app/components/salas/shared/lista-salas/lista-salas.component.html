@@ -1,6 +1,6 @@
 <div class="lista-container">
   <div [ngClass]="{'lista':!suasSalas,'lista-suas-salas':suasSalas}" >
-    <table *ngIf="ListaSalas.length > 0; else semSalas" class="table table-bordered " >
+    <table *ngIf="ListaSalas.length > 0; else semSalas" class="table " >
       <thead>
       <tr>
         <th><div>Nome</div></th>
@@ -21,12 +21,12 @@
       'nao-pode-entrar':classificarOrdemDeSalas(p)==2,
       'pode-entrar':classificarOrdemDeSalas(p)==1}">
         <!--        <div class="card opcao-sala" >-->
-        <td >{{ p.usernameDono }}/{{ p.nome }}</td>
-        <td>{{ p.categoria }}</td>
+        <td ><div><div><p>{{ p.usernameDono }}/{{ p.nome }} </p></div></div></td>
+        <td><div><div><p>{{ p.categoria }}</p></div></div></td>
 
 <!--        <td>{{ p.disponivel ? 'Sim' : 'Não' }}</td>-->
-        <td>{{ p.publica ? 'Pública' : 'Privada' }}</td>
-        <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="{{participantesComDono(p)}}">{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</td>
+        <td><div><div><p>{{ p.publica ? 'Pública' : 'Privada' }}</p></div></div></td>
+        <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="{{participantesComDono(p)}}"><div><div><p>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</p></div></div></td>
         <td>
           @if (jaEstaNaSala(p)) {
             <button
@@ -60,6 +60,7 @@
       </tbody>
     </table>
   </div>
+
 </div>
 
 <ng-template #semSalas>

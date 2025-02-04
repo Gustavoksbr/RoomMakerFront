@@ -1,3 +1,5 @@
+
+
 .header-perso{
   background-color: rgba(64, 118, 255, 0.71);
   justify-content: space-around;
@@ -83,8 +85,12 @@ footer{
   background-color: rgb(64, 118, 255);
   //box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.5);
 }
+//body, *{
+//  background-color: var(--background-color);
+//}
 
 .home{
+  background-color: var(--background-color);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -112,3 +118,19 @@ footer a{
 //.with-ng-content{
 //  bottom:0;
 //}
+
+.mudar-tema{
+
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //justify-content: space-between;
+input{
+  cursor: pointer;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+
+}
+}

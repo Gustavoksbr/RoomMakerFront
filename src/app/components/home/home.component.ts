@@ -35,7 +35,6 @@ export class HomeComponent implements OnInit {
   }
 
   changeTheme() {
-    console.log("mudou tema");
    if(localStorage.getItem("tema") == "claro" || localStorage.getItem("tema") == null){
      localStorage.setItem("tema", "escuro");
    }else if (localStorage.getItem("tema") == "escuro"){
@@ -45,14 +44,15 @@ export class HomeComponent implements OnInit {
   }
 
   colorir() {
-    console.log("colorindo");
     if (localStorage.getItem("tema") == "claro" || localStorage.getItem("tema") == null) {
       this.escuro = false;
+      document.documentElement.setAttribute('data-theme', "");
       // document.getElementById('home')!.style.backgroundColor = 'white';
 
     } else if (localStorage.getItem("tema") == "escuro") {
 // setTimeout(() => {
   this.escuro = true;
+      document.documentElement.setAttribute('data-theme', "dark");
   // document.getElementById('home')!.style.backgroundColor = 'black';
 
 //

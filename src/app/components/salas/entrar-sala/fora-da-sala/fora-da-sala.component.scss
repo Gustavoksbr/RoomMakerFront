@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: var(--text-color);
 }
 
 
@@ -13,6 +14,9 @@ padding: 4%;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 3px solid var(--text-color);
 }
 
 .fora-da-sala p{

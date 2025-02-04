@@ -1,19 +1,20 @@
-<div class="home" id="home" [ngClass]="{'tema-escuro': escuro, 'tema-claro': !escuro}" >
+<div class="home" id="home"  >
+<!--  [ngClass]="{'tema-escuro': escuro, 'tema-claro': !escuro}"-->
   <header class="d-flex header-perso">
     <div class="logo-container">
       <img src="RoomMaker.png" alt="RoomMaker">
     </div>
-<!--    <div>-->
-<!--      <div class="form-switch">-->
-<!--        @if(!escuro) {-->
-<!--          <label class="form-check-label" >Tema escuro</label>-->
-<!--          <input class="form-check-input" type="checkbox" role="switch"  (click)="changeTheme()">-->
-<!--          }@else{-->
-<!--          <label class="form-check-label" >Tema escuro</label>-->
-<!--          <input class="form-check-input" type="checkbox" role="switch" (click)="changeTheme()" checked>-->
-<!--          }-->
-<!--      </div>-->
-<!--    </div>-->
+    <div>
+      <div class="form-switch mudar-tema">
+        @if(!escuro) {
+          <label class="form-check-label" >Tema claro</label>
+          <input class="form-check-input" type="checkbox" role="switch"  (click)="changeTheme()">
+          }@else{
+          <label class="form-check-label" >Tema escuro</label>
+          <input class="form-check-input" type="checkbox" role="switch" (click)="changeTheme()" checked>
+          }
+      </div>
+    </div>
     <div class="col-6 col-md-3 d-flex justify-content-end align-items-center flex-row homecard">
       @if (username != null) {
         <img ngSrc="icon.png" alt="Profile Picture" width="24" height="32" class="me-2">

@@ -1,8 +1,8 @@
-<div class="card">
-  <div class="card-header">
+<div class="card container-dentro-sala">
+  <div class="card-header header-dentro-sala">
     <h4>Sala</h4> <p>  {{sala.usernameDono}}/<b style="font-size: 1.2em">{{sala.nome}}</b></p>
   </div>
-  <div class="card-header">
+  <div class="card-header participantes-dentro-sala">
 
     <h5>Participantes ({{sala.usernameParticipantes.length + 1}}/{{sala.qtdCapacidade}}):</h5>
     <ul>
@@ -20,7 +20,7 @@
           <div>
             <h2>Jogo da velha</h2>
 
-            <div class="card">
+            <div class="card categoria">
               <app-tictactoe [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]" />
             </div>
           </div>
@@ -28,21 +28,21 @@
         @else if (sala.categoria == 'jokenpo') {
           <div>
             <h2>Jo-Ken-Po</h2>
-            <div class="card">
+            <div class="card categoria">
               <app-jokenpo [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]"/>
             </div>
           </div>
             }
         <div>
           <h2>Chat</h2>
-          <div class="card">
+          <div class="card categoria">
             <app-chat [topic]="topic" [app]="app" [stompClient]="stompClient" />
           </div>
         </div>
       </div>
     }
   </div>
-  <div class="card-footer">
+  <div class="card-footer sair-dentro-sala">
   @if (sala.usernameDono == username) {
       <button class="btn btn-danger" (click)="deletarSala()">Deletar sala</button>
   }@else{

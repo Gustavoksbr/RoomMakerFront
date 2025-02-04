@@ -6,6 +6,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  h3{
+    color: var(--text-color);
+  }
 }
 
 .container-forms{
@@ -15,6 +18,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: var(--background-color);
+  border: 1px solid var(--text-color);
+  label{
+    color: var(--text-color);
+  }
 }
 
 .formulario{
@@ -23,12 +31,23 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  input,select{
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+  }
+  ::placeholder{
+    color: var(--text-color);
+  }
 }
 
 .selecionarCategoria{
   width: 30%;
 }
 
+#flexSwitchCheckDefault:checked {
+  background-color: blue;
+}
 .acoes{
   display: flex;
   justify-content: space-around;

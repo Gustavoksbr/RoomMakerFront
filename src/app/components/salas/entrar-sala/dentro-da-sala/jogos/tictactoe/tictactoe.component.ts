@@ -125,7 +125,7 @@ public empates = 0;
             this.verificarResultado(this.tictactoe);
             this.zerar();
           }
-          // this.websocketService.sendMessage(this.stompClient,this.app+"/tictactoe",null);
+          this.websocketService.sendMessage(this.stompClient,this.app+"/tictactoe",null);
         }
 
     });

@@ -29,7 +29,7 @@ export class LoginComponent {
     // console.log("chegou aqui no login")
     this.tentandoLogar = true;
     // setTimeout(() => {
-      console.log("tentando logar" + this.credentials.username + this.credentials.password);
+    //   console.log("tentando logar" + this.credentials.username + this.credentials.password);
       this.authService.login(this.credentials).subscribe({
         next: (response: { token: any; }) => {
           this.authService.saveToken(response.token);

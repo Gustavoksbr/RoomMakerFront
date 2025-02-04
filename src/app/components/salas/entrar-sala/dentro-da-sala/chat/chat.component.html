@@ -5,8 +5,8 @@
       <p><b>{{ mensagem.from }}</b>: {{ mensagem.message }}</p>
     }
   </div>
-  <div class="card-footer">
-    <div class="input-group">
+  <div class="card-footer chat-footer">
+    <div class="input-group input-do-chat">
       <input type="text" class="form-control" [(ngModel)]="message.message" placeholder="Digite sua mensagem">
       <div class="input-group-append">
         @if (!enviandoMensagem){

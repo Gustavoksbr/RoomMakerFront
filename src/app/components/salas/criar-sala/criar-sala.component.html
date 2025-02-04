@@ -40,7 +40,7 @@
       class="form-control"
       style=""
       placeholder="Digite a capacidade"
-      [ngStyle]="soPodeDois() ? {'background-color': '#f0f0f0'} : {}"
+      [ngStyle]="soPodeDois() ? {'background-color': 'var(--background-color2)'} : {}"
       [(ngModel)]="sala.qtdCapacidade"
       name="qtdCapacidade"
       [readonly]="soPodeDois()"
@@ -58,11 +58,11 @@
       id="salaSenha"
       type="password"
       class="form-control"
-      placeholder="Digite a senha"
+
       [(ngModel)]="sala.senha"
       name="senha"
       required
-      [ngStyle]="publica ? {'background-color': '#f0f0f0'} : {}"
+      [ngStyle]="publica ? {'background-color': 'var(--background-color2)'} : {}"
       [readOnly]="publica"
       [value]="publica ? '' : sala.senha"
     >

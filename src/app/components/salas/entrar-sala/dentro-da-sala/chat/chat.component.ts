@@ -40,17 +40,17 @@ public enviandoMensagem: boolean = false;
   }
 
   ngOnInit(): void {
-      console.log("o pai enviou o app: " + this.app);
-      console.log("o pai enviou o topic: " + this.topic);
+      // console.log("o pai enviou o app: " + this.app);
+      // console.log("o pai enviou o topic: " + this.topic);
     this.websocketService.subscribe(this.stompClient, this.topic + "/chat", (msg: any) => {
       if(msg.usernameDono==null){
         if (msg.message && msg.message.trim() !== '') {
-          console.log("recebeu mensagem do chat:" + msg);
-          console.log("a mensagem é:" + msg.message);
-          console.log("do usuário:" + msg.from);
+          // console.log("recebeu mensagem do chat:" + msg);
+          // console.log("a mensagem é:" + msg.message);
+          // console.log("do usuário:" + msg.from);
           this.chat.push(msg);
         } else {
-          console.log("Mensagem recebida é nula ou vazia e não será adicionada ao chat.");
+          // console.log("Mensagem recebida é nula ou vazia e não será adicionada ao chat.");
         }
       }else{
         this.chat = msg.messages;
@@ -64,7 +64,7 @@ public enviandoMensagem: boolean = false;
   public sendMessage() {
     this.enviandoMensagem = true;
   setTimeout(() => { console.log("Enviando mensagem: " + this.message.message);
-    console.log("com destination: " + this.app + "/chat/message");
+    // console.log("com destination: " + this.app + "/chat/message");
     this.websocketService.sendMessage(this.stompClient, this.app + "/chat/message", JSON.stringify(this.message));
     this.message.message = '';
     setTimeout(() => this.scrollToBottom(), 10);

@@ -2,9 +2,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  h3{
+    color: var(--text-color);
+  }
+
 }
 
 .suas-salas div{
+  background-color: var(--background-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -12,5 +17,5 @@
   padding: 10px;
   margin-top: 5%;
   margin-bottom: 5%;
-  //border-bottom: 1px solid black;
+  border: 1px solid var(--text-color);
 }

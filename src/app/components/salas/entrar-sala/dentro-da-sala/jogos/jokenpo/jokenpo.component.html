@@ -1,13 +1,12 @@
 <!--<div>-->
 <!--  <h3>Jokenpo </h3>-->
-
+<div class="jokenpo-container">
   @if (!jogadorOponente){
     <div class="card-header">
     <p>Esperando oponente...</p>
     </div>
   } @else {
-    <div class="card-header">
-    <div class="tabela-jokenpo">
+    <div class="card-header tabela-jokenpo">
     <div>
       <p>Vitórias de <b>{{jogadorDono}}</b>: {{vitoriasDono}}</p>
       <p>Vitórias de <b>{{jogadorOponente}}</b>: {{vitoriasOponente}}</p>
@@ -16,19 +15,19 @@
     @if (jokenpoAnterior.status!=JokenpoStatus.WAITING){
       <div class="card jogo-anterior">
         @if(jokenpoAnterior.status==JokenpoStatus.DRAW){
-          <p>Empate!</p>
+          <h5>Empate!</h5>
         } @else if(jokenpoAnterior.status==JokenpoStatus.DONO_WIN) {
-          <p><b>{{jogadorDono}}</b> venceu!</p>
+          <h5><b>{{jogadorDono}}</b> venceu!</h5>
         }
         @else if(jokenpoAnterior.status==JokenpoStatus.OPONENTE_WIN) {
-          <p><b>{{jogadorOponente}}</b> venceu!</p>
+          <h5><b>{{jogadorOponente}}</b> venceu!</h5>
         }
         <p>lance do <b>{{jogadorDono}}</b>: {{jokenpoAnterior.lanceDono}}</p>
         <p>lance do <b>{{jogadorOponente}}</b>: {{jokenpoAnterior.lanceOponente}}</p>
       </div>
     }
     </div>
-    </div>
+
     <div class="card-body">
       <div><p style="font-size: 20px">Escolha uma jogada: </p><p style="font-size: 14px">(Você pode mudar enquanto seu oponente não fizer o lance)</p></div>
       <div class="opcoes">
@@ -50,5 +49,5 @@
     </div>
 
   }
-
+</div>
 <!--    </div>-->

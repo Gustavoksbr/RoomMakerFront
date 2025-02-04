@@ -3,10 +3,15 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  background-color: var(--background-color3);
+  border:1px solid var(--border-color-sem-tema-claro);
 }
 
 .escolha-jokenpo{
   width: 20%;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border:1px solid var(--text-color);
 }
 
 .opcoes{
@@ -23,6 +28,9 @@
 }
 
 .jogo-anterior{
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border:1px solid var(--border-color-sem-tema-claro);
   display: flex;
   flex-direction: column;
   margin: 3%;

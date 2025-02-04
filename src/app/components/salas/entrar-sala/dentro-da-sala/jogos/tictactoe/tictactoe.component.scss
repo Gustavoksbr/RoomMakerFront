@@ -1,8 +1,15 @@
-﻿.jogo-da-velha-cabecalho{
+﻿.tictactoe-container{
+  //background-color: var(--background-color);
+  //color: var(--text-color);
+  //border-radius: 1%;
+}
+
+.jogo-da-velha-cabecalho{
   display: flex;
   flex-direction: row;
 
   align-items: center;
+  border:1px solid var(--border-color-sem-tema-claro);
 }
 
 .tictactoe-board p{
@@ -11,6 +18,10 @@
 
 .tictactoe-board .letra{
   width: 100px;
+}
+
+.tictactoe-board-2{
+
 }
 
 .tictactoe-board-2 p{
@@ -28,6 +39,14 @@
   justify-content: center;
 }
 
+.esperando-oponente{
+  //background-color: var(--background-color);
+  color: var(--text-color);
+border-radius: 1%;
+  border: 1px solid var(--border-color-sem-tema-claro);
+
+}
+
 .col-personalizada{
   display: flex;
   flex-direction: column;
@@ -35,7 +54,7 @@
 }
 
 .letra{
-  border: 1px solid black;
+  border: 1px solid var(--text-color);
   align-items: center;
 }
 
@@ -49,6 +68,8 @@
 }
 
 .resultado-anterior{
+  background-color: var(--background-color);
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
