@@ -32,7 +32,7 @@ td{
 .lista{
   background-color: var(--background-lista);
   overflow-y:auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   height:500px;
   min-width: 500px;
   border: 3px solid var(--background-lista);
@@ -52,7 +52,7 @@ td{
 .lista-suas-salas{
   background-color: var(--background-lista);
   overflow-y:auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   min-height:50px;
   max-height: 250px;
   min-width: 500px;
