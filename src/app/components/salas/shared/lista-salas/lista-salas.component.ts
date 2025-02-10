@@ -28,6 +28,16 @@ export class ListaSalasComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     this.ordenarSalas();
+    // Seleciona o elemento com a classe .lista
+
+
+    // Define overflow-x como hidden inicialmente
+
+    // Após 2 segundos, muda overflow-x para auto
+    // setTimeout(() => {
+    //   const lista = document.getElementsByClassName('lista')[0];
+    //   (lista as HTMLElement).style.overflowX = 'auto';
+    // }, 2000); // 2000 milissegundos = 2 segundos
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['ListaSalas']) {
@@ -46,6 +56,7 @@ export class ListaSalasComponent implements OnInit, OnChanges {
       const disponivelB = this.classificarOrdemDeSalas(b);
       return disponivelA - disponivelB;
     });
+
     // console.log("lista ordenada: ", this.ListaSalas);
 
   }

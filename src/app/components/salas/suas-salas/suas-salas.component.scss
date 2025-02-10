@@ -1,21 +1,35 @@
 .suas-salas{
+
   display: flex;
+
   flex-direction: column;
   justify-content: space-between;
+
   h3{
+    text-align: center;
     color: var(--text-color);
+    margin-top: 5%;
   }
 
 }
 
 .suas-salas div{
+  //display: inline-block;
   background-color: var(--background-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  float: left;
+
   padding: 10px;
   margin-top: 5%;
   margin-bottom: 5%;
-  border: 1px solid var(--text-color);
+  //border: 1px solid var(--text-color);
+  border:none;
 }
+
+
+
+//.suas-salas div app-lista-salas{
+//  overflow-x:auto;
+//}

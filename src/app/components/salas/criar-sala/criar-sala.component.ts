@@ -8,6 +8,7 @@ import {AuthService} from '../../../services/auth.service';
 import {HomeComponent} from '../../home/home.component';
 import {NavbarComponent} from '../../navbar/navbar.component';
 import {PaginaAtual} from '../../navbar/PaginaAtual';
+import {GlobalSuccess} from '../../../providers/sucesso/GlobalSuccess';
 
 @Component({
   selector: 'app-criar-sala',
@@ -34,7 +35,7 @@ export class CriarSalaComponent {
     }
   }
 
-  constructor(private service: SalasService, private router: Router, private authService: AuthService) {
+  constructor(private service: SalasService, private router: Router, private authService: AuthService,private successHandler: GlobalSuccess) {
     this.username = this.authService.getStorage("username")!;
   }
 
@@ -42,7 +43,7 @@ export class CriarSalaComponent {
     this.tentandoCriar = true;
     this.service.criar(this.sala).subscribe({
       next: (response: any) => {
-        this.router.navigate([`/salas/${this.username}/${this.sala.nome}`]);
+        this.router.navigate([`/salas/${this.username}/${this.sala.nome}`]).then(() => {this.successHandler.handleSuccess('Sala criada com sucesso!')});
       },
         error: (err: any) => {
           this.tentandoCriar = false;

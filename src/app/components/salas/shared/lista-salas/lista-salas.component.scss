@@ -29,16 +29,14 @@ td{
 //  padding: 0;
 //}
 
-.lista{
-  background-color: var(--background-lista);
-  overflow-y:auto;
-  overflow-x: auto;
-  height:500px;
-  min-width: 500px;
-  border: 3px solid var(--background-lista);
-  border-radius: 10px;
 
-}
+
+//@container (max-width: 1000000000000000000px) {
+//  .lista {
+//    overflow-x: auto;
+//  }
+//}
+
 
 //.lista:hover{
 //  scrollbar-color: var(--background-color-scrollbar-hover) var(--background-color);
@@ -49,16 +47,32 @@ td{
 //}
 
 
-.lista-suas-salas{
+.lista{
   background-color: var(--background-lista);
   overflow-y:auto;
-  overflow-x: auto;
+  overflow-x:auto;
   min-height:50px;
   max-height: 250px;
-  min-width: 500px;
+  min-width: 300px;
   border: 3px solid var(--background-lista);
   border-radius: 5px;
 }
+//.lista{ //lista antiga
+//  overflow-y:auto;
+//  overflow-x:auto;
+//  background-color: var(--background-lista);
+//
+//  height:500px;
+//  min-width: 500px;
+//  border: 3px solid var(--background-lista);
+//  border-radius: 10px;
+//container-type: inline-size;
+//@media (max-width: 130000000000000px) {
+//  .lista {
+//    overflow-x: auto;
+//  }
+//}
+//}
 
 //.lista::-webkit-scrollbar-track, .lista-suas-salas::-webkit-scrollbar-track {
 //  background-color: var(--background-color); /* Cor de fundo da área da barra de rolagem */

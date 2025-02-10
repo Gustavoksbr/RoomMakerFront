@@ -1,14 +1,18 @@
 <app-home>
   <app-navbar [paginaAtual]=PaginaAtual.SUAS_SALAS>
     <div class="suas-salas">
-    <div class="card">
+<!--    <div class="card">-->
     <h3>Salas que você é dono</h3>
     <app-lista-salas [ListaSalas]="ListaSalasDono" [suasSalas]=true></app-lista-salas>
-    </div>
-    <div class="card">
-    <h3>Salas que você é convidado</h3>
+<!--    </div>-->
+<!--    <div class="card">-->
+<!--      <app-lista-salas [ListaSalas]="ListaSalasParticipante"></app-lista-salas>-->
+
+      <h3>Salas que você é convidado</h3>
     <app-lista-salas [ListaSalas]="ListaSalasParticipante" [suasSalas]=true></app-lista-salas>
+<!--    </div>-->
     </div>
-    </div>
+
   </app-navbar>
+
 </app-home>

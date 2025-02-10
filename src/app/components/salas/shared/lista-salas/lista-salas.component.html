@@ -1,5 +1,6 @@
 <div class="lista-container">
-  <div [ngClass]="{'lista':!suasSalas,'lista-suas-salas':suasSalas}" >
+<!--  <div [ngClass]="{'lista':!suasSalas,'lista-suas-salas':suasSalas}" >-->
+    <div class="lista" >
     <table *ngIf="ListaSalas.length > 0; else semSalas" class="table " >
       <thead>
       <tr>

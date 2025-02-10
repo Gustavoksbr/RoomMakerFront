@@ -47,4 +47,8 @@ export class LoginComponent {
   cadastrar(){
     this.router.navigate(['/register']);
   }
+
+  esqueciSenha(){
+    this.router.navigate(['/forget']);
+  }
 }

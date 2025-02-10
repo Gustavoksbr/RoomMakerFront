@@ -9,6 +9,7 @@ import {EntrarSalaComponent} from './components/salas/entrar-sala/entrar-sala.co
 import {CriarSalaComponent} from './components/salas/criar-sala/criar-sala.component';
 import {HackerComponent} from './components/testes/hacker/hacker.component';
 import {SuasSalasComponent} from './components/salas/suas-salas/suas-salas.component';
+import {ForgetComponent} from './components/auth/forget/forget.component';
 // import {WsComponent} from './components/testes/ws/ws.component';
 // import {Ws2Component} from './components/testes/ws2/ws2.component';
 // import {UsestateComponent} from './components/testes/usestate/usestate.component';
@@ -38,6 +39,7 @@ export  const routes: Routes = [
   {path:"salas/:usernameDono/:nomeSala", component: EntrarSalaComponent, canActivate: [AuthGuard]},
   {path:"criar-sala", component: CriarSalaComponent, canActivate: [AuthGuard]},
   {path:"suas-salas", component: SuasSalasComponent, canActivate: [AuthGuard]},
+  {path:"forget", component: ForgetComponent},
 
 
 

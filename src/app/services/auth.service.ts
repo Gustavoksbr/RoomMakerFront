@@ -18,6 +18,7 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/username`, { headers: this.getHeaders() });
   }
 
+  //chamadas para api
   register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/cadastro`, userData);
   }
@@ -25,7 +26,14 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
+  forget(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/usuario/esquecisenha`, credentials);
+  }
+  redefinirSenha(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/usuario/novasenha`, credentials);
+  }
 
+  //chamadas para storage
 saveStorage(chave:string,valor:string){
   localStorage.setItem(chave, valor);
 }
@@ -51,8 +59,12 @@ deleteStorage(chave:string){
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    this.router.navigate(['/login']).then(r =>console.log("logout") );
+    if(this.router.url != "/register" && this.router.url != "/forget") {
+      this.router.navigate(['/login']).then(r => console.log("logout"));
+    }
   }
+
+
   // saveCookie(chave:string,valor:string){
   //   this.cookieService.set(chave,valor);
   // }
