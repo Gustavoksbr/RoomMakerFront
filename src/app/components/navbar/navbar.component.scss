@@ -82,3 +82,18 @@ nav div:hover{
 .pagina-atual p{
   color:var(--text-color);
 }
+
+@media (max-width: 775px) {
+  .container-nav{
+    height: 125px;
+  }
+
+}
+
+@media (max-width: 400px) {
+
+  #salas{
+    width: 180%;
+  }
+
+}

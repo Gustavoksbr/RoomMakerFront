@@ -19,7 +19,14 @@
 .tictactoe-board .letra{
   width: 100px;
 }
-
+@media (max-width: 600px) {
+.tictactoe-board .letra{
+  width: 50px;
+}
+  .tictactoe-board p{
+    font-size: 25px;
+  }
+}
 .tictactoe-board-2{
 
 }

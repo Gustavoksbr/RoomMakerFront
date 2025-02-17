@@ -13,13 +13,15 @@
 
 <!--  </header>-->
   <app-navbar [paginaAtual]=PaginaAtual.SALAS>
-  <div class="row mb-3 barra-pesquisa">
+  <div class="barra-pesquisa">
     <h3>Procurar</h3>
+    <div class="main-search">
+      <div class="inputs-search row mb-3 ">
     <div class="col">
       <label for="searchUsernameDono">Dono</label>
       <input id="searchUsernameDono" type="text" class="form-control"  [(ngModel)]="searchUsernameDono">
     </div>
-    <div class="col">
+    <div class="col" id="input-nome-sala">
       <label for="searchNomeSala">Nome da Sala</label>
       <input id="searchNomeSala" type="text" class="form-control" [(ngModel)]="searchNomeSala">
     </div>
@@ -39,27 +41,15 @@
      <!--   <option value="coup">Coup</option> !-->
       </select>
     </div>
-<!--    <div class="col">-->
-<!--      <label for="searchEspecifico">Específico</label>-->
-<!--      <select-->
-<!--        [(ngModel)]="searchEspecifico"-->
-<!--        id="searchEspecifico"-->
-<!--        class="form-select selecionarCategoria"-->
-<!--        name="especifico"-->
-<!--        required>-->
-<!--        <option value="" selected ></option>-->
-<!--        <option>Salas que eu participo</option>-->
-<!--        <option>Salas que eu sou dono</option>-->
-<!--        <option>Salas que eu sou convidado</option>-->
-<!--        <option>Salas que eu não participo</option>-->
-
-<!--      </select>-->
-<!--    </div>-->
-    <div class="col">
+      </div>
+    <div class="col conjunto-botoes">
+    <div class="" id="botao-pesquisar">
       <button type="submit" (click)="search()" class="btn btn-primary">🔎</button>
       </div>
-    <div class="col">
+    <div class="">
       <button (click)="limpar()" class="btn btn-secondary">Limpar</button>
+    </div>
+    </div>
     </div>
   </div>
 

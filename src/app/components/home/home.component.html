@@ -1,6 +1,7 @@
 <div class="home" id="home"  >
 <!--  [ngClass]="{'tema-escuro': escuro, 'tema-claro': !escuro}"-->
-  <header class="d-flex header-perso">
+  <header class="header-perso">
+    <div class="nao-homecard">
     <div class="logo-container">
       <img src="RoomMaker.png" alt="RoomMaker">
     </div>
@@ -10,17 +11,18 @@
           <label class="form-check-label" >Tema claro</label>
           <input class="form-check-input" type="checkbox" role="switch"  (click)="changeTheme()">
           }@else{
-          <label class="form-check-label" >Tema escuro</label>
+          <label class="form-check-label" >Tema Escuro</label>
           <input class="form-check-input" type="checkbox" role="switch" (click)="changeTheme()" checked>
           }
       </div>
     </div>
-    <div class="col-6 col-md-3 d-flex justify-content-end align-items-center flex-row homecard">
+    </div>
+    <div class="  homecard">
       @if (username != null) {
         <img ngSrc="icon.png" alt="Profile Picture" width="24" height="32" class="me-2">
         <div class="d-flex flex-column align-items-center">
-          <p class="mb-0">Olá, {{username}}</p>
-          <div class="btn sair" (click)="logout()">
+          <p>Olá, {{username}}</p>
+          <div class="sair" (click)="logout()">
             <img src="logout.png" alt="logout">
             <p>sair</p>
           </div>

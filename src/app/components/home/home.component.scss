@@ -1,18 +1,26 @@
 
 
+
 .header-perso{
-  background-color: rgba(64, 118, 255, 0.71);
-  justify-content: space-around;
+  display: flex;
+  background-color: rgba(64, 118, 255, 1);
+  justify-content: center;
   width: 100%;
   height: 100px;
   //box-shadow: 0 10px 10px 0 rgba(0,0,0,0.1);
 }
 .logo-container{
   //background-color: rgba(64, 118, 255, 0.71);
+  width: 200px;
+  //height: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
 }
 
 .logo-container img{
-  width: 180%;
+  width: 100%;
 }
 
 //.homecard{
@@ -21,24 +29,27 @@
 //}
 
 .homecard {
+  width: 170px;
   margin-right: 5%;
-  //background-color: rgba(64, 118, 255, 0.71);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }
-
 .homecard p{
   font-size: 150%;
   color: white;
 }
 
 .sair{
-  background-color: rgba(64, 118, 255, 0.71);
+  background-color: rgba(64, 118, 255, 1);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100px;
   height: 45px;
-
+  padding: 5%;
 
 }
 .sair p{
@@ -51,6 +62,8 @@
 .sair:hover{
   cursor: pointer;
   background-color: grey;
+  border: 1px solid white;
+  border-radius: 5%;
 }
 //#sair p:hover{
 //  color:blue;
@@ -134,3 +147,73 @@ input{
 
 }
 }
+
+.mudar-tema{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5%;
+}
+
+.nao-homecard{
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 570px) {
+  .header-perso{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .nao-homecard{
+    display: flex;
+    flex-direction: column;
+  }
+  .mudar-tema{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+  }
+}
+
+@media (max-width: 400px) {
+  .homecard p{
+    font-size: 100%;
+  }
+.sair{
+  width: 70px;
+  height: 35px;
+}
+
+}
+
+//@media (max-width: 800px){
+//  .mudar-tema{
+//    width: 30%;
+//    margin-left: 80%;
+//
+//  }
+//  .mudar-tema label{
+//  font-size: 16px
+//}
+//  .homecard{
+//    width: 80px;
+//    margin-right: 0;
+//  }
+//  .homecard p{
+//    font-size: 16px
+//  }
+//
+//  .homecard div div p{
+//    font-size: 150%;
+//  }
+//  //.homecard div{
+//  //  width: 80%;
+//  //  height: 80%;
+//  //}
+//  .logo-container {
+//    width: 30%;
+//  }
+//}

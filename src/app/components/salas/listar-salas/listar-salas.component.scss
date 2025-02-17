@@ -32,8 +32,8 @@
 
 .barra-pesquisa{
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
+  //justify-content: space-around;
 background: var(--background-color2);
   color: var(--text-color);
   padding: 10px;
@@ -97,3 +97,43 @@ background: var(--background-color2);
 //}
 //
 //
+.main-search{
+  display: flex;
+  flex-direction: row;
+
+}
+.conjunto-botoes{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  max-width: 200px;
+}
+@media (max-width: 1000px) {
+  .barra-pesquisa{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .main-search{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  //.conjunto-botoes{
+  //  display: flex;
+  //  flex-direction: row;
+  //  justify-content: space-between;
+  //}
+
+}
+
+@media (max-width: 490px) {
+  .inputs-search{
+    font-size: 80%;
+  }
+  #input-nome-sala label{
+    width: 180%;
+
+  }
+
+}
