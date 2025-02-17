@@ -54,3 +54,12 @@
   display: flex;
   justify-content: space-around;
 }
+
+@media (min-width: 950px ) {
+  .formulario{
+    width: 338px
+  }
+  .container-forms{
+    width: 467px;
+  }
+}
