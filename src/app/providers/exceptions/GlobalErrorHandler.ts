@@ -16,7 +16,13 @@ export class GlobalErrorHandler implements ErrorHandler {
       if(error.error instanceof ProgressEvent){
         toastr.error("status code: "+"500","Erro ao tentar se conectar com o servidor");
       }else {
-        toastr.error("status code: " + error.status, error.error);
+        toastr.error(`Status code: ${error.status}`, error.error, {
+          closeButton: true,
+          extendedTimeOut: 5000,
+          progressBar: true,
+          disableTimeOut: 'extendedTimeOut',
+          tapToDismiss: false,
+        });
         if(error.status == 401){
           this.authService.logout();
         }

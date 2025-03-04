@@ -10,6 +10,7 @@ import {CriarSalaComponent} from './components/salas/criar-sala/criar-sala.compo
 import {HackerComponent} from './components/testes/hacker/hacker.component';
 import {SuasSalasComponent} from './components/salas/suas-salas/suas-salas.component';
 import {ForgetComponent} from './components/auth/forget/forget.component';
+import {GeralComponent} from './components/testes/geral/geral.component';
 // import {WsComponent} from './components/testes/ws/ws.component';
 // import {Ws2Component} from './components/testes/ws2/ws2.component';
 // import {UsestateComponent} from './components/testes/usestate/usestate.component';
@@ -42,7 +43,7 @@ export  const routes: Routes = [
   {path:"forget", component: ForgetComponent},
 
 
-
+  {path:"testes/geral", component: GeralComponent},
   // {path:"testes/ws", component: WsComponent},
   // {path:"testes/ws2",component:Ws2Component},
   // {path:"testes/useState",component:UsestateComponent},

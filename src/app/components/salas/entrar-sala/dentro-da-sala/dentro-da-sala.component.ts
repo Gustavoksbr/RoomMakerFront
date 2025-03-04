@@ -8,6 +8,7 @@ import {Client} from '@stomp/stompjs';
 import {TictactoeComponentimplements} from './jogos/tictactoe/tictactoe.component';
 import {JokenpoComponent} from './jogos/jokenpo/jokenpo.component';
 import {Router} from '@angular/router';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -15,7 +16,8 @@ import {Router} from '@angular/router';
   imports: [
     ChatComponent,
     TictactoeComponentimplements,
-    JokenpoComponent
+    JokenpoComponent,
+    NgIf
   ],
   templateUrl: './dentro-da-sala.component.html',
   styleUrl: './dentro-da-sala.component.scss'
@@ -31,6 +33,7 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
     publica: false,
     usernameParticipantes: []
   }
+public usuariosOnline: Map<string, boolean> = new Map<string, boolean>();
   protected username : string = '';
   protected topic : string = '';
   protected app : string = '';
@@ -68,13 +71,24 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
         this.sala.usernameParticipantes = msg;
         this.enviarParticipantes.emit(msg);
       });
-    console.log("oi");
+    // this.websocketService.subscribe(this.stompClient,this.topic+"/",(usuarioOnline: UsuarioOnline)=>{
+    //   console.log("recebeu usuario online: " + usuarioOnline);
+    //   this.usuariosOnline.set(usuarioOnline.username,usuarioOnline.online);
+    // }
+    // );
   }
 
   ngOnDestroy(): void {
     this.websocketService.disconnect(this.stompClient);
   }
+  isModalOpen = false;
+  abrirModal() {
+    this.isModalOpen = true;
+  }
 
+  fecharModal() {
+    this.isModalOpen = false;
+  }
 
 }
 

@@ -26,6 +26,7 @@
 
 
   --background-color2: lightgrey;
+  --background-color2-reverse: #333333;
   --background-color3: #f1f1f1;
   --text-color-link: blue;
 
@@ -37,6 +38,8 @@
 
   --background-indisponivel: lightgrey;
   --background-ja-esta-na-sala: lightblue;
+
+  --color-icon: invert(1);
 }
 
 [data-theme="dark"] {
@@ -50,6 +53,7 @@
   --text-color2: darkgrey;
 
   --background-color2: #333333;
+  --background-color2-reverse: lightgrey;;
   --background-color3: #333333;
 --text-color-link: lightblue;
 
@@ -62,6 +66,7 @@
   --background-indisponivel: #333333;
   --background-ja-esta-na-sala: #008fe4;
 
+  --color-icon: invert(0);
 }
 ::-webkit-scrollbar-corner {
   background-color: #1e62cd;
@@ -88,4 +93,13 @@
 //  background-color: var(--background-color);
 //  color: var(--text-color);
 //  transition: background-color 0.5s, color 0.5s;
+//}
+
+//@media (max-width: 600px) {
+//  h1,h2,h3,h4,h5,h6,label{
+//    font-size: 12px;
+//  }
+//  p{
+//    font-size: 10px;
+//  }
 //}

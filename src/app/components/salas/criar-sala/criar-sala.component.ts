@@ -22,7 +22,7 @@ export class CriarSalaComponent {
   sala: CriarSalaRequest = {
     nome: '',
     senha: '',
-    categoria: '',
+    categoria: 'chat',
     qtdCapacidade: 2
   }
   public publica :boolean = false;

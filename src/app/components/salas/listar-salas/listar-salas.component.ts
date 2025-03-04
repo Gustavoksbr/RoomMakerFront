@@ -10,11 +10,12 @@ import {AuthService} from '../../../services/auth.service';
 import {NavbarComponent} from '../../navbar/navbar.component';
 import {PaginaAtual} from '../../navbar/PaginaAtual';
 import {ListaSalasComponent} from '../shared/lista-salas/lista-salas.component';
+import {ModalComponent} from '../../geral/modal/modal.component';
 
 @Component({
   selector: 'app-listar-salas',
   standalone: true,
-  imports: [RouterLink, NgFor, NgIf, SalaComponent, HomeComponent, NgClass, FormsModule, NavbarComponent, ListaSalasComponent],
+  imports: [RouterLink, NgFor, NgIf, SalaComponent, HomeComponent, NgClass, FormsModule, NavbarComponent, ListaSalasComponent,ModalComponent],
   templateUrl: './listar-salas.component.html',
   styleUrl: './listar-salas.component.scss'
 })

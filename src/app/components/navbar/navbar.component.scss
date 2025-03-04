@@ -5,7 +5,7 @@
   //color: var(--text-color);
 }
 .quadrado-principal{
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -71,8 +71,17 @@ nav div:hover{
   border-right: 1px solid #1e62cd;
   border-bottom: 1px solid #1e62cd;
   border-radius: 0 0 7px 7px;
+}
+
+@media (max-width: 600px) {
+  .container-conteudo{
+    padding: 0;
+    padding-bottom: 20px;
+    padding-top:20px ;
+  }
 
 }
+
 
 .pagina-atual{
   background-color: var(--background-color);

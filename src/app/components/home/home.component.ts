@@ -14,7 +14,8 @@ import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler'
     FormsModule,
     ReactiveFormsModule,
     NgOptimizedImage,
-    NgClass
+    NgClass,
+    NgIf
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -64,4 +65,12 @@ export class HomeComponent implements OnInit {
    this.colorir();
    console.log("home carregou");
   }
+  isModalOpen = false;
+  abrirModal() {
+    this.isModalOpen = true;
+  }
+  fecharModal() {
+    this.isModalOpen = false;
+  }
+
 }

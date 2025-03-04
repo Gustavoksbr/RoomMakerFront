@@ -44,10 +44,29 @@
   </div>
   <div class="card-footer sair-dentro-sala">
   @if (sala.usernameDono == username) {
-      <button class="btn btn-danger" (click)="deletarSala()">Deletar sala</button>
+      <button class="btn btn-danger" (click)="abrirModal()">Deletar sala</button>
   }@else{
-    <button class="btn btn-warning" (click)="sairSala()">Sair da sala</button>
+    <button class="btn btn-warning" (click)="abrirModal()">Sair da sala</button>
   }
 </div>
+  <div *ngIf="isModalOpen" class="modal-overlay" (click)="fecharModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      @if (sala.usernameDono == username){
+        <h2>Deletar sala</h2>
+        <p>Tem certeza que deseja deletar a sala?</p>
+      }@else{
+        <h2>Sair da sala</h2>
+        <p>Tem certeza que deseja sair da sala?</p>
+      }
+      <div class="modal-opcoes">
+      @if (sala.usernameDono == username){
+        <button class="btn btn-danger" (click)="deletarSala()">Deletar</button>
+      } @else {
+        <button class="btn btn-warning" (click)="sairSala()">Sair</button>
+      }
+      <button class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
 </div>

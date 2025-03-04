@@ -22,12 +22,24 @@
         <img ngSrc="icon.png" alt="Profile Picture" width="24" height="32" class="me-2">
         <div class="d-flex flex-column align-items-center">
           <p>Olá, {{username}}</p>
-          <div class="sair" (click)="logout()">
+          <div class="sair" (click)="abrirModal()">
             <img src="logout.png" alt="logout">
             <p>sair</p>
           </div>
         </div>
       }
+      <div *ngIf="isModalOpen" class="modal-overlay" (click)="fecharModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+
+            <h2>Deslogar</h2>
+            <p>Tem certeza que deseja sair da sua conta?</p>
+
+          <div class="modal-opcoes">
+            <button class="btn btn-warning" (click)="logout()">Sair</button>
+            <button class="btn btn-secondary" (click)="fecharModal()">Cancelar</button>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- <button (click)="throwErro()"> throw error de proposito</button> -->
   </header>
