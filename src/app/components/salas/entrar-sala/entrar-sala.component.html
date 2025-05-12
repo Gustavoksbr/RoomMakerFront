@@ -5,6 +5,12 @@
   <header class="header d-flex">
   </header>
   <button routerLink="/salas" class="btn btn btn-secondary voltar-a-lista">Voltar a lista</button>
+  @if (carregando){
+    <div class="ff-inter carregando">
+      <p>Carregando</p>
+      <span class="spinner-border" role="status" aria-hidden="true"></span>
+    </div>
+  } @else  {
 @if(sala.id==""){
   <div class="pagina-not-found">
     <h3>Sala com nome <b>{{url}}</b> não encontrada!</h3>
@@ -21,6 +27,8 @@
   }
 
 }
+  }
 </section>
+    
 </app-navbar>
 </app-home>

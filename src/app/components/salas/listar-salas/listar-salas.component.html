@@ -1,17 +1,4 @@
 <app-home>
-<!--<section class="container-listar-salas">-->
-
-<!--  <div class=" card listar-salas">-->
-<!--  <header class="header-listar-salas header d-flex flex-wrap">-->
-<!--    <div class="col-6 col-md-3 titulo-listar-salas">-->
-<!--      <h2 class="ff-inter">Mural de salas</h2>-->
-<!--    </div>-->
-<!--    <div class="col-6 col-md-3">-->
-<!--      <button routerLink="criarSala" class="btn btn-primary">Adicionar sala</button>-->
-<!--      </div>-->
-
-
-<!--  </header>-->
   <app-navbar [paginaAtual]=PaginaAtual.SALAS>
   <div class="barra-pesquisa">
     <h3>Procurar</h3>
@@ -52,89 +39,7 @@
     </div>
     </div>
   </div>
-
-<!--<div class="lista-de-salas">-->
-    <app-lista-salas [ListaSalas]="ListaSalas">
+    <app-lista-salas [ListaSalas]="ListaSalas" [carregando]="carregando">
     </app-lista-salas>
-<!--</div>-->
-<!--  <div class="lista-container">-->
-<!--  <div class="lista">-->
-<!--  <table *ngIf="ListaSalas.length > 0; else semSalas" class="table table-bordered " >-->
-<!--    <thead>-->
-<!--      <tr>-->
-<!--        <th><div>Nome</div></th>-->
-<!--        <th>Categoria</th>-->
-<!--        <th>Disponível</th>-->
-<!--        <th>Privacidade</th>-->
-<!--        <th>Participantes</th>-->
-<!--        <th>Ação</th>-->
-<!--      </tr>-->
-<!--    </thead>-->
-
-<!--    <tbody  class=""  >-->
-
-<!--      <tr *ngFor="let p of ListaSalas" >-->
-<!--&lt;!&ndash;        <div class="card opcao-sala" >&ndash;&gt;-->
-<!--        <td>{{ p.usernameDono }}/{{ p.nome }}</td>-->
-<!--        <td>{{ p.categoria }}</td>-->
-<!--        <td>{{ p.disponivel ? 'Sim' : 'Não' }}</td>-->
-<!--        <td>{{ p.publica ? 'Pública' : 'Privada' }}</td>-->
-<!--        <td>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</td>-->
-<!--        <td>-->
-<!--          <button-->
-<!--            class="btn"-->
-<!--            [ngClass]="{'btn-success': p.publica, 'btn-warning': !p.publica}"-->
-<!--            [routerLink]="['/salas', p.usernameDono, p.nome]"-->
-<!--          >-->
-<!--            {{ p.publica ? 'Entrar' : 'Entrar com senha' }}-->
-<!--          </button>-->
-<!--        </td>-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--      </tr>-->
-<!--    </tbody>-->
-<!--  </table>-->
-<!--  </div>-->
-<!--  </div>-->
   </app-navbar>
-<!--&lt;!&ndash;  </div>&ndash;&gt;-->
-<!--&lt;!&ndash;</section>&ndash;&gt;-->
-
-
-
-
-
-<ng-template #semSalas>
-  <div class="ff-inter sem-salas">
-    <p>Nenhuma sala encontrada!</p>
-  </div>
-</ng-template>
-<!--<ng-container *ngIf="showParticipantsPopup">-->
-<!--  <div class="modal">-->
-<!--    <h3>Participantes</h3>-->
-<!--    <ul>-->
-<!--      <li *ngFor="let participant of participants">{{ participant }}</li>-->
-<!--    </ul>-->
-<!--    <button (click)="toggleParticipants()">Fechar</button>-->
-<!--  </div>-->
-<!--  <div class="modal" tabindex="-1" role="dialog">-->
-<!--    <div class="modal-dialog" role="document">-->
-<!--      <div class="modal-content">-->
-<!--        <div class="modal-header">-->
-<!--          <h5 class="modal-title">Modal title</h5>-->
-<!--          <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--            <span aria-hidden="true">&times;</span>-->
-<!--          </button>-->
-<!--        </div>-->
-<!--        <div class="modal-body">-->
-<!--          <p>Modal body text goes here.</p>-->
-<!--        </div>-->
-<!--        <div class="modal-footer">-->
-<!--          <button type="button" class="btn btn-primary">Save changes</button>-->
-<!--          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</ng-container>-->
-<!--<div class="mural" *ngIf="ListaSalas.length > 0; else semSalas">-->
 </app-home>

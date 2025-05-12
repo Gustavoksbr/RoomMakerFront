@@ -20,6 +20,7 @@ export class ListaSalasComponent implements OnInit, OnChanges {
   @Input() ListaSalas: SalaResponse[] = [];
   @Input() suasSalas: boolean = false;
   public username: string = '';
+  @Input() public carregando: boolean = false;
 
   // ListaOrdenada: SalaResponse[] = [];
 

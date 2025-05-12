@@ -1,65 +1,73 @@
 <div class="lista-container">
 <!--  <div [ngClass]="{'lista':!suasSalas,'lista-suas-salas':suasSalas}" >-->
     <div class="lista" >
-    <table *ngIf="ListaSalas.length > 0; else semSalas" class="table " >
-      <thead>
-      <tr>
-        <th><div>Nome</div></th>
-        <th>Categoria</th>
-        <th>Privacidade</th>
-        <th>Participantes</th>
-        <th>Ação</th>
-        <th>Status</th>
-      </tr>
-      </thead>
+      @if (carregando){
+        <div class="ff-inter carregando">
+          <p>Carregado</p>
+<span class="spinner-border" role="status" aria-hidden="true"></span>
+        </div>
+      } @else {
+        <table *ngIf="ListaSalas.length > 0; else semSalas" class="table " >
+          <thead>
+          <tr>
+            <th><div>Nome</div></th>
+            <th>Categoria</th>
+            <th>Privacidade</th>
+            <th>Participantes</th>
+            <th>Ação</th>
+            <th>Status</th>
+          </tr>
+          </thead>
 
-      <tbody  >
-<!--      <p (click)="ordenarSalas()"> ordenaaar</p>-->
-<!--<p (click)="mostrarOrdenacao()" > testeeee</p>-->
-        @if (ListaSalas.length > 0){
-          @for (p of ListaSalas; track $index) {
-      <tr [ngClass]="{'ja-esta-na-sala':classificarOrdemDeSalas(p)==3,
+          <tbody  >
+          <!--      <p (click)="ordenarSalas()"> ordenaaar</p>-->
+          <!--<p (click)="mostrarOrdenacao()" > testeeee</p>-->
+            @if (ListaSalas.length > 0){
+              @for (p of ListaSalas; track $index) {
+                <tr [ngClass]="{'ja-esta-na-sala':classificarOrdemDeSalas(p)==3,
       'nao-pode-entrar':classificarOrdemDeSalas(p)==2,
       'pode-entrar':classificarOrdemDeSalas(p)==1}">
-        <!--        <div class="card opcao-sala" >-->
-        <td ><div><div><p>{{ p.usernameDono }}/{{ p.nome }} </p></div></div></td>
-        <td><div><div><p>{{ p.categoria }}</p></div></div></td>
+                  <!--        <div class="card opcao-sala" >-->
+                  <td ><div><div><p>{{ p.usernameDono }}/{{ p.nome }} </p></div></div></td>
+                  <td><div><div><p>{{ p.categoria }}</p></div></div></td>
 
-<!--        <td>{{ p.disponivel ? 'Sim' : 'Não' }}</td>-->
-        <td><div><div><p>{{ p.publica ? 'Pública' : 'Privada' }}</p></div></div></td>
-        <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="{{participantesComDono(p)}}"><div><div><p>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</p></div></div></td>
-        <td>
-          @if (jaEstaNaSala(p)) {
-            <button
-              class = "btn btn-primary"
-              [routerLink]="['/salas', p.usernameDono, p.nome]">
-              Continuar
-            </button>
+                  <!--        <td>{{ p.disponivel ? 'Sim' : 'Não' }}</td>-->
+                  <td><div><div><p>{{ p.publica ? 'Pública' : 'Privada' }}</p></div></div></td>
+                  <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="{{participantesComDono(p)}}"><div><div><p>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</p></div></div></td>
+                  <td>
+                    @if (jaEstaNaSala(p)) {
+                      <button
+                        class = "btn btn-primary"
+                        [routerLink]="['/salas', p.usernameDono, p.nome]">
+                        Continuar
+                      </button>
 
-          } @else {
-            <button
-              class="btn"
-              [ngClass]="{  'btn-success': p.publica && getDisponivel(p)=='Disponível', 'btn-warning': !p.publica && getDisponivel(p)=='Disponível','nao-pode-entrar-botao':getDisponivel(p)!='Disponível'}"
-              [routerLink]="classificarOrdemDeSalas(p) ==1 ? ['/salas', p.usernameDono, p.nome] : null"
-            >
-              {{ p.publica ? 'Entrar' : 'Entrar com senha' }}
-            </button>
-          }
+                    } @else {
+                      <button
+                        class="btn"
+                        [ngClass]="{  'btn-success': p.publica && getDisponivel(p)=='Disponível', 'btn-warning': !p.publica && getDisponivel(p)=='Disponível','nao-pode-entrar-botao':getDisponivel(p)!='Disponível'}"
+                        [routerLink]="classificarOrdemDeSalas(p) ==1 ? ['/salas', p.usernameDono, p.nome] : null"
+                      >
+                        {{ p.publica ? 'Entrar' : 'Entrar com senha' }}
+                      </button>
+                    }
 
-        </td>
-        @if (getDisponivel(p) == "Sala cheia") {
-          <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Sala cheia">🚫</td>
-        } @else if (getDisponivel(p)=="Em jogo"){
-          <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Em jogo">🚫</td>
-        } @else if (getDisponivel(p)=="Disponível"){
-          <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Disponível">✅</td>
-        }
-        <!--        </div>-->
-      </tr>
-          }
-        }
-      </tbody>
-    </table>
+                  </td>
+                  @if (getDisponivel(p) == "Sala cheia") {
+                    <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Sala cheia">🚫</td>
+                  } @else if (getDisponivel(p)=="Em jogo"){
+                    <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Em jogo">🚫</td>
+                  } @else if (getDisponivel(p)=="Disponível"){
+                    <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Disponível">✅</td>
+                  }
+                  <!--        </div>-->
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+
+      }
   </div>
 
 </div>

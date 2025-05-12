@@ -49,6 +49,7 @@ export class EntrarSalaComponent implements OnInit {
   salaNome: string | null = "";
   public url: string = ''
   public participantesMaisDono: string[] = [];
+  public carregando: boolean = false;
   constructor(
     private authService: AuthService,
     private service:SalasService,
@@ -60,17 +61,22 @@ export class EntrarSalaComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.carregando = true;
    this.username = this.authService.getStorage("username")!;
-;
    this.usernameDono  = this.route.snapshot.paramMap.get('usernameDono');
    this.salaNome =this.route.snapshot.paramMap.get('nomeSala');
     this.url = this.usernameDono! + "/" + this.salaNome!;
       console.log("dono é:"+this.usernameDono);
    console.log(this.username);
-   this.service.buscarPorUsernameDonoESalaNome((this.usernameDono)!,(this.salaNome)!).subscribe((sala)=>{
-   this.sala = sala;
-   this.participantesMaisDono = this.sala.usernameParticipantes.concat(this.sala.usernameDono);
-    })
+    this.service.buscarPorUsernameDonoESalaNome((this.usernameDono)!, (this.salaNome)!).subscribe({
+      next: (sala) => {
+        this.carregando = false;
+        this.sala = sala;
+      },
+      error: (err) => {
+        this.carregando = false;
+      }
+    });
   }
   usuarioEstaNaSala(){
     return this.sala.usernameParticipantes.concat(this.sala.usernameDono).includes(this.username);

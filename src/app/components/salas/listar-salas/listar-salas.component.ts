@@ -28,6 +28,8 @@ export class ListarSalasComponent implements OnInit {
   searchCategoria: string = '';
   username: string ="";
 
+  carregando: boolean = false;
+
   // showParticipantsPopup: boolean = false;
   // participants: string[] = [];
   // searchEspecifico: string = '';
@@ -36,7 +38,9 @@ export class ListarSalasComponent implements OnInit {
  }
 
 ngOnInit() {
+   this.carregando = true;
   this.service.listar().subscribe((salas: any) => {
+    this.carregando = false;
     this.ListaSalas = salas;
     this.ListaSalasCompartilhada = salas;
     console.log("ngOninit: "+this.ListaSalas);
@@ -44,7 +48,9 @@ ngOnInit() {
 }
 search(): void {
    console.log("fez search")
+  this.carregando = true;
   this.service.listarEspecifico(this.searchUsernameDono,this.searchNomeSala,this.searchCategoria).subscribe((salas) => {
+    this.carregando = false;
     this.ListaSalas = salas;
   });
 }

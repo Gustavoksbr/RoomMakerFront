@@ -50,6 +50,7 @@ export  const routes: Routes = [
   // {path:"testes/chatTeste",component:ChatTesteComponent},
   // {path:"testes/ws3", component: MultiplecomponentsComponent}
   // {path:"testes/hacker", component: HackerComponent}
+  {path:'**', redirectTo: 'default', pathMatch: 'full'}
 ];
 
 @NgModule({
