@@ -34,7 +34,12 @@ export class LoginComponent {
         next: (response: { token: any; }) => {
           this.authService.saveToken(response.token);
           this.authService.saveStorage("username",this.credentials.username);
-          this.router.navigate(['/salas']);
+          this.authService.getDataNascimento().subscribe(res => {
+            const dataNascimento = res.data;
+            console.log("Data de nascimento recebida:", dataNascimento);
+              this.authService.saveStorage("datanascimento",dataNascimento);
+            this.router.navigate(['/salas']);
+          });
         },
         error: (err: any) => {
           this.tentandoLogar = false;

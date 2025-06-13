@@ -4,8 +4,9 @@
       <p><a class="a" (click)="login()">Voltar ao login</a></p>
       <h3>Recuperar a senha</h3>
       <form (submit)="forget()" class="form-group">
-        <div class="mb-3">
-          <input type="text" [(ngModel)]="emailParaRecuperarRequest.email" class="form-control" placeholder="Email" required name="email" />
+        <div class="mb-3 label-input">
+          <label for="email"> Email:</label>
+          <input type="text" [(ngModel)]="emailParaRecuperarRequest.email" class="form-control" required name="email" id="email" />
         </div>
         @if (!enviado){
           @if (!tentandoEnviar){

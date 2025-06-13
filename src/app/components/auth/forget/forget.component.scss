@@ -5,6 +5,16 @@
   justify-content: center;
   align-items: center;
 }
+.a {
+  color: var(--text-color-link);
+  text-decoration: underline;
+  cursor: pointer;
+}
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .forget{
   display: flex;

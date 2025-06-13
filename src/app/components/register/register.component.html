@@ -3,17 +3,28 @@
     <div class="card cadastro">
   <h3>Cadastre-se</h3>
 <form (submit)="register()" class="form-group">
-  <div class="mb-3">
-  <input type="text" [(ngModel)]="user.username" placeholder="Username"  class="form-control" required name="username" />
+  <div class="mb-3 label-input">
+    <label for="username">Username:</label>
+    <input type="text" [(ngModel)]="user.username" class="form-control" required name="username" id="username" />
   </div>
-  <div class="mb-3">
-  <input type="email" [(ngModel)]="user.email" placeholder="Email" class="form-control" required  name="email" />
+
+  <div class="mb-3 label-input">
+    <label for="email">Email:</label>
+    <input type="email" [(ngModel)]="user.email" class="form-control" required name="email" id="email" />
   </div>
-  <div class="mb-3">
-  <input type="password" [(ngModel)]="user.password" placeholder="Password" class="form-control" required name="password" />
+
+  <div class="mb-3 label-input">
+    <label for="password">Senha:</label>
+    <input type="password" [(ngModel)]="user.password" class="form-control" required name="password" id="password" />
   </div>
+
+  <div class="mb-3 label-input">
+    <label for="dataNascimento">Data de Nascimento:</label>
+    <input type="date" [(ngModel)]="user.dataNascimento" class="form-control" required name="dataNascimento" id="dataNascimento" />
+  </div>
+
   @if (!tentandoCadastrar){
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">Cadastre-se</button>
   } @else {
     <button type="submit" class="btn btn-secondary" disabled>
     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

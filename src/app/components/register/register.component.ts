@@ -16,7 +16,7 @@ import {Router} from '@angular/router';
 })
 export class RegisterComponent {
   public tentandoCadastrar = false;
-  user = { username: '', email:'', password: '' };
+  user = { username: '', email:'', password: '' ,dataNascimento:''};
 
   constructor(private authService: AuthService,  private router:Router) {}
 
@@ -26,7 +26,12 @@ export class RegisterComponent {
       next: (response: { token: any; }) => {
         this.authService.saveToken(response.token);
         this.authService.saveStorage("username",this.user.username);
-        this.router.navigate(['/salas']);
+        this.authService.getDataNascimento().subscribe(res => {
+          const dataNascimento = res.data;
+          console.log("Data de nascimento recebida:", dataNascimento);
+          this.authService.saveStorage("datanascimento",dataNascimento);
+          this.router.navigate(['/salas']);
+        });
       },
       error: (err: any) => {
         this.tentandoCadastrar = false;

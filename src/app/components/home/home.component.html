@@ -44,6 +44,15 @@
     <!-- <button (click)="throwErro()"> throw error de proposito</button> -->
   </header>
   <!-- <div class="with-ng-content"> -->
+  @if (seuAniversario) {
+    <div class="aniversario-container">
+      <div class="aniversario-content">
+        <img src="boloaniversario.gif" width="100px">
+        <p>Feliz Aniversário!!!</p>
+        <img src="boloaniversario.gif" width="100px">
+      </div>
+    </div>
+  }
   <ng-content></ng-content>
   <!-- </div> -->
 

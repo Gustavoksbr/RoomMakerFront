@@ -59,11 +59,15 @@ deleteStorage(chave:string){
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('datanascimento');
     if(this.router.url != "/register" && this.router.url != "/forget") {
       this.router.navigate(['/login']).then(r => console.log("logout"));
     }
   }
 
+  getDataNascimento(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/datanascimento`, { headers: this.getHeaders() });
+  }
 
   // saveCookie(chave:string,valor:string){
   //   this.cookieService.set(chave,valor);

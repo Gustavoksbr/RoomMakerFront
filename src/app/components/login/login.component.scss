@@ -13,6 +13,7 @@
 }
 
 .login{
+  width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,6 +22,30 @@
   background-color: var(--background-color);
   color: var(--text-color);
   border: 3px solid var(--text-color);
+  gap: 10px;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+.label-input-username{
+  width: 300px;
+}
+
+.label-input-senha{
+  width: 300px;
+  label{
+    min-width: 78px;
+  }
+}
+
+form{
+  margin-bottom: 10px;
 }
 
 .login form input{

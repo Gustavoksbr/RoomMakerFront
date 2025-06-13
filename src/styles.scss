@@ -114,3 +114,13 @@
 //    font-size: 10px;
 //  }
 //}
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Inverte as cores do ícone no modo escuro */
+}
+.label-input{
+  display: flex;
+  flex-direction: row;
+
+  gap: 15px;
+  align-items: center;
+}

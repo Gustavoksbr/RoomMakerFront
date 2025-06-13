@@ -29,7 +29,8 @@
 //}
 
 .homecard {
-  width: 170px;
+  min-width: 170px;
+  max-width: 400px;
   margin-right: 5%;
   display: flex;
   justify-content: center;
@@ -247,4 +248,24 @@ input{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.aniversario-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  p{
+    font-size: 150%;
+    color: var(--text-color);
+  }
+}
+
+.aniversario-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }

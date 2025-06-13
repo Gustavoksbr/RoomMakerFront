@@ -3,11 +3,13 @@
     <div class="card login">
   <h3>Login</h3>
 <form (submit)="login()" class="form-group">
-  <div class="mb-3">
-    <input type="text" [(ngModel)]="credentials.username" class="form-control" placeholder="Username" required name="username" />
+  <div class="mb-3 label-input label-input-username">
+    <label for="username" >Username: </label>
+    <input type="text" [(ngModel)]="credentials.username" class="form-control"  required id="username" name="username" />
   </div>
-  <div class="mb-3">
-    <input type="password" [(ngModel)]="credentials.password" class="form-control" placeholder="Password" required name="password" />
+  <div class="mb-3 label-input label-input-senha">
+    <label for="password" ><p>Senha:</p> </label>
+    <input type="password" [(ngModel)]="credentials.password" class="form-control"  required id="password" name="password"/>
   </div>
 
     @if (!tentandoLogar){
