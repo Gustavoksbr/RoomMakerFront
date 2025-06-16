@@ -26,6 +26,7 @@ export class ForaDaSalaComponent {
     publica: false,
     usernameParticipantes: []
   }
+  // public tentandoEntrar :boolean = false;
   salaRequest : EntrarSalaRequest = {
     nome: '',
     usernameDono: '',
@@ -35,8 +36,12 @@ export class ForaDaSalaComponent {
   @Output() enviarSala = new EventEmitter<EntrarSalaRequest>();
 
   entrarSala(){
-    this.salaRequest.nome = this.salaParaEntrar.nome;
-    this.salaRequest.usernameDono = this.salaParaEntrar.usernameDono;
-    this.enviarSala.emit(this.salaRequest);
+    // this.tentandoEntrar = true;
+ // setTimeout(() => {
+   this.salaRequest.nome = this.salaParaEntrar.nome;
+   this.salaRequest.usernameDono = this.salaParaEntrar.usernameDono;
+   this.enviarSala.emit(this.salaRequest);
+ // }, 3000);
+ //    this.tentandoEntrar = false;
   }
 }
