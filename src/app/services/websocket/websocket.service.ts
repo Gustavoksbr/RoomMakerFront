@@ -5,7 +5,7 @@ import {AuthService} from '../auth.service';
 import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
 import {ErrorHandlerPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
 import {ErrorPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
-import {API_CONFIG} from '../../config/api.config';
+import {API_CONFIG} from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',

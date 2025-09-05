@@ -1,5 +1,5 @@
 {
-  "name": "jwt-authentication",
+  "name": "roommakerfront",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

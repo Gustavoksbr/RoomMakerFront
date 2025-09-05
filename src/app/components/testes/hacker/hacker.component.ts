@@ -5,7 +5,7 @@ import {JsonPipe} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {SalasService} from '../../../services/salas/salas.service';
 import {AuthService} from '../../../services/auth.service';
-import {API_CONFIG} from '../../../config/api.config';
+import {API_CONFIG} from '../../../services/config/api.config';
 
 @Component({
   selector: 'app-hacker',

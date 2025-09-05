@@ -6,7 +6,7 @@ import {AuthService} from '../auth.service';
 import {Sala} from '../../models/salas/domain/Sala';
 import {CriarSalaRequest} from '../../models/salas/request/CriarSalaRequest';
 import {EntrarSalaRequest} from '../../models/salas/request/EntrarSalaRequest';
-import {API_CONFIG} from '../../config/api.config';
+import {API_CONFIG} from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'

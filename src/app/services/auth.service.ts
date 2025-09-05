@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {CookieService} from 'ngx-cookie-service';
-import {API_CONFIG} from '../config/api.config';
+import {API_CONFIG} from './config/api.config';
 
 @Injectable({
   providedIn: 'root',
