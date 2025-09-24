@@ -40,7 +40,7 @@ export  const routes: Routes = [
   {path:"salas/:usernameDono/:nomeSala", component: EntrarSalaComponent, canActivate: [AuthGuard]},
   {path:"criar-sala", component: CriarSalaComponent, canActivate: [AuthGuard]},
   {path:"suas-salas", component: SuasSalasComponent, canActivate: [AuthGuard]},
-  {path:"forget", component: ForgetComponent},
+  // {path:"forget", component: ForgetComponent},
 
 
   {path:"testes/geral", component: GeralComponent},
