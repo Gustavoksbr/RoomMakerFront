@@ -103,7 +103,6 @@ public mostrarOpcoes(ordem:number): void {
   scrollToBottom() {
 
     const tableContainer = document.getElementsByClassName('chat-perso')[0];
-    console.log("tableContainer: " + tableContainer);
     let alturaMaxima;
     if(tableContainer.scrollHeight!=null) {
       alturaMaxima = tableContainer.scrollHeight;

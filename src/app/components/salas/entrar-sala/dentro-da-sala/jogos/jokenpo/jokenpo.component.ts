@@ -74,7 +74,6 @@ private verificarResultado(jokenpo:JokenpoResponse){
   ngOnInit(): void {
     this.username= this.authService.getStorage("username")!
     this.websocketService.subscribe(this.stompClient, this.topic + "/jokenpo", (msg: any) => {
-      console.log("recebeu mensagem do jokenpo:\n" + JSON.stringify(msg));
       if(msg.historico != null){
         this.vitoriasOponente = 0;
         this.vitoriasDono = 0;

@@ -56,12 +56,9 @@ public usuariosOnline: Map<string, boolean> = new Map<string, boolean>();
   }
   ngOnInit(): void {
     this.topic = `/topic/sala/${this.sala.usernameDono}/${this.sala.nome}/${this.username}`;
-    console.log("u topicoococc: " +this.topic);
     this.app = `/app/sala/${this.sala.usernameDono}/${this.sala.nome}/${this.username}`;
-    console.log("u app: " +this.app);
 
     let topicForThis = this.topic + "/sala";
-    console.log("topicForThis: " + topicForThis);
     this.stompClient = this.websocketService.connect(
       this.stompClient,
       () => {console.log("Conectado ao websocket da sala")},

@@ -9,7 +9,6 @@ export class  GlobalSuccess {
   }
   handleSuccess(message: string): void {
     const toastr = this.injector.get(ToastrService)
-    console.log('Sucesso');
     toastr.success(message, 'Sucesso',{
       closeButton: true,
       extendedTimeOut: 5000,

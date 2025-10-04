@@ -30,15 +30,9 @@ export class WebSocketService {
       error: message.body.error
     }
     if(parsed.error){
-      console.log("nao e nulo");
       this.globalErrorHandler.handleError(parsed);
 
     }
-    console.log('z  message: ' + message);
-    console.log('z no topico ('+topic+') message.body: ' + message.body);
-    console.log('z  JSON.parse(message.body): ' + JSON.parse(message.body));
-    console.log('z  JSON.strinfy(message.body): ' + JSON.stringify(message.body));
-
     return JSON.parse(message.body);
   }
   connect(
@@ -53,7 +47,6 @@ export class WebSocketService {
       // brokerURL: 'ws://localhost:8080/socket',
     });
     stompClient.onConnect = (frame) => {
-      console.log('Connected: ' + frame);
       onConnectCallback(frame);
       stompClient.subscribe(topic, (messageBeforeConvertionToType) =>
           onMessageCallback(this.convertToObject(messageBeforeConvertionToType,topic)),
@@ -73,7 +66,6 @@ export class WebSocketService {
     return stompClient;
   }
 subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any) => void) {
-    console.log("stompCliente is connected: " + stompClient.connected);
     stompClient.subscribe(topic, (messageBeforeConvertionToType) =>
         onMessageCallback(this.convertToObject(messageBeforeConvertionToType,topic)),
       {Authorization: `Bearer ${this.authService.getToken()}`});
@@ -81,7 +73,6 @@ subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any)
 
   disconnect(stompClient : Client) {
     stompClient.deactivate();
-    console.log('Disconnected');
   }
 
   sendMessage(stompClient : Client,destination: string, body: any='') {

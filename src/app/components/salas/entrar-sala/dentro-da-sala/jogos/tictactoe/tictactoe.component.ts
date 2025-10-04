@@ -83,9 +83,6 @@ public empates = 0;
   }
 
   private verificarResultado(jogo:TicTacToeResponse){
-    console.log("verificando "+JSON.stringify(jogo));
-    console.log("sendo que o dono é "+this.jogadorDono);
-    console.log("e o oponente é "+this.jogadorOponente);
     if(jogo.status == TicTacToeStatus.x_WIN ){
       if(jogo.x == this.jogadorDono){
           this.vitoriasDono++;
@@ -102,13 +99,10 @@ public empates = 0;
     }else if(jogo.status == TicTacToeStatus.DRAW){
       this.empates++;
     }
-    console.log("vitorias do dono: "+this.vitoriasDono);
-    console.log("vitorias do oponente: "+this.vitoriasOponente);
   }
   ngOnInit(): void {
     this.username= this.authService.getStorage("username")!
     this.websocketService.subscribe(this.stompClient, this.topic + "/tictactoe", (msg: any) => {
-        console.log("recebeu mensagem do tictactoe:" + msg);
         if(msg.usernameDono!=null){
           this.tictactoe = msg.jogoAtual;
           this.historico = msg.historico;
@@ -119,7 +113,6 @@ public empates = 0;
             this.verificarResultado(this.historico[i]);
           }
         }else if(msg.posicao!=null){
-          console.log("chegou aquiaaa");
           this.tictactoe = msg;
           if(this.tictactoe.status == TicTacToeStatus.DRAW || this.tictactoe.status == TicTacToeStatus.x_WIN || this.tictactoe.status == TicTacToeStatus.o_WIN) {
             this.verificarResultado(this.tictactoe);
@@ -154,7 +147,6 @@ public empates = 0;
       const lance: TicTacToeLanceRequest = {
         lance: posicao
       }
-      console.log("tictactoe anterior:" + this.tictactoeAnterior.posicao);
       this.websocketService.sendMessage(this.stompClient, this.app + "/tictactoe/lance", JSON.stringify(lance));
     }
   }

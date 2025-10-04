@@ -135,18 +135,20 @@ footer a{
 //}
 
 .mudar-tema{
-
+  //width: 120px;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   //justify-content: space-between;
+  @media (min-width: 571px) {
+    width: 120px;
+  }
 input{
   cursor: pointer;
   background-color: var(--background-color);
   color: var(--text-color);
   border: 1px solid var(--text-color);
-
 }
 }
 
@@ -176,7 +178,6 @@ input{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
   }
 }
 
@@ -191,34 +192,6 @@ input{
 
 }
 
-//@media (max-width: 800px){
-//  .mudar-tema{
-//    width: 30%;
-//    margin-left: 80%;
-//
-//  }
-//  .mudar-tema label{
-//  font-size: 16px
-//}
-//  .homecard{
-//    width: 80px;
-//    margin-right: 0;
-//  }
-//  .homecard p{
-//    font-size: 16px
-//  }
-//
-//  .homecard div div p{
-//    font-size: 150%;
-//  }
-//  //.homecard div{
-//  //  width: 80%;
-//  //  height: 80%;
-//  //}
-//  .logo-container {
-//    width: 30%;
-//  }
-//}
 .modal-overlay {
   position: fixed;
   top: 0;

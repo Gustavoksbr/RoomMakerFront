@@ -43,11 +43,9 @@ ngOnInit() {
     this.carregando = false;
     this.ListaSalas = salas;
     this.ListaSalasCompartilhada = salas;
-    console.log("ngOninit: "+this.ListaSalas);
   });
 }
 search(): void {
-   console.log("fez search")
   this.carregando = true;
   this.service.listarEspecifico(this.searchUsernameDono,this.searchNomeSala,this.searchCategoria).subscribe((salas) => {
     this.carregando = false;

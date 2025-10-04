@@ -28,7 +28,6 @@ export class RegisterComponent {
         this.authService.saveStorage("username",this.user.username);
         this.authService.getDataNascimento().subscribe(res => {
           const dataNascimento = res.data;
-          console.log("Data de nascimento recebida:", dataNascimento);
           this.authService.saveStorage("datanascimento",dataNascimento);
           this.router.navigate(['/salas']);
         });

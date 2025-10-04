@@ -21,10 +21,8 @@ import confetti from 'canvas-confetti';
 export class HomeComponent implements OnInit {
  verificarAniversario(){
     const dataNascimentoStr = localStorage.getItem("datanascimento");
-    console.log("Data de nascimento do usuário:", dataNascimentoStr);
     if (dataNascimentoStr) {
       const dataNascimento = new Date(dataNascimentoStr);
-      console.log("Data de nascimento convertida:", dataNascimento);
       const hoje = new Date();
       const mes = String(hoje.getMonth() + 1).padStart(2, '0');
       const dia = String(hoje.getDate()).padStart(2, '0');
@@ -37,7 +35,7 @@ export class HomeComponent implements OnInit {
     }
   }
   public username: string = '';
-  public escuro: boolean = false;
+  public escuro: boolean = true;
   public seuAniversario: boolean = false;
 //  public  throwErro() {
 //   const error: ErrorPersonalizado = { status: '500', error: 'Internal Server Error' };
@@ -45,7 +43,6 @@ export class HomeComponent implements OnInit {
 // }
   constructor(private authService: AuthService,private errorHandler: GlobalErrorHandler) {
    this.username =  localStorage.getItem('username')!;
-   console.log('aaaaaaaaaaaaaaaaaaa')
   this.verificarAniversario();
   }
 
@@ -54,28 +51,23 @@ export class HomeComponent implements OnInit {
   }
 
   changeTheme() {
-   if(localStorage.getItem("tema") == "claro" || localStorage.getItem("tema") == null){
-     localStorage.setItem("tema", "escuro");
-   }else if (localStorage.getItem("tema") == "escuro"){
-      localStorage.setItem("tema","claro");
+   if(localStorage.getItem("tema") == "escuro" || localStorage.getItem("tema") == null){
+     localStorage.setItem("tema", "claro");
+   }else if (localStorage.getItem("tema") == "claro"){
+      localStorage.setItem("tema","escuro");
    }
     this.colorir();
   }
 
   colorir() {
-    if (localStorage.getItem("tema") == "claro" || localStorage.getItem("tema") == null) {
-      this.escuro = false;
-      document.documentElement.setAttribute('data-theme', "");
-      // document.getElementById('home')!.style.backgroundColor = 'white';
-
-    } else if (localStorage.getItem("tema") == "escuro") {
-// setTimeout(() => {
-  this.escuro = true;
-      document.documentElement.setAttribute('data-theme', "dark");
-  // document.getElementById('home')!.style.backgroundColor = 'black';
-
-//
-// },500);
+    if (localStorage.getItem("tema") == "escuro" || localStorage.getItem("tema") == null) {
+      this.escuro = true;
+      document.documentElement.setAttribute('data-theme', "escuro");
+    } else if (localStorage.getItem("tema") == "claro") {
+  this.escuro = false;
+  console.log("claro");
+      document.documentElement.setAttribute('data-theme', "claro");
+      // console.log("document DOcument elmeent: "+document.documentElement);
     }
   }
 

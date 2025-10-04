@@ -20,11 +20,9 @@ export class SalasService {
     return  this.authService.getHeaders();
   }
  listar(): Observable<SalaResponse[]> {
-    console.log("fazendo http get em "+this.API);
   return this.http.get<SalaResponse[]>(this.API, { headers: this.getHeaders() });
 }
   listarEspecifico(usernameDono: string = '', nome: string = '', categoria: string = ''): Observable<SalaResponse[]> {
-    console.log("fazendo http get em "+this.API+"?usernameDono="+usernameDono+"&nome="+nome+"&categoria="+categoria);
     const params = new HttpParams()
       .set('usernameDono', usernameDono)
       .set('nome', nome)
@@ -34,7 +32,6 @@ export class SalasService {
 
   listarPorUsernameDono(usernameDono:string):Observable<SalaResponse[]>{
     const url = `${this.API}/_dono`;
-    console.log("url é:"+url);
     const params = new HttpParams()
       .set('usernameDono', usernameDono);
     return this.http.get<SalaResponse[]>(url,{ headers: this.getHeaders(),params });
@@ -42,7 +39,6 @@ export class SalasService {
 
   listarPorUsernameParticipante(usernameParticipante:string):Observable<SalaResponse[]>{
     const url = `${this.API}/_convidado`;
-    console.log("url é:"+url);
     const params = new HttpParams()
       .set('usernameParticipante', usernameParticipante);
     return this.http.get<SalaResponse[]>(url,{ headers: this.getHeaders(),params });
@@ -59,7 +55,6 @@ export class SalasService {
 
   entrarNaSala(sala:EntrarSalaRequest):Observable<SalaResponse>{
     const url = `${this.API}/${sala.usernameDono}/${sala.nome}`;
-    console.log("url é:"+url);
     return this.http.post<SalaResponse>(url,sala,{ headers: this.getHeaders() });
   }
 
