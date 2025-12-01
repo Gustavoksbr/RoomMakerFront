@@ -25,7 +25,12 @@
                 <tr [ngClass]="{'ja-esta-na-sala':classificarOrdemDeSalas(p)==3,
       'nao-pode-entrar':classificarOrdemDeSalas(p)==2,
       'pode-entrar':classificarOrdemDeSalas(p)==1}">
-                  <td data-label="Nome"><p>{{ p.usernameDono }}/{{ p.nome }} </p></td>
+                  <td data-label="Nome">
+                    <div class="nome-container">
+                     <div>{{ p.usernameDono }}/</div>
+                      <div>{{ p.nome }} </div>
+                    </div>
+                  </td>
                   <td data-label="Categoria"><p>{{ p.categoria }}</p></td>
                   <td data-label="Ação">
                     @if (jaEstaNaSala(p)) {
