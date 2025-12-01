@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {CriarSalaRequest} from '../../../models/salas/request/CriarSalaRequest';
 import {SalasService} from '../../../services/salas/salas.service';
-import {AuthService} from '../../../services/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {HomeComponent} from '../../home/home.component';
 import {NavbarComponent} from '../../navbar/navbar.component';
 import {PaginaAtual} from '../../navbar/PaginaAtual';
@@ -13,7 +13,7 @@ import {GlobalSuccess} from '../../../providers/sucesso/GlobalSuccess';
 @Component({
   selector: 'app-criar-sala',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink, HomeComponent, NavbarComponent],
+  imports: [FormsModule, CommonModule, HomeComponent, NavbarComponent],
   templateUrl: './criar-sala.component.html',
   styleUrl: './criar-sala.component.scss'
 })

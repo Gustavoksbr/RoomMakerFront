@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {RouterLink} from '@angular/router';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {SalaResponse} from '../../../../models/salas/response/SalaResponse';
-import {AuthService} from '../../../../services/auth.service';
+import {AuthService} from '../../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-lista-salas',
@@ -22,33 +22,17 @@ export class ListaSalasComponent implements OnInit, OnChanges {
   public username: string = '';
   @Input() public carregando: boolean = false;
 
-  // ListaOrdenada: SalaResponse[] = [];
-
   constructor(private authService: AuthService) {
     this.username = this.authService.getStorage("username")!;
   }
   ngOnInit() {
     this.ordenarSalas();
-    // Seleciona o elemento com a classe .lista
-
-
-    // Define overflow-x como hidden inicialmente
-
-    // Após 2 segundos, muda overflow-x para auto
-    // setTimeout(() => {
-    //   const lista = document.getElementsByClassName('lista')[0];
-    //   (lista as HTMLElement).style.overflowX = 'auto';
-    // }, 2000); // 2000 milissegundos = 2 segundos
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['ListaSalas']) {
       this.ordenarSalas();
     }}
-// mostrarOrdenacao(){
-//     console.log("lista salas ordenadaaaaas: ", this.ListaOrdenada);
-// }
   ordenarSalas() {
-    // console.log("lista salas: ", this.ListaSalas);
     this.ListaSalas = this.ListaSalas.reverse();
 
 
@@ -57,8 +41,6 @@ export class ListaSalasComponent implements OnInit, OnChanges {
       const disponivelB = this.classificarOrdemDeSalas(b);
       return disponivelA - disponivelB;
     });
-
-    // console.log("lista ordenada: ", this.ListaSalas);
 
   }
 
@@ -82,7 +64,6 @@ export class ListaSalasComponent implements OnInit, OnChanges {
   }
 
   classificarOrdemDeSalas(sala: SalaResponse): number {
-    // console.log("alo");
     if(this.jaEstaNaSala(sala)){
       return 3;
     }

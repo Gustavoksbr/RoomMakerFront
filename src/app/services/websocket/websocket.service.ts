@@ -1,10 +1,8 @@
 // Serviço WebSocket para Angular
 import { Injectable } from '@angular/core';
 import { Client } from '@stomp/stompjs';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../auth/auth.service';
 import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
-import {ErrorHandlerPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
-import {ErrorPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
 import {API_CONFIG} from '../config/api.config';
 
 @Injectable({
@@ -24,10 +22,6 @@ export class WebSocketService {
     } catch (error) {
       console.error('Failha to parse message body as JSON:', error);
       return null;
-    }
-    const erroInterface : ErrorPersonalizado={
-      status: message.body.status,
-      error: message.body.error
     }
     if(parsed.error){
       this.globalErrorHandler.handleError(parsed);
@@ -77,28 +71,11 @@ subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any)
 
   sendMessage(stompClient : Client,destination: string, body: any='') {
     // this.stompClient.configure({ connectHeaders: {} });
-    console.log("body: " + body);
+    //console.log("body: " + body);
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination, body, headers: { Authorization: `Bearer ${this.authService.getToken()}` } });
     }
   }
 
-  //testes para hacker
-  connectHacker(
-    stompClient : Client)//o q fazer sempre que receber uma mensagem
-  {
-    stompClient.configure({
-      brokerURL: 'https://roommaker.onrender.com/socket',
-    });
-    stompClient.onConnect = (frame) => {
-      console.log('Connected via hack: ' + frame);
-    };
-
-    stompClient.activate();
-    return stompClient;
-  }
-  unsubscribe(stompClient : Client, topic: string) {
-    stompClient.unsubscribe(topic);
-  }
 
 }

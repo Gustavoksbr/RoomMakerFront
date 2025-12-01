@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {SalaResponse} from '../../models/salas/response/SalaResponse';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../auth/auth.service';
 import {Sala} from '../../models/salas/domain/Sala';
 import {CriarSalaRequest} from '../../models/salas/request/CriarSalaRequest';
 import {EntrarSalaRequest} from '../../models/salas/request/EntrarSalaRequest';

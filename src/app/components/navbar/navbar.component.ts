@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../services/auth/auth.service';
 import {PaginaAtual} from './PaginaAtual';
 import {NgClass} from '@angular/common';
 @Component({

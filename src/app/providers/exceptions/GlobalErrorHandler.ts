@@ -1,7 +1,6 @@
 ﻿import {ErrorHandler, Injectable, Injector} from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
-import {ErrorPersonalizado} from '../../components/home/ErrorHandlerPersonalizado';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../services/auth/auth.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +10,6 @@ export class GlobalErrorHandler implements ErrorHandler {
   handleError(error: any): void {
     const toastr = this.injector.get(ToastrService)
     console.error('An error occurred:', error);
-    console.log("erro é:"+JSON.stringify(error));
     if (error.error && error.status != null) {
       if(error.error instanceof ProgressEvent){
         toastr.error("status code: "+"500","Erro ao tentar se conectar com o servidor");
@@ -24,7 +22,7 @@ export class GlobalErrorHandler implements ErrorHandler {
           tapToDismiss: false,
         });
         if(error.status == 401){
-          this.authService.logout();
+          this.authService.logout(true);
         }
       }
     }

@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../services/auth/auth.service';
 import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
 import confetti from 'canvas-confetti';
@@ -12,7 +12,6 @@ import confetti from 'canvas-confetti';
     FormsModule,
     ReactiveFormsModule,
     NgOptimizedImage,
-    NgClass,
     NgIf
   ],
   templateUrl: './home.component.html',
@@ -37,10 +36,6 @@ export class HomeComponent implements OnInit {
   public username: string = '';
   public escuro: boolean = true;
   public seuAniversario: boolean = false;
-//  public  throwErro() {
-//   const error: ErrorPersonalizado = { status: '500', error: 'Internal Server Error' };
-//   this.errorHandler.handleError(error);
-// }
   constructor(private authService: AuthService,private errorHandler: GlobalErrorHandler) {
    this.username =  localStorage.getItem('username')!;
   this.verificarAniversario();
@@ -65,9 +60,8 @@ export class HomeComponent implements OnInit {
       document.documentElement.setAttribute('data-theme', "escuro");
     } else if (localStorage.getItem("tema") == "claro") {
   this.escuro = false;
-  console.log("claro");
+  // console.log("claro");
       document.documentElement.setAttribute('data-theme', "claro");
-      // console.log("document DOcument elmeent: "+document.documentElement);
     }
   }
 

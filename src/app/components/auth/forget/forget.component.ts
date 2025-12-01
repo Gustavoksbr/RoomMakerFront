@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {HomeComponent} from '../../home/home.component';
-import {AuthService} from '../../../services/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {RedefinirSenhaRequest} from './RedefinirSenhaRequest';

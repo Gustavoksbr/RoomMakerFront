@@ -1,9 +1,8 @@
-import {Component, NgModule} from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import {Component, OnInit} from '@angular/core';
+import { AuthService } from '../../../services/auth/auth.service';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import {ToastrModule, ToastrService} from 'ngx-toastr';
-import {HomeComponent} from '../home/home.component';
+import {HomeComponent} from '../../home/home.component';
 
 
 @Component({
@@ -16,20 +15,17 @@ import {HomeComponent} from '../home/home.component';
   ],
   standalone: true
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   tentandoLogar = false;
   credentials = { username: '', password: '' };
 
   constructor(
     private authService: AuthService,
-  private router:Router,
-  private toastr : ToastrService) {}
+  private router:Router) {
+  }
 
   login() {
-    // console.log("chegou aqui no login")
     this.tentandoLogar = true;
-    // setTimeout(() => {
-    //   console.log("tentando logar" + this.credentials.username + this.credentials.password);
       this.authService.login(this.credentials).subscribe({
         next: (response: { token: any; }) => {
           this.authService.saveToken(response.token);
@@ -45,7 +41,6 @@ export class LoginComponent {
           throw err;
         },
       });
-    // }, 5000);
   }
 
   cadastrar(){
@@ -54,5 +49,12 @@ export class LoginComponent {
 
   esqueciSenha(){
     this.router.navigate(['/forget']);
+  }
+
+  ngOnInit(): void {
+    console.log("localStorage all items:", localStorage);
+    // this.tentandoLogar = false;
+    // this.credentials = { username: '', password: '' };
+    // window.location.reload();
   }
 }

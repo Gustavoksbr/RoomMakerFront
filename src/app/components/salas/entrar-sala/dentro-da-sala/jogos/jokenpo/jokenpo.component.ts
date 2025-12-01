@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Client} from '@stomp/stompjs';
 import {WebSocketService} from '../../../../../../services/websocket/websocket.service';
-import {AuthService} from '../../../../../../services/auth.service';
+import {AuthService} from '../../../../../../services/auth/auth.service';
 import {JokenpoResponse} from './JokenpoResponse';
 import {JokenpoLance} from './JokenpoLance';
 import {JokenpoStatus} from './JokenpoStatus';

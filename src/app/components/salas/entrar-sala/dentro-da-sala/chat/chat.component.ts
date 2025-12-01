@@ -5,7 +5,7 @@ import {MessageRequestWs} from './MessageRequestWs';
 import {FormsModule} from '@angular/forms';
 import {Client} from '@stomp/stompjs';
 import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
-import {AuthService} from '../../../../../services/auth.service';
+import {AuthService} from '../../../../../services/auth/auth.service';
 import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-chat',
@@ -87,7 +87,7 @@ public mostrarOpcoes(ordem:number): void {
   public sendMessage() {
     this.enviandoMensagem = true;
   setTimeout(() => {
-    console.log("Enviando mensagem: " + this.message.message);
+    // console.log("Enviando mensagem: " + this.message.message);
 
     // console.log("com destination: " + this.app + "/chat/message");
     this.websocketService.sendMessage(this.stompClient, this.app + "/chat/message", JSON.stringify(this.message));

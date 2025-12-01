@@ -4,7 +4,7 @@ import {NavbarComponent} from '../../navbar/navbar.component';
 import {PaginaAtual} from '../../navbar/PaginaAtual';
 import {SalasService} from '../../../services/salas/salas.service';
 import {Router} from '@angular/router';
-import {AuthService} from '../../../services/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {SalaResponse} from '../../../models/salas/response/SalaResponse';
 import {ListaSalasComponent} from '../shared/lista-salas/lista-salas.component';
 

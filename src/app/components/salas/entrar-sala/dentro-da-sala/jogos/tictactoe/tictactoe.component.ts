@@ -4,7 +4,7 @@ import {WebSocketService} from '../../../../../../services/websocket/websocket.s
 import {TicTacToeResponse} from './TicTacToeResponse';
 import {TicTacToeStatus} from './TicTacToeStatus';
 import {TicTacToeLanceRequest} from './TicTacToeLanceRequest';
-import {AuthService} from '../../../../../../services/auth.service';
+import {AuthService} from '../../../../../../services/auth/auth.service';
 import {JokenpoStatus} from '../jokenpo/JokenpoStatus';
 import {NgClass} from '@angular/common';
 

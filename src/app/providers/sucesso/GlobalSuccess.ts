@@ -1,5 +1,4 @@
-﻿import {ErrorHandler, Injectable, Injector} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
+﻿import { Injectable, Injector} from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
 @Injectable({
   providedIn: 'root'

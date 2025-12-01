@@ -53,9 +53,7 @@
   padding: 5%;
 
 }
-.sair p{
-  //width: 20%;
-}
+
 .sair img{
   width: 40%;
 
@@ -66,39 +64,26 @@
   border: 1px solid white;
   border-radius: 5%;
 }
-//#sair p:hover{
-//  color:blue;
-//
-//}
 
-.with-ng-content{
-  flex:1;
-  width: 100%;
-  height: 100%;
-  //display: flex;
-  //justify-content: center;
-  //align-items: center;
-}
-
-//ng-content{
-//  flex: 1;
-//  width: 100%;
-//  height: 100%;
-//  padding-top: 100px;
-//  display: flex;
-//  justify-content: center;
-//  align-items: center;
-//}
 
 
 footer{
-  padding: 20px;
+  background-color: rgb(64, 118, 255);
   position: absolute;
   bottom: 0;
-  //padding: 1rem;
   width: 100%;
-  background-color: rgb(64, 118, 255);
-  //box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.5);
+  .parte-fundo{
+    background-color: var(--background-color);
+    height: 10px;
+  }
+  .parte-azul{
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
 }
 //body, *{
 //  background-color: var(--background-color);
@@ -192,6 +177,27 @@ input{
 
 }
 
+
+.aniversario-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  p{
+    font-size: 150%;
+    color: var(--text-color);
+  }
+}
+
+.aniversario-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -221,24 +227,4 @@ input{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-}
-
-.aniversario-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  p{
-    font-size: 150%;
-    color: var(--text-color);
-  }
-}
-
-.aniversario-content{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
 }

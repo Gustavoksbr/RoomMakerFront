@@ -6,7 +6,7 @@ import {SalasService} from '../../../services/salas/salas.service';
 import {SalaComponent} from '../sala/sala.component';
 import {HomeComponent} from '../../home/home.component';
 import {FormsModule} from '@angular/forms';
-import {AuthService} from '../../../services/auth.service';
+import {AuthService} from '../../../services/auth/auth.service';
 import {NavbarComponent} from '../../navbar/navbar.component';
 import {PaginaAtual} from '../../navbar/PaginaAtual';
 import {ListaSalasComponent} from '../shared/lista-salas/lista-salas.component';

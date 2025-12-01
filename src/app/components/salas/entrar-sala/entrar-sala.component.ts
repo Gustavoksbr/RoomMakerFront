@@ -1,27 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {NgForOf, NgIf} from '@angular/common';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {SalaComponent} from '../sala/sala.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EntrarSalaRequest} from '../../../models/salas/request/EntrarSalaRequest';
 import {SalasService} from '../../../services/salas/salas.service';
 import {SalaResponse} from '../../../models/salas/response/SalaResponse';
-import {AuthService} from '../../../services/auth.service';
-import {io} from 'socket.io-client';
+import {AuthService} from '../../../services/auth/auth.service';
 import {ForaDaSalaComponent} from './fora-da-sala/fora-da-sala.component';
 import {DentroDaSalaComponent} from './dentro-da-sala/dentro-da-sala.component';
 import {HomeComponent} from '../../home/home.component';
 import {NavbarComponent} from '../../navbar/navbar.component';
-import {PaginaAtual} from '../../navbar/PaginaAtual';
 
 @Component({
   selector: 'app-entrar-sala',
   standalone: true,
   imports: [
-    NgForOf,
-    NgIf,
     RouterLink,
-    SalaComponent,
     ReactiveFormsModule,
     FormsModule,
     ForaDaSalaComponent,

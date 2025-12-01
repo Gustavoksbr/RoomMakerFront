@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {CookieService} from 'ngx-cookie-service';
-import {API_CONFIG} from './config/api.config';
+import {API_CONFIG} from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
@@ -56,12 +56,14 @@ deleteStorage(chave:string){
   getHeaders(): HttpHeaders {
     return new HttpHeaders({ Authorization: `Bearer ${this.getToken()}` });
   }
-  logout(): void {
+  logout(from401 = false): void {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('datanascimento');
-    if(this.router.url != "/register" && this.router.url != "/forget") {
-      this.router.navigate(['/login']).then(r => console.log("logout"));
+    if(this.router.url != "/register" && this.router.url != "/forget" && this.router.url!="/login") {
+      this.router.navigate(['/login']).then(() => {
+        if (from401) window.location.reload();
+      });
     }
   }
 

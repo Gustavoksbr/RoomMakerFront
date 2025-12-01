@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {SalaResponse} from '../../../../models/salas/response/SalaResponse';
 import {WebSocketService} from '../../../../services/websocket/websocket.service';
-import {AuthService} from '../../../../services/auth.service';
+import {AuthService} from '../../../../services/auth/auth.service';
 import {SalasService} from '../../../../services/salas/salas.service';
 import {ChatComponent} from './chat/chat.component';
 import {Client} from '@stomp/stompjs';
@@ -61,10 +61,12 @@ public usuariosOnline: Map<string, boolean> = new Map<string, boolean>();
     let topicForThis = this.topic + "/sala";
     this.stompClient = this.websocketService.connect(
       this.stompClient,
-      () => {console.log("Conectado ao websocket da sala")},
+      () => {
+        // console.log("Conectado ao websocket da sala")
+      },
       topicForThis,
       (msg : string[]) => {
-        console.log("recebeu mensagem:"+msg);
+        //console.log("recebeu mensagem:"+msg);
         this.sala.usernameParticipantes = msg;
         this.enviarParticipantes.emit(msg);
       });
