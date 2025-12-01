@@ -31,8 +31,9 @@
                       <div>{{ p.nome }} </div>
                     </div>
                   </td>
-                  <td data-label="Categoria"><p>{{ p.categoria }}</p></td>
+                  <td data-label="Categoria"><div><p>{{ p.categoria }}</p></div></td>
                   <td data-label="Ação">
+                    <div>
                     @if (jaEstaNaSala(p)) {
                       <button
                         class = "btn btn-primary"
@@ -49,17 +50,25 @@
                         {{ p.publica ? 'Entrar' : 'Entrar com senha' }}
                       </button>
                     }
-
+                    </div>
                   </td>
 
-                  <td data-label="Participantes" class="emojis" data-bs-toggle="tooltip" data-placement="top" title="{{participantesComDono(p)}}"><div><div><p>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</p></div></div></td>
-                  <td data-label="Privacidade"><div><div><p>{{ p.publica ? 'Pública' : 'Privada' }}</p></div></div></td>
+                  <td data-label="Participantes" class="emojis" data-bs-toggle="tooltip" data-placement="top" title="{{participantesComDono(p)}}">
+                    <div>
+                      <p>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</p>
+                    </div>
+                  </td>
+                  <td data-label="Privacidade">
+                    <div>
+                      <p>{{ p.publica ? 'Pública' : 'Privada' }}</p>
+                    </div>
+                  </td>
                   @if (getDisponivel(p) == "Sala cheia") {
-                    <td data-label="Status" class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Sala cheia">🚫</td>
+                    <td data-label="Status" class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Sala cheia"><div>🚫</div></td>
                   } @else if (getDisponivel(p)=="Em jogo"){
-                    <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Em jogo">🚫</td>
+                    <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Em jogo"><div>🚫</div></td>
                   } @else if (getDisponivel(p)=="Disponível"){
-                    <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Disponível">✅</td>
+                    <td class="emojis" data-bs-toggle="tooltip" data-placement="top" title="Disponível"><div>✅</div></td>
                   }
                 </tr>
               }
