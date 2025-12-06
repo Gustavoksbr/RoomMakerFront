@@ -10,8 +10,7 @@
       }
     </div>
     <div class="mostrar-esconder-container"  [ngClass]="{'aparecer': mostrarCartaAtual, 'desaparecer': !mostrarCartaAtual}">
-      <div class="mostrar-esconder-content"
-          >
+      <div class="mostrar-esconder-content">
         @if (whoIsTheImpostor.isImpostor) {
           <div style="text-align:center"> VOCÊ É O <b style="color: red">IMPOSTOR</b> </div>
           <img ngSrc="icon-amongus-shhh.webp" alt="Impostor" width="200" height="200" />
@@ -55,7 +54,6 @@
           </button>
           </div>
         }
-
     }
   } @else {
     @if (whoIsTheImpostor.partidaSendoJogada) {
@@ -66,10 +64,8 @@
   }
     <div *ngIf="estaAbertoModalIniciarPartida" class="modal-overlay" (click)="fecharModalIniciarPartida()">
       <div class="modal-content" (click)="$event.stopPropagation()">
-
         <h2>Iniciar partida</h2>
         <p>Tem certeza que deseja iniciar a partida?</p>
-
         <div class="modal-opcoes">
           <button class="btn btn-warning" (click)="iniciarPartida()">Sim</button>
           <button class="btn btn-secondary" (click)="fecharModalIniciarPartida()">Cancelar</button>
@@ -79,10 +75,8 @@
   </div>
   <div *ngIf="estaAbertoModalTerminarPartida" class="modal-overlay" (click)=" fecharModalTerminarPartida() ">
     <div class="modal-content" (click)="$event.stopPropagation()">
-
       <h2>Terminar partida</h2>
       <p>Tem certeza que deseja terminar a partida?</p>
-
       <div class="modal-opcoes">
         <button class="btn btn-warning" (click)="terminarPartida()">Sim</button>
         <button class="btn btn-secondary" (click)="fecharModalTerminarPartida()">Cancelar</button>

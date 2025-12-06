@@ -65,11 +65,10 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
       },
       topicForThis,
       (msg : string[]) => {
-        console.log("recebiiiii:"+msg);
         this.sala.usernameParticipantes = msg;
         this.enviarParticipantes.emit(msg);
         if(this.username!== this.sala.usernameDono && (!msg.includes(this.username))){
-          window.location.reload();
+          this.router.navigate(['/salas']);
         }
       });
   }

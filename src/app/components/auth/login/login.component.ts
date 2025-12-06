@@ -15,7 +15,7 @@ import {HomeComponent} from '../../home/home.component';
   ],
   standalone: true
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent  {
   tentandoLogar = false;
   credentials = { username: '', password: '' };
 
@@ -49,12 +49,5 @@ export class LoginComponent implements OnInit {
 
   esqueciSenha(){
     this.router.navigate(['/forget']);
-  }
-
-  ngOnInit(): void {
-    console.log("localStorage all items:", localStorage);
-    // this.tentandoLogar = false;
-    // this.credentials = { username: '', password: '' };
-    // window.location.reload();
   }
 }

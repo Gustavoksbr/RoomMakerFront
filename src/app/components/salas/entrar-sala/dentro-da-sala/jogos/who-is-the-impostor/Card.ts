@@ -134,7 +134,7 @@ export const CardMap: Record<string, string> = {
   [Card.LOG]: "Log",
   [Card.BATS]: "Bats",
   [Card.BOMBER]: "Bomber",
-  [Card.SNOWBALL]: "SnowBall",
+  [Card.SNOWBALL]: "Snowball",
   [Card.BARBBARREL]: "BarbBarrel",
   [Card.BERSERKER]: "Berserker",
   [Card.ICEGOLEM]: "IceGolem",
