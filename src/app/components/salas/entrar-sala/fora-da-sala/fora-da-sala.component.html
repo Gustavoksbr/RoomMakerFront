@@ -5,7 +5,7 @@
 
 <p>Sala:<b> {{salaParaEntrar.usernameDono}}/{{salaParaEntrar.nome}}</b></p>
 
-<p>Categoria: <b>{{salaParaEntrar.categoria}}</b></p>
+<p>Categoria: <b>{{categoriaMap[salaParaEntrar.categoria]}}</b></p>
 <p>Capacidade: <b>{{salaParaEntrar.qtdCapacidade}}</b></p>
 <p>Privacidade:<b> {{salaParaEntrar.publica ? 'Pública' : 'Privada'}}</b></p>
 <div class="participantes"><p>Participantes:</p>
@@ -38,4 +38,3 @@
   </div>
   </div>
   </div>
-

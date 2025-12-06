@@ -1,0 +1,92 @@
+
+<div class="who-is-the-impostor-container">
+  <div class="who-is-the-impostor-content">
+  @if (whoIsTheImpostor.partidaSendoJogada && whoIsTheImpostor.estaNaPartida) {
+    <div class="mostrar-esconder-header" (click)="mostrarEsconderCarta()">
+      @if (mostrarCartaAtual){
+        <div class="btn-mostrar-esconder">Clique para esconder a carta</div>
+      } @else {
+        <div class="btn-mostrar-esconder">Clique para mostrar a carta</div>
+      }
+    </div>
+    <div class="mostrar-esconder-container"  [ngClass]="{'aparecer': mostrarCartaAtual, 'desaparecer': !mostrarCartaAtual}">
+      <div class="mostrar-esconder-content"
+          >
+        @if (whoIsTheImpostor.isImpostor) {
+          <div style="text-align:center"> VOCÊ É O <b style="color: red">IMPOSTOR</b> </div>
+          <img ngSrc="icon-amongus-shhh.webp" alt="Impostor" width="200" height="200" />
+        } @else {
+          <div style="text-align:center"> A carta é <b>{{cardNamePortuguese}}</b> </div>
+          <img ngSrc="{{ urlBaseDasCartas + cardName + '.png'}}" alt="{{cardNamePortuguese}}" title="{{cardNamePortuguese}}" width="200" height="200" />
+        }
+      </div>
+    </div>
+  } @else if (whoIsTheImpostor.partidaSendoJogada && !whoIsTheImpostor.estaNaPartida) {
+    <div> Espere a partida terminar</div>
+  } @else {
+    @if (whoIsTheImpostor.impostorDaPartidaPassada!=null && whoIsTheImpostor.cartaDaPartidaPassada!=null) {
+      <div>- O impostor da última partida foi: <b style="color: red; font-size: 30px">{{whoIsTheImpostor.impostorDaPartidaPassada}}</b> </div>
+      <div>- A carta sorteada da última partida foi: <b style="font-size: 24px">{{ cardPassadaNamePortuguese }}</b> </div>
+      <img ngSrc="{{ urlBaseDasCartas + cardPassadaName + '.png'}}" alt="{{cardPassadaNamePortuguese}}" title="{{cardPassadaNamePortuguese}}" width="200" height="200" />
+    }
+  }
+    @if (!whoIsTheImpostor.partidaSendoJogada) {
+      @if (outrosJogadores.length<2){
+        <div style="margin-top: 20px; text-align: center;">
+          <div>⚠️</div>
+          <div> Necessário no mínimo 3 jogadores </div>
+          <div>{{outrosJogadores.length + 1}}/3 </div>
+        </div>
+      }
+    }
+  @if (jogadorDono==username){
+    @if (whoIsTheImpostor.partidaSendoJogada){
+      <div>
+        <button class="btn btn-danger" (click)="abrirModalTerminarPartida()">
+          Terminar partida
+        </button>
+      </div>
+    } @else {
+
+        @if (outrosJogadores.length>=2){
+          <div>
+          <button class="btn btn-success" (click)="abrirModalIniciarPartida()">
+            Iniciar partida
+          </button>
+          </div>
+        }
+
+    }
+  } @else {
+    @if (whoIsTheImpostor.partidaSendoJogada) {
+      <div> Se a discussão já foi feita, aguarde o dono terminar a partida </div>
+    } @else if (outrosJogadores.length>=2){
+      <div> Aguarde o dono iniciar a partida </div>
+    }
+  }
+    <div *ngIf="estaAbertoModalIniciarPartida" class="modal-overlay" (click)="fecharModalIniciarPartida()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+
+        <h2>Iniciar partida</h2>
+        <p>Tem certeza que deseja iniciar a partida?</p>
+
+        <div class="modal-opcoes">
+          <button class="btn btn-warning" (click)="iniciarPartida()">Sim</button>
+          <button class="btn btn-secondary" (click)="fecharModalIniciarPartida()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="estaAbertoModalTerminarPartida" class="modal-overlay" (click)=" fecharModalTerminarPartida() ">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+
+      <h2>Terminar partida</h2>
+      <p>Tem certeza que deseja terminar a partida?</p>
+
+      <div class="modal-opcoes">
+        <button class="btn btn-warning" (click)="terminarPartida()">Sim</button>
+        <button class="btn btn-secondary" (click)="fecharModalTerminarPartida()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,12 +27,20 @@
             }
         @else if (sala.categoria == 'jokenpo') {
           <div>
-            <h2>Jo-Ken-Po</h2>
+            <h2>Jo-Ken-Pô</h2>
             <div class="card categoria">
               <app-jokenpo [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorOponente]="sala.usernameParticipantes[0]"/>
             </div>
           </div>
             }
+        @else if(sala.categoria == 'whoistheimpostor') {
+          <div>
+            <h2>Quem é o impostor? 🤔</h2>
+            <div class="card categoria">
+              <app-who-is-the-impostor [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [outrosJogadores]="sala.usernameParticipantes"/>
+            </div>
+          </div>
+        }
         <div>
           <h2>Chat</h2>
           <div class="card categoria">

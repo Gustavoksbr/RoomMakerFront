@@ -19,11 +19,22 @@
   </div>
   <div class="form-group">
 <label for="salaCategoria">Categoria</label>
-<select id="salaCategoria"  class="form-select selecionarCategoria"  [(ngModel)]="sala.categoria"  name="categoria" required>
-  <option value="chat" >Chat</option>
-  <option value="jokenpo">Jo-ken-pô</option>
-  <option value="tictactoe">Jogo da velha</option>
-</select>
+<select id="salaCategoria"
+        class="form-select selecionarCategoria"
+        [(ngModel)]="sala.categoria"
+        (change)="onCategoriaChange()"
+        name="categoria"
+        required>
+  @for (categoria of ["chat","jokenpo","tictactoe","whoistheimpostor"] ; track $index) {
+    <option value="{{categoria}}" >
+      {{categoriaMap[categoria]}}
+    </option>
+  }
+<!--  <option value="chat" >Chat</option>-->
+<!--  <option value="jokenpo">Jo-ken-pô</option>-->
+<!--  <option value="tictactoe">Jogo da velha</option>-->
+<!--  <option value="whoistheimpostor">Quem é o impostor?</option>-->
+</select >
   </div>
   <div class="form-group">
 
@@ -34,11 +45,12 @@
       class="form-control"
       style=""
       placeholder="Digite a capacidade"
+      name="qtdCapacidade"
       [ngStyle]="soPodeDois() ? {'background-color': 'var(--background-color2)'} : {}"
       [(ngModel)]="sala.qtdCapacidade"
-      name="qtdCapacidade"
       [readonly]="soPodeDois()"
-      [value]="soPodeDois() ? 2 : sala.qtdCapacidade"
+      [min]="noMinimoTres() ? 3 : 2"
+      max="100"
       required
     >
   </div>

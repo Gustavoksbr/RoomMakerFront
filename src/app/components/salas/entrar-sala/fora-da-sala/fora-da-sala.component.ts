@@ -3,14 +3,14 @@ import {FormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
 import {SalaResponse} from '../../../../models/salas/response/SalaResponse';
 import {EntrarSalaRequest} from '../../../../models/salas/request/EntrarSalaRequest';
+import {categoriaMap} from '../../../../models/salas/domain/Sala';
 
 
 @Component({
   selector: 'app-fora-da-sala',
   standalone: true,
     imports: [
-        FormsModule,
-        RouterLink
+        FormsModule
     ],
   templateUrl: './fora-da-sala.component.html',
   styleUrl: './fora-da-sala.component.scss'
@@ -35,6 +35,8 @@ export class ForaDaSalaComponent {
 
   @Output() enviarSala = new EventEmitter<EntrarSalaRequest>();
 
+  // futuramente seria bom implementar um carregando
+  // public carregando: boolean = false;
   entrarSala(){
     // this.tentandoEntrar = true;
  // setTimeout(() => {
@@ -44,4 +46,6 @@ export class ForaDaSalaComponent {
  // }, 3000);
  //    this.tentandoEntrar = false;
   }
+
+  protected readonly categoriaMap = categoriaMap;
 }

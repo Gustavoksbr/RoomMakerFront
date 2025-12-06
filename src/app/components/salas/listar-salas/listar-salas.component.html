@@ -22,9 +22,15 @@
         required
       >
         <option value="" selected ></option>
-        <option value="chat" >Chat</option>
-        <option value="jokenpo">Jo-ken-pô</option>
-        <option value="tictactoe">Jogo da velha</option>
+        @for (categoria of ["chat","jokenpo","tictactoe","whoistheimpostor"] ; track $index) {
+          <option value="{{categoria}}" >
+            {{categoriaMap[categoria]}}
+          </option>
+        }
+<!--        <option value="chat" >Chat</option>-->
+<!--        <option value="jokenpo">Jo-ken-pô</option>-->
+<!--        <option value="tictactoe">Jogo da velha</option>-->
+<!--        <option value="whoistheimpostor">Quem é o impostor?</option>-->
      <!--   <option value="coup">Coup</option> !-->
       </select>
     </div>

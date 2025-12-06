@@ -10,13 +10,20 @@
 </div>
     @for (mensagem of chat; track $index;) {
 <div  >
-      @if (mensagem.ordem!=null && opcoesMostradas == mensagem.ordem){
-        <div class="container-opcoes-mostradas" [ngClass]="{'invertido':mensagem.from == getNomeUsuario,'nao-invertido':mensagem.from != getNomeUsuario}" id="opcoes-mostradas-{{mensagem.ordem}}">
+<!--      @if (mensagem.ordem!=null && opcoesMostradas == mensagem.ordem){-->
+        <div class="container-opcoes-mostradas"
+             [ngClass]="{
+    'ativo': opcoesMostradas == mensagem.ordem,
+    'invertido': mensagem.from == getNomeUsuario,
+    'nao-invertido': mensagem.from != getNomeUsuario
+  }"
+             id="opcoes-mostradas-{{mensagem.ordem}}">
         <div class="opcoes-mostradas"   id="{{mensagem.ordem}}">
           <div class="responder" (click)="responderMensagem(mensagem)" >
             <p >Responder</p>
 
           </div>
+          <div class="traco-preto"></div>
           <div class="data">
             @if (mensagem.timestamp!=null){
               <p >{{transformarData(mensagem.timestamp)}}</p>}
@@ -24,20 +31,16 @@
           </div>
         </div>
         </div>
-      }
+<!--      }-->
   @if (verificarSeMensagemAnteriorEhDoMesmoUsuario(mensagem)==0) {
     <div [ngClass]="{'username-de-quem-disse': mensagem.from != getNomeUsuario,'username-de-quem-disse-reverse':mensagem.from == getNomeUsuario}">
-      <div class="icon">
-        <img ngSrc="icon.png" alt="Profile Picture" width="24" height="32" class="me-2">
-      </div>
-
       <b>{{ mensagem.from }}</b>
     </div>
   }
-      <div [ngClass]="{'mensagem' : mensagem.from != getNomeUsuario, 'mensagem-reverse':mensagem.from == getNomeUsuario,'manter-background':mensagem.ordem!=null && opcoesMostradas == mensagem.ordem,'respondendo-esta-mensagem':mensagem.ordem!=null && this.message.to == mensagem.ordem}"
+      <div class="mensagem" [ngClass]="{'mensagem-de-outro' : mensagem.from != getNomeUsuario, 'mensagem-reverse':mensagem.from == getNomeUsuario,'manter-background':mensagem.ordem!=null && opcoesMostradas == mensagem.ordem,'respondendo-esta-mensagem':mensagem.ordem!=null && this.message.to == mensagem.ordem}"
            id="mensagem-{{mensagem.ordem}}">
         @if (mensagem.ordem !=null){
-          <div class="seta-para-cima seta-para-cima-display" id="seta-para-cima-{{mensagem.ordem}}" (click)="mostrarOpcoes(mensagem.ordem)">
+          <div class="seta-para-cima" id="seta-para-cima-{{mensagem.ordem}}" (click)="mostrarOpcoes(mensagem.ordem)">
             ^
           </div>
         }
@@ -47,18 +50,18 @@
               <p>Respondendo <b>{{ procurado.from }}</b>: {{procurado.message}}</p>
             </div>
           }
-        <p> {{ mensagem.message }}</p></div>
+        <p> {{ mensagem.message }}</p>
+        </div>
       </div>
 </div>
     }
   </div>
   <div class="card-footer chat-footer">
-
     <div class="respondendo" [ngClass]="{'respondendo-display-none':this.message.to == null}" >
       <p>Respondendo <b>{{this.respondendoAUsername}}</b></p>
       <button class="btn btn-secondary" (click)="cancelarResposta()">Cancelar</button>
     </div>
-    <div class="input-group input-do-chat">
+    <div class="input-group input-do-chat" style="gap:10px;">
 
       <input type="text" class="form-control" [(ngModel)]="message.message" placeholder="Digite sua mensagem" (keydown.enter)="sendMessage()" maxlength="200">
       <div class="input-group-append">
@@ -71,6 +74,9 @@
           </button>
         }
       </div>
+    </div>
+    <div style="margin-top:10px; margin-left: 10px;">
+      {{message.message.length}}/200
     </div>
   </div>
 

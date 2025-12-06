@@ -50,6 +50,7 @@ export class EntrarSalaComponent implements OnInit {
     private route:ActivatedRoute
 
 
+
   ) {}
 
 

@@ -1,8 +1,9 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {SalaResponse} from '../../../../models/salas/response/SalaResponse';
 import {AuthService} from '../../../../services/auth/auth.service';
+import {categoriaMap} from '../../../../models/salas/domain/Sala';
 
 @Component({
   selector: 'app-lista-salas',
@@ -11,7 +12,8 @@ import {AuthService} from '../../../../services/auth/auth.service';
     RouterLink,
     NgClass,
     NgForOf,
-    NgIf
+    NgIf,
+    NgOptimizedImage
   ],
   templateUrl: './lista-salas.component.html',
   styleUrl: './lista-salas.component.scss'
@@ -21,6 +23,7 @@ export class ListaSalasComponent implements OnInit, OnChanges {
   @Input() suasSalas: boolean = false;
   public username: string = '';
   @Input() public carregando: boolean = false;
+
 
   constructor(private authService: AuthService) {
     this.username = this.authService.getStorage("username")!;
@@ -72,4 +75,6 @@ export class ListaSalasComponent implements OnInit, OnChanges {
     }
     return 1;
   }
+
+  protected readonly categoriaMap =  categoriaMap;
 }

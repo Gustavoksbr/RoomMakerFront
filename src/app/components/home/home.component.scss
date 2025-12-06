@@ -51,7 +51,6 @@
   width: 100px;
   height: 45px;
   padding: 5%;
-
 }
 
 .sair img{
@@ -61,29 +60,22 @@
 .sair:hover{
   cursor: pointer;
   background-color: grey;
-  border: 1px solid white;
-  border-radius: 5%;
+  border-radius: 10px;
 }
 
 
 
 footer{
   background-color: rgb(64, 118, 255);
-  position: absolute;
+  //position: absolute;
   bottom: 0;
   width: 100%;
-  .parte-fundo{
-    background-color: var(--background-color);
-    height: 10px;
-  }
-  .parte-azul{
     height: 70px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     text-align: center;
-  }
 }
 //body, *{
 //  background-color: var(--background-color);
@@ -227,4 +219,9 @@ input{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.conteudo{
+  flex: 1;
+  //border: 1px solid gold;
 }

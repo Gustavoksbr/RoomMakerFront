@@ -9,6 +9,7 @@ import {HomeComponent} from '../../home/home.component';
 import {NavbarComponent} from '../../navbar/navbar.component';
 import {PaginaAtual} from '../../navbar/PaginaAtual';
 import {GlobalSuccess} from '../../../providers/sucesso/GlobalSuccess';
+import {categoriaMap} from '../../../models/salas/domain/Sala';
 
 @Component({
   selector: 'app-criar-sala',
@@ -28,12 +29,26 @@ export class CriarSalaComponent {
   public publica :boolean = false;
   public tentandoCriar :boolean = false;
   public soPodeDois() :boolean {
-    if(this.sala.categoria=="tictactoe"|| this.sala.categoria=="jokenpo"){
-      return true;
-    }else{
-      return false;
+    return this.sala.categoria == "tictactoe" || this.sala.categoria == "jokenpo";
+  }
+  public noMinimoTres() :boolean {
+    return this.sala.categoria == "whoistheimpostor";
+
+  }
+  onCategoriaChange() {
+    if (this.soPodeDois()) { // tictactoe or jokenpo
+      this.sala.qtdCapacidade = 2;
+    }else if (this.noMinimoTres()) { //who is the impostor
+      if (this.sala.qtdCapacidade < 3) {
+        this.sala.qtdCapacidade = 3;
+      }
+    }else { //chat
+      if (this.sala.qtdCapacidade < 2) {
+        this.sala.qtdCapacidade = 2;
+      }
     }
   }
+
 
   constructor(private service: SalasService, private router: Router, private authService: AuthService,private successHandler: GlobalSuccess) {
     this.username = this.authService.getStorage("username")!;
@@ -63,4 +78,5 @@ cancelar() {
   }
 
   protected readonly PaginaAtual = PaginaAtual;
+  protected readonly categoriaMap = categoriaMap;
 }

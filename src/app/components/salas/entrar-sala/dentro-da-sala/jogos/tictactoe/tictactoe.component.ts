@@ -5,7 +5,6 @@ import {TicTacToeResponse} from './TicTacToeResponse';
 import {TicTacToeStatus} from './TicTacToeStatus';
 import {TicTacToeLanceRequest} from './TicTacToeLanceRequest';
 import {AuthService} from '../../../../../../services/auth/auth.service';
-import {JokenpoStatus} from '../jokenpo/JokenpoStatus';
 import {NgClass} from '@angular/common';
 
 @Component({
@@ -37,10 +36,7 @@ public tictactoe : TicTacToeResponse = {
   posicao:'_________',
   status:TicTacToeStatus.WAITING
 }
-public ticTacToeComecarRequest= {
-  jogador1: 'zxc',
-  jogador2: 'asd'
-};
+
 public verificarStatus(){
   switch (this.tictactoe.status) {
     case TicTacToeStatus.x_WIN:
@@ -151,6 +147,5 @@ public empates = 0;
     }
   }
 
-  protected readonly JokenpoStatus = JokenpoStatus;
   protected readonly TicTacToeStatus = TicTacToeStatus;
 }

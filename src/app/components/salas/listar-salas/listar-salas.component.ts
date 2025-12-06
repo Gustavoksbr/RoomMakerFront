@@ -11,6 +11,7 @@ import {NavbarComponent} from '../../navbar/navbar.component';
 import {PaginaAtual} from '../../navbar/PaginaAtual';
 import {ListaSalasComponent} from '../shared/lista-salas/lista-salas.component';
 import {ModalComponent} from '../../geral/modal/modal.component';
+import {categoriaMap} from '../../../models/salas/domain/Sala';
 
 @Component({
   selector: 'app-listar-salas',
@@ -70,4 +71,5 @@ limpar(): void {
   // }
 
   protected readonly PaginaAtual = PaginaAtual;
+  protected readonly categoriaMap = categoriaMap;
 }

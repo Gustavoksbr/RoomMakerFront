@@ -26,7 +26,7 @@ html{
 
   --background-color2: #333333;
   --background-color2-reverse: lightgrey;;
-  --background-color3: #333333;
+  --background-color3: #474747;
   --text-color-link: lightblue;
 
   --background-color-scrollbar-default: #555;
@@ -93,20 +93,6 @@ html{
   height: 100%;
 }
 
-//body{
-//  background-color: var(--background-color);
-//  color: var(--text-color);
-//  transition: background-color 0.5s, color 0.5s;
-//}
-
-//@media (max-width: 600px) {
-//  h1,h2,h3,h4,h5,h6,label{
-//    font-size: 12px;
-//  }
-//  p{
-//    font-size: 10px;
-//  }
-//}
 [data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* Inverte as cores do ícone no modo escuro */
 }

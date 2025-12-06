@@ -38,16 +38,12 @@ export class WebSocketService {
     stompClient.configure({
       connectHeaders: {Authorization: `Bearer ${this.authService.getToken()}`},
       brokerURL: API_CONFIG.BASE_URL+'/socket',
-      // brokerURL: 'ws://localhost:8080/socket',
     });
     stompClient.onConnect = (frame) => {
       onConnectCallback(frame);
       stompClient.subscribe(topic, (messageBeforeConvertionToType) =>
           onMessageCallback(this.convertToObject(messageBeforeConvertionToType,topic)),
         {Authorization: `Bearer ${this.authService.getToken()}`});
-    //   stompClient.subscribe(topic+"/chat", (messageBeforeConvertionToType) =>
-    //       onMessageCallback(this.convertToObject(messageBeforeConvertionToType)),
-    //     {Authorization: `Bearer ${this.authService.getToken()}`});
      };
 
     stompClient.onWebSocketError = (error) => console.error('Error with websocket', error);
@@ -60,6 +56,7 @@ export class WebSocketService {
     return stompClient;
   }
 subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any) => void) {
+    console.log("Subscribing to topic: " + topic);
     stompClient.subscribe(topic, (messageBeforeConvertionToType) =>
         onMessageCallback(this.convertToObject(messageBeforeConvertionToType,topic)),
       {Authorization: `Bearer ${this.authService.getToken()}`});
@@ -70,8 +67,7 @@ subscribe(stompClient : Client, topic: string, onMessageCallback: (message: any)
   }
 
   sendMessage(stompClient : Client,destination: string, body: any='') {
-    // this.stompClient.configure({ connectHeaders: {} });
-    //console.log("body: " + body);
+    console.log("Sending message to destination: " + destination + " with body: " + body);
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination, body, headers: { Authorization: `Bearer ${this.authService.getToken()}` } });
     }

@@ -20,13 +20,14 @@ thead{
   border-left: 3px solid var(--background-lista);
 }
 
+
 td{
   //border-radius: 10px;
   border: 3px solid var(--background-lista);
 }
 
 .acao-th{
-  min-width: 175px;
+  //min-width: 175px;
 }
 
 td div{
@@ -40,8 +41,13 @@ td div{
   .nome-container {
     flex-direction: column!important;
   }
+  table{
+    font-size: 14px;
+  }
+  button{
+    font-size: 14px;
+  }
 }
-
 
 .lista{
   background-color: var(--background-lista);
@@ -106,12 +112,4 @@ cursor: default;
   color: var(--text-color);
   display: flex;
   justify-content: center;
-}
-
-//aaaaaaa
-
-@media (max-width: 500px) {
-  //*{
-  //  font-size: 8px;
-  //}
 }

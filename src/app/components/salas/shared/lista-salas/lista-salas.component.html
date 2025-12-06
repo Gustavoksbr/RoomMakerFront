@@ -10,9 +10,9 @@
         <table *ngIf="ListaSalas.length > 0; else semSalas" class="table " >
           <thead>
           <tr>
-            <th>Nome</th>
+            <th>Sala</th>
             <th>Categoria</th>
-            <th class="acao-th">Ação</th>
+            <th class="acao-th">Entrar</th>
             <th>Participantes</th>
             <th>Privacidade</th>
             <th>Status</th>
@@ -31,7 +31,11 @@
                       <div>{{ p.nome }} </div>
                     </div>
                   </td>
-                  <td data-label="Categoria"><div><p>{{ p.categoria }}</p></div></td>
+                  <td data-label="Categoria">
+                    <div>
+                      <p style="text-align: center ;" >{{categoriaMap[p.categoria] }}</p>
+                    </div>
+                  </td>
                   <td data-label="Ação">
                     <div>
                     @if (jaEstaNaSala(p)) {

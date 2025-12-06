@@ -19,7 +19,6 @@
     </div>
     <div class="  homecard">
       @if (username != null) {
-        <img ngSrc="icon.png" alt="Profile Picture" width="24" height="32" class="me-2">
         <div class="d-flex flex-column align-items-center">
           <p>Olá, {{username}}</p>
           <div class="sair" (click)="abrirModal()">
@@ -53,14 +52,10 @@
       </div>
     </div>
   }
-
+  <div class="conteudo">
   <ng-content></ng-content>
-
+  </div>
   <footer>
-    <div class="parte-fundo">
-    </div>
-    <div class="parte-azul">
           <p class="text-center">Desenvolvido por <a href="https://gustavoksbr-portfolio-maker.vercel.app/portfolios/gustavoksbr" target="_blank">Gustavoksbr</a></p>
-    </div>
   </footer>
 </div>
