@@ -5,8 +5,19 @@
 <form (submit)="register()" class="form-group">
   <div class="mb-3 label-input">
     <label for="username">Username:</label>
-    <input type="text" [(ngModel)]="user.username" class="form-control" required name="username" id="username" />
+    <div>
+      <input type="text" [(ngModel)]="user.username" class="form-control" required name="username" id="username" onlyAlphanumeric maxlength="15" />
+      <div style="margin-top:5px; margin-left: 5px; color:var(--text-color); font-size: 12px; display: flex; flex-direction: row; gap:30px; max-width:220px; ">
+        <div>
+          {{user.username.length}}/15
+        </div>
+        <div style="font-size: 12px;">
+          Obs: Apenas letras e números são permitidos.
+        </div>
+      </div>
+    </div>
   </div>
+
 
   <div class="mb-3 label-input">
     <label for="email">Email:</label>
@@ -15,13 +26,14 @@
 
   <div class="mb-3 label-input">
     <label for="password">Senha:</label>
-    <input type="password" [(ngModel)]="user.password" class="form-control" required name="password" id="password" />
+    <input type="password" [(ngModel)]="user.password" class="form-control" required name="password" id="password" togglePassword />
   </div>
 
-  <div class="mb-3 label-input">
-    <label for="dataNascimento">Data de Nascimento (opcional):</label>
-    <input type="date" [(ngModel)]="user.dataNascimento" class="form-control" required name="dataNascimento" id="dataNascimento" />
-  </div>
+<!--  removido campo de data de nascimento por enquanto-->
+<!--  <div class="mb-3 label-input">-->
+<!--    <label for="dataNascimento">Data de Nascimento (opcional):</label>-->
+<!--    <input type="date" [(ngModel)]="user.dataNascimento" class="form-control" required name="dataNascimento" id="dataNascimento" />-->
+<!--  </div>-->
 
   @if (!tentandoCadastrar){
     <button type="submit" class="btn btn-primary">Cadastre-se</button>

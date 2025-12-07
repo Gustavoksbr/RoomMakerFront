@@ -88,7 +88,5 @@ public iniciarPartida(): void{
     this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/mostrar", {});
   }
 
-
-
   protected readonly Card = Card;
 }

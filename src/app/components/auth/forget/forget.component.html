@@ -29,15 +29,13 @@
         <div class="redefinindo-senha">
         <h5>Enviado código de recuperação para <b>{{this.redefinirSenhaRequest.email}}</b></h5>
           <p>Obs: pode estar no lixo eletrônico</p>
-        <form (submit)="redefinirSenha()" class="form-group">
-          <div class="mb-3">
-            <label for="codigo">Código de recuperação</label>
+        <form (submit)="redefinirSenha()" class="form-group" style="display: flex; flex-direction: column; gap:10px; margin-top:15px;">
+            <label for="codigo"  >Código de recuperação</label>
             <input id="codigo" type="text" [(ngModel)]="redefinirSenhaRequest.codigo" class="form-control" required name="codigo" />
-          </div>
-          <div class="mb-3">
-            <label for="novasenha">Nova Senha</label>
-            <input id="novasenha" type="password" [(ngModel)]="redefinirSenhaRequest.password" class="form-control" required name="senha" />
-          </div>
+
+            <label for="novasenha" >Nova Senha</label>
+            <input id="novasenha" type="password" [(ngModel)]="redefinirSenhaRequest.password" class="form-control" required name="senha" togglePassword  />
+
 <!--          <div class="mb-3">-->
 <!--            <input type="password" [(ngModel)]="redefinirSenhaRequest.confirmacao" class="form-control" placeholder="Confirmação da nova senha" required name="confirmacaoSenha" />-->
 <!--          </div>-->

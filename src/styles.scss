@@ -93,9 +93,12 @@ html{
   height: 100%;
 }
 
-[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1); /* Inverte as cores do ícone no modo escuro */
-}
+//input[type="date"]::-webkit-calendar-picker-indicator {
+//  filter: invert(1);
+//}
+//[data-theme="claro"] input[type="date"]::-webkit-calendar-picker-indicator  {
+//  filter: invert(0);
+//}
 .label-input{
   display: flex;
   flex-direction: row;

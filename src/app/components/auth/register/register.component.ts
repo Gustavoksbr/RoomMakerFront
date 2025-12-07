@@ -3,6 +3,8 @@ import {FormsModule} from '@angular/forms';
 import {AuthService} from '../../../services/auth/auth.service';
 import {HomeComponent} from '../../home/home.component';
 import {Router} from '@angular/router';
+import {TogglePasswordDirective} from '../../../diretivas/only-alphanumeric/toggle-password.directive';
+import {OnlyAlphanumericDirective} from '../../../diretivas/only-alphanumeric/only-alphanumeric.divective';
 
 @Component({
   selector: 'app-register',
@@ -10,7 +12,9 @@ import {Router} from '@angular/router';
   styleUrls: ['./register.component.scss'],
   imports: [
     FormsModule,
-    HomeComponent
+    HomeComponent,
+    TogglePasswordDirective,
+    OnlyAlphanumericDirective
   ],
   standalone: true
 })

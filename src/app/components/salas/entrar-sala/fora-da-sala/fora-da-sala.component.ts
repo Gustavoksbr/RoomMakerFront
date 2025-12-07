@@ -4,14 +4,16 @@ import {RouterLink} from "@angular/router";
 import {SalaResponse} from '../../../../models/salas/response/SalaResponse';
 import {EntrarSalaRequest} from '../../../../models/salas/request/EntrarSalaRequest';
 import {categoriaMap} from '../../../../models/salas/domain/Sala';
+import {TogglePasswordDirective} from '../../../../diretivas/only-alphanumeric/toggle-password.directive';
 
 
 @Component({
   selector: 'app-fora-da-sala',
   standalone: true,
-    imports: [
-        FormsModule
-    ],
+  imports: [
+    FormsModule,
+    TogglePasswordDirective
+  ],
   templateUrl: './fora-da-sala.component.html',
   styleUrl: './fora-da-sala.component.scss'
 })

@@ -10,12 +10,20 @@
       id="salaNome"
       type="text"
       class="form-control"
-
+      onlyAlphanumeric
       [(ngModel)]="sala.nome"
       name="nome"
       [maxLength]="15"
       required
     >
+    <div style="margin-top:5px; margin-left: 5px; color:var(--text-color); font-size: 12px; display: flex; flex-direction: row; gap:30px;">
+      <div>
+        {{sala.nome.length}}/15
+      </div>
+      <div>
+        Obs: Apenas letras e números são permitidos.
+      </div>
+    </div>
   </div>
   <div class="form-group">
 <label for="salaCategoria">Categoria</label>
@@ -64,7 +72,7 @@
       id="salaSenha"
       type="password"
       class="form-control"
-
+      togglePassword
       [(ngModel)]="sala.senha"
       name="senha"
       required

@@ -5,13 +5,15 @@ import {Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {RedefinirSenhaRequest} from './RedefinirSenhaRequest';
 import {GlobalSuccess} from '../../../providers/sucesso/GlobalSuccess';
+import {TogglePasswordDirective} from '../../../diretivas/only-alphanumeric/toggle-password.directive';
 
 @Component({
   selector: 'app-forget',
   standalone: true,
   imports: [
     HomeComponent,
-    FormsModule
+    FormsModule,
+    TogglePasswordDirective
   ],
   templateUrl: './forget.component.html',
   styleUrl: './forget.component.scss'

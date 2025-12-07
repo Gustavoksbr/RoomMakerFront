@@ -25,17 +25,6 @@
   gap: 10px;
 }
 
-@media (max-width: 550px) {
-  .login{
-    width: 90%;
-  }
-}
-@media (max-width: 450px){
-  input{
-    width: 50%;
-  }
-}
-
 form{
   display: flex;
   flex-direction: column;

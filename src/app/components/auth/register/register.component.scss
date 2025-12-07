@@ -15,7 +15,7 @@
 
 .label-input{
   label{
-    min-width: 160px;
+    min-width: 100px;
   }
 }
 
@@ -51,4 +51,11 @@
 .cadastro h3 {
   text-align: center;
   margin-bottom: 1rem;
+}
+
+@media (max-width: 400px) {
+  .cadastro {
+    width: 300px;
+  }
+
 }

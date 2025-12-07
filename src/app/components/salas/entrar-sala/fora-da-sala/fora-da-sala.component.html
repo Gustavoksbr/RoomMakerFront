@@ -3,26 +3,27 @@
   <div class ="fora-da-sala card">
 
 
-<p>Sala:<b> {{salaParaEntrar.usernameDono}}/{{salaParaEntrar.nome}}</b></p>
+<p>- Sala:<b> {{salaParaEntrar.usernameDono}}/{{salaParaEntrar.nome}}</b></p>
 
-<p>Categoria: <b>{{categoriaMap[salaParaEntrar.categoria]}}</b></p>
-<p>Capacidade: <b>{{salaParaEntrar.qtdCapacidade}}</b></p>
-<p>Privacidade:<b> {{salaParaEntrar.publica ? 'Pública' : 'Privada'}}</b></p>
-<div class="participantes"><p>Participantes:</p>
-  <ul>
-    <li>
-      <b> {{salaParaEntrar.usernameDono}}(dono)</b>
-    </li>
-    @for (participante of salaParaEntrar.usernameParticipantes; track $index) {
-       <li>
-      <b>{{participante}}</b>
-    </li>
-    }
-  </ul>
-</div>
+<p>- Categoria: <b>{{categoriaMap[salaParaEntrar.categoria]}}</b></p>
+<p>- Quantidade de participantes: <b>{{salaParaEntrar.usernameParticipantes.length+1}}/{{salaParaEntrar.qtdCapacidade}}</b></p>
+    <div class="participantes"><p>- Participantes:</p>
+      <ul>
+        <li>
+          <b> {{salaParaEntrar.usernameDono}}(dono)</b>
+        </li>
+        @for (participante of salaParaEntrar.usernameParticipantes; track $index) {
+          <li>
+            <b>{{participante}}</b>
+          </li>
+        }
+      </ul>
+    </div>
+<p>- Privacidade:<b> {{salaParaEntrar.publica ? 'Pública' : 'Privada'}}</b></p>
+
   @if (!salaParaEntrar.publica) {
-  <div class="form-group">
-    <label for="salaSenha">Senha</label>
+  <div style="display: flex; flex-direction: column; gap:5px;">
+    <label for="salaSenha">- Senha</label>
     <input
       id="salaSenha"
       type="password"
@@ -30,6 +31,7 @@
       [(ngModel)]="salaRequest.senha"
       name="senha"
       required
+      togglePassword
     >
   </div>
   }

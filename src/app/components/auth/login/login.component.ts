@@ -3,6 +3,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {HomeComponent} from '../../home/home.component';
+import {TogglePasswordDirective} from '../../../diretivas/only-alphanumeric/toggle-password.directive';
 
 
 @Component({
@@ -12,6 +13,7 @@ import {HomeComponent} from '../../home/home.component';
   imports: [
     FormsModule,
     HomeComponent,
+    TogglePasswordDirective,
   ],
   standalone: true
 })
