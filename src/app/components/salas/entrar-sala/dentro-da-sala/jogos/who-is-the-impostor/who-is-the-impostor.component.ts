@@ -77,6 +77,8 @@ public iniciarPartida(): void{
   public get cardPassadaNamePortuguese(): string {
     return CardMapToPortuguese[this.whoIsTheImpostor.cartaDaPartidaPassada!];
   }
+  // public cardNames: string[] = Object.values(CardMap);
+
   ngOnInit(): void {
     this.username = this.authService.getStorage("username")!;
     this.websocketService.subscribe(this.stompClient, this.topic+"/whoistheimpostor", (msg:WhoIsTheImpostorResponse) => {
