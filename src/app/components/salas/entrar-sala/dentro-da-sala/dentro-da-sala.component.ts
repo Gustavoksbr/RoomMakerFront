@@ -10,6 +10,7 @@ import {JokenpoComponent} from './jogos/jokenpo/jokenpo.component';
 import {Router} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {WhoIsTheImpostorComponent} from './jogos/who-is-the-impostor/who-is-the-impostor.component';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -19,7 +20,8 @@ import {WhoIsTheImpostorComponent} from './jogos/who-is-the-impostor/who-is-the-
     TictactoeComponentimplements,
     JokenpoComponent,
     NgIf,
-    WhoIsTheImpostorComponent
+    WhoIsTheImpostorComponent,
+    FormsModule
   ],
   templateUrl: './dentro-da-sala.component.html',
   styleUrl: './dentro-da-sala.component.scss'
@@ -39,10 +41,30 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
   protected topic : string = '';
   protected app : string = '';
   public stompClient : Client = new Client();
+  public participanteASerRemovido : string | null = null;
+
+  public abrirModalRemoverParticipante(participante : string) {
+    this.participanteASerRemovido = participante;
+  }
+
+  public fecharModalRemoverParticipante() {
+    this.participanteASerRemovido = null;
+  }
+
+  public removerParticipante() {
+    if (this.participanteASerRemovido==null) {
+      return
+    }
+    this.salaService.sairDaSala(this.sala.usernameDono,this.sala.nome,this.participanteASerRemovido).subscribe((sala :  any)=>{
+      console.log("removido participante: " + this.participanteASerRemovido);
+      this.fecharModalRemoverParticipante();
+    });
+  }
+
   @Output() enviarParticipantes = new EventEmitter<string[]>();
   sairSala(){
     this.salaService.sairDaSala(this.sala.usernameDono,this.sala.nome,this.username).subscribe((sala :  any)=>{
-      console.log("saiu da sala");
+      console.log("você saiu da sala");
     });
   }
   constructor(private websocketService : WebSocketService, private authService : AuthService, private salaService : SalasService,private router : Router) {

@@ -8,7 +8,14 @@
     <ul>
       <li>{{sala.usernameDono}} (dono)</li>
       @for (u of sala.usernameParticipantes; track $index) {
-        <li>{{u}}</li>
+<li>
+  <div class="d-flex flex-row align-items-center gap-3 w-100">
+    <div>{{u}}</div>
+    @if (username==sala.usernameDono){
+      <button class="btn btn-sm btn-danger btn-remover-participante" style="font-size:14px; padding:0.15rem 0.25rem; line-height:1;" (click)="abrirModalRemoverParticipante(u)">x</button>
+    }
+  </div>
+</li>
       }
     </ul>
   </div>
@@ -76,5 +83,16 @@
       </div>
     </div>
   </div>
+  <div *ngIf="participanteASerRemovido!=null" class="modal-overlay" (click)="fecharModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2>Remover participante</h2>
+      <p style="margin-top: 15px">Tem certeza que deseja remover o participante <b>{{participanteASerRemovido}}</b> da sala?</p>
+      <div class="modal-opcoes">
+          <button class="btn btn-danger" (click)="removerParticipante()">Remover</button>
+        <button class="btn btn-secondary" (click)="fecharModalRemoverParticipante()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
 
 </div>

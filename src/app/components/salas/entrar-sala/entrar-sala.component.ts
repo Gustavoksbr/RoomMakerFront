@@ -67,23 +67,18 @@ export class EntrarSalaComponent implements OnInit {
       },
       error: (err) => {
         this.carregando = false;
+        throw err;
       }
     });
   }
   usuarioEstaNaSala(){
     return this.sala.usernameParticipantes.concat(this.sala.usernameDono).includes(this.username);
   }
-  // returnPaginaAtual(){
-  //   if(this.usuarioEstaNaSala()){
-  //     return PaginaAtual.SUAS_SALAS
-  //   }
-  //   return PaginaAtual.SALAS;
-  // }
+
   entrarSala(salaRequest:EntrarSalaRequest){
    this.service.entrarNaSala(salaRequest).subscribe((salaResponse: SalaResponse)=>{
      this.sala = salaResponse;
    });
-    // this.router.navigate(['salas/{this.usernameDono}/{this.salaNome}']);
   }
 
   validarParticipantes(participantes:string[]){
