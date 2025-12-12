@@ -85,19 +85,22 @@ public mostrarOpcoes(ordem:number): void {
 
 
   public sendMessage() {
+    if(this.message ==null || this.message.message.trim() === ''){
+      return;
+    }
     this.enviandoMensagem = true;
-  setTimeout(() => {
+  // setTimeout(() => {
     // console.log("Enviando mensagem: " + this.message.message);
 
     // console.log("com destination: " + this.app + "/chat/message");
     this.websocketService.sendMessage(this.stompClient, this.app + "/chat/message", JSON.stringify(this.message));
     this.message.message = '';
-    setTimeout(() => this.scrollToBottom(), 1000);
-    this.enviandoMensagem = false;
+     setTimeout(() => this.scrollToBottom(), 1000);
+    // this.enviandoMensagem = false;
     if(this.message.to != null) {
       this.cancelarResposta();
     }
-    }, 1000);
+    // }, 1000);
 
   }
   scrollToBottom() {
@@ -143,6 +146,12 @@ public mostrarOpcoes(ordem:number): void {
         if (msg.message && msg.message.trim() !== '') {
           this.mensagemAnterior = null;
           this.chat.push(msg);
+          // if(msg.mensagem.from==this.getNomeUsuario){
+          //   console.log("msg.mensagem.from: " + msg.mensagem.from);
+          //   console.log("this.getNomeUsuario: " + this.getNomeUsuario);
+            this.enviandoMensagem = false;
+          // }
+
         } else {
         }
       }else{

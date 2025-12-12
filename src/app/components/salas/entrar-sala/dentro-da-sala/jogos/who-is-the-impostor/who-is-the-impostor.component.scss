@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   gap: 25px;
-  width: 80%;
+  width: 100%;
   border: 1px solid var(--border-color);
   padding: 15px;
   border-radius: 8px;
@@ -77,4 +77,90 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.lista-jogadores-voto{
+  display:flex; flex-direction:row; gap:12px; flex-wrap:wrap; justify-content:center; align-items: center;border: 1px solid var(--text-color);
+  border-radius: 10px;
+}
+
+.escolha-impostor{
+  color: var(--text-color);
+  //border: 1px solid var(--text-color);
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin: 5px;
+}
+.selecionavel{
+  cursor: pointer;
+}
+.selecionavel:hover{
+  background-color: var(--background-color3);
+}
+
+.escolha-selecionada{
+  background-color: var(--highlight-color);
+  color: var(--text-color);
+  font-weight: bold;
+}
+.escolha-impostor-selecionado{
+  margin: 4px;
+  border: 1px solid var(--text-color);
+  background-color: var(--background-color3);
+}
+
+.escolha-impostor-votado{
+  margin: 4px;
+  border: 1px solid var(--text-color);
+  background-color: var(--highlight-color);
+}
+.botao-votar{
+  color: var(--text-color);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  //cursor: not-allowed;
+}
+.botao-votar-habilitado{
+  background-color: var(--highlight-color);
+  //color: var(--text-color);
+  //border: none;
+  //padding: 8px 12px;
+  //border-radius: 4px;
+  cursor: pointer;
+}
+
+.botao-votar-desabilitado{
+  background-color: var(--background-color3);
+  cursor: not-allowed;
+}
+
+.botao-cancelar-voto{
+  background-color: var(--highlight-color2);
+  cursor: pointer;
+}
+
+.vitoria{
+  text-align: center;  font-size: 24px;
+  b{
+    color: green;
+  }
+}
+
+.derrota{
+  text-align: center;   font-size: 24px;
+  b{
+    color: red;
+  }
+}
+
+table{
+  max-width:600px;
+}
+
+@media (max-width: 450px) {
+  table {
+    font-size: 14px;
+  }
+
 }

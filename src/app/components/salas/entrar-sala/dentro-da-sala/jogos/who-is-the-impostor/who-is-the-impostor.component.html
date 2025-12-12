@@ -4,29 +4,124 @@
   @if (whoIsTheImpostor.partidaSendoJogada && whoIsTheImpostor.estaNaPartida) {
     <div class="mostrar-esconder-header" (click)="mostrarEsconderCarta()">
       @if (mostrarCartaAtual){
-        <div class="btn-mostrar-esconder">Clique para esconder a carta</div>
+        <div class="btn-mostrar-esconder nao-copiavel hover-crescer">Clique para esconder a carta</div>
       } @else {
-        <div class="btn-mostrar-esconder">Clique para mostrar a carta</div>
+        <div class="btn-mostrar-esconder nao-copiavel hover-crescer">Clique para mostrar a carta</div>
       }
     </div>
     <div class="mostrar-esconder-container"  [ngClass]="{'aparecer': mostrarCartaAtual, 'desaparecer': !mostrarCartaAtual}">
       <div class="mostrar-esconder-content">
         @if (whoIsTheImpostor.isImpostor) {
-          <div style="text-align:center"> VOCÊ É O <b style="color: red">IMPOSTOR</b> </div>
+          <div style="text-align:center"> Você é o <b style="color: red">IMPOSTOR</b> </div>
           <img ngSrc="icon-amongus-shhh.webp" alt="Impostor" width="200" height="200" />
         } @else {
           <div style="text-align:center"> A carta é <b>{{cardNamePortuguese}}</b> </div>
-          <img ngSrc="{{ urlBaseDasCartas + cardName + '.png'}}" alt="{{cardNamePortuguese}}" title="{{cardNamePortuguese}}" width="200" height="200" />
+          <img ngSrc="{{ urlBaseDasCartas + cardName + '.png'}}" alt="{{cardNamePortuguese}}" title="{{cardNamePortuguese}}" width="200" height="200"  priority  />
         }
       </div>
     </div>
+
+    @if (!mostrarCartaAtual || !whoIsTheImpostor.isImpostor){
+      <div>Escolha quem você acha que é o impostor:</div>
+    } @else if (whoIsTheImpostor.isImpostor) {
+      <div>Finja que não é o impostor e vote em alguém:</div>
+    }
+
+<div class="lista-jogadores-voto">
+  @for (jogador of whoIsTheImpostor.jogadoresNaPartida; track $index) {
+    @if (jogador!=username) {
+      @if (whoIsTheImpostor.votado==null || whoIsTheImpostor.votado=="") {
+      <div class="escolha-impostor nao-copiavel selecionavel" [id]="'escolha-impostor' + jogador" (click)="selecionarVoto(jogador)"
+      [ngClass]="{'escolha-impostor-selecionado': votoSelecionado==jogador, 'escolha-impostor-nao-selecionado': votoSelecionado!=jogador}">
+        {{jogador}}
+      </div>
+      } @else {
+        <div class="escolha-impostor nao-copiavel"
+        [ngClass]="{'escolha-impostor-votado': whoIsTheImpostor.votado==jogador, 'escolha-impostor-nao-votado': whoIsTheImpostor.votado!=jogador}">
+          {{jogador}}
+        </div>
+      }
+    }
+  }
+</div>
+    @if (whoIsTheImpostor.votado==null || whoIsTheImpostor.votado=="") {
+    <div class="botao-votar nao-copiavel"
+    [ngClass]="{'botao-votar-habilitado hover-crescer': votoSelecionado!='', 'botao-votar-desabilitado': votoSelecionado=='' || votoSelecionado==null}"
+    [title]="votoSelecionado=='' ? 'Selecione um jogador para votar' : 'Clique para votar em ' + votoSelecionado"
+    (click)="votar()">
+      VOTAR
+    </div>
+    }
+    @else {
+      <div class="botao-votar botao-cancelar-voto hover-crescer nao-copiavel"
+           (click)="cancelarVoto()">
+        CANCELAR VOTO
+      </div>
+    }
+    <div> Votos: {{whoIsTheImpostor.quantidadeVotos}}/{{whoIsTheImpostor.jogadoresNaPartida!.length}}</div>
+
+
   } @else if (whoIsTheImpostor.partidaSendoJogada && !whoIsTheImpostor.estaNaPartida) {
     <div> Espere a partida terminar</div>
   } @else {
     @if (whoIsTheImpostor.impostorDaPartidaPassada!=null && whoIsTheImpostor.cartaDaPartidaPassada!=null) {
-      <div>- O impostor da última partida foi: <b style="color: red; font-size: 30px">{{whoIsTheImpostor.impostorDaPartidaPassada}}</b> </div>
-      <div>- A carta sorteada da última partida foi: <b style="font-size: 24px">{{ cardPassadaNamePortuguese }}</b> </div>
-      <img ngSrc="{{ urlBaseDasCartas + cardPassadaName + '.png'}}" alt="{{cardPassadaNamePortuguese}}" title="{{cardPassadaNamePortuguese}}" width="200" height="200" />
+      <div style="display: flex; flex-direction: column; align-items: center;  text-align: center; padding: 5px">
+      @if (terminoBrusco){
+
+          <div style="font-size: 28px">🤨</div>
+          <div> O dono da sala terminou a partida antes de todos votarem </div>
+          <div> Ou </div>
+          <div> Algum jogador saiu da partida</div>
+
+      } @else if (impostorVenceu !== null && whoIsTheImpostor.jogadoresDaPartidaPassada!.includes(username)) {
+        @if (whoIsTheImpostor.impostorDaPartidaPassada === username ) {
+          @if (impostorVenceu) {
+            <div class="vitoria">
+              🎉 <b>VITÓRIA!</b><div> Você não foi pego.</div>
+            </div>
+          } @else {
+            <div class="derrota">
+              💀 <b>DERROTA!</b><div> Você foi pego.</div>
+            </div>
+          }
+        } @else {
+          @if (impostorVenceu) {
+            <div class="derrota">
+              💀 <b>DERROTA!</b>
+              <div>O Impostor não foi pego. </div>
+            </div>
+          } @else {
+            <div class="vitoria">
+              🎉 <b>VITÓRIA!</b>
+              <div>O impostor foi pego</div>
+            </div>
+          }
+        }
+      }
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: start;  text-align: center;  border-radius: 8px;  background-color: var(--background-color3); padding: 5%">
+      <div>- O impostor da última partida foi: <b style="color: red; font-size: 26px">{{whoIsTheImpostor.impostorDaPartidaPassada}}</b> </div>
+      <div>- A carta sorteada da última partida foi: <b style="font-size: 22px">{{ cardPassadaNamePortuguese }}</b> </div>
+      </div>
+      <img ngSrc="{{ urlBaseDasCartas + cardPassadaName + '.png'}}" alt="{{cardPassadaNamePortuguese}}" title="{{cardPassadaNamePortuguese}}" width="200" height="200"  priority  />
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 22px;">
+        <thead>
+        <tr>
+          <th style="border: 1px solid var(--text-color); padding: 8px; text-align: center;">Votados</th>
+          <th style="border: 1px solid var(--text-color); padding: 8px; text-align: center;">Votos</th>
+          <th style="border: 1px solid var(--text-color); padding: 8px; text-align: center;">Votantes</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (row of votosDaPartidaPassadaFormatados; track row.Chave) {
+            <tr [style.background-color]="row.Chave === whoIsTheImpostor.impostorDaPartidaPassada ? 'var(--highlight-color3)' : ''">
+              <td style="border: 1px solid var(--text-color); padding: 8px; font-weight: bold;">{{ row.Chave }}</td>
+              <td style="border: 1px solid var(--text-color); padding: 8px; text-align: center;">{{ row['Quantidade de Votos'] }}</td>
+              <td style="border: 1px solid var(--text-color); padding: 8px;">{{ row['Lista de Votos'] }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
     }
   }
     @if (!whoIsTheImpostor.partidaSendoJogada) {
@@ -55,17 +150,13 @@
           </div>
         }
     }
-  } @else {
-    @if (whoIsTheImpostor.partidaSendoJogada) {
-      <div> Se a discussão já foi feita, aguarde o dono terminar a partida </div>
-    } @else if (outrosJogadores.length>=2){
+  } @else if (outrosJogadores.length>=2 && !whoIsTheImpostor.partidaSendoJogada) {
       <div> Aguarde o dono iniciar a partida </div>
     }
-  }
     <div *ngIf="estaAbertoModalIniciarPartida" class="modal-overlay" (click)="fecharModalIniciarPartida()">
       <div class="modal-content" (click)="$event.stopPropagation()">
-        <h2>Iniciar partida</h2>
-        <p>Tem certeza que deseja iniciar a partida?</p>
+        <h2 style="text-align: center;" >Iniciar partida</h2>
+        <p style="text-align: center;" >Tem certeza que deseja iniciar a partida?</p>
         <div class="modal-opcoes">
           <button class="btn btn-warning" (click)="iniciarPartida()">Sim</button>
           <button class="btn btn-secondary" (click)="fecharModalIniciarPartida()">Cancelar</button>
@@ -75,8 +166,10 @@
   </div>
   <div *ngIf="estaAbertoModalTerminarPartida" class="modal-overlay" (click)=" fecharModalTerminarPartida() ">
     <div class="modal-content" (click)="$event.stopPropagation()">
-      <h2>Terminar partida</h2>
-      <p>Tem certeza que deseja terminar a partida?</p>
+      <h2 style="text-align: center;" >Terminar partida</h2>
+      <p style="text-align: center;margin-bottom: 20px;">⚠️ ATENÇÃO!!! ⚠️</p>
+      <p>Tem certeza que deseja forçar o término da partida?</p>
+      <p>O ideal seria que todos os jogadores votassem</p>
       <div class="modal-opcoes">
         <button class="btn btn-warning" (click)="terminarPartida()">Sim</button>
         <button class="btn btn-secondary" (click)="fecharModalTerminarPartida()">Cancelar</button>
@@ -85,9 +178,5 @@
   </div>
 </div>
 
-<!--    @for (name of cardNames; track $index) {-->
-<!--      <div class="card-item">-->
-<!--        <img ngSrc="{{ urlBaseDasCartas +  name  + '.png'}}" [alt]="name" width="200" height="200" />-->
-<!--      </div>-->
-<!--    }-->
+
 

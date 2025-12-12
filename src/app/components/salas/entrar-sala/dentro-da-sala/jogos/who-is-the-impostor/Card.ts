@@ -252,7 +252,7 @@ export const CardMapToPortuguese: Record<string, string> = {
   [Card.FIRESPIRIT]: "Espírito de Fogo",
   [Card.ELECTROSPIRIT]: "Espírito Elétrico",
   [Card.ICESPIRIT]: "Espírito de Gelo",
-  [Card.HEALSPIRIT]: "Espírito Curandeiro",
+  [Card.HEALSPIRIT]: "Espírito de Cura",
   [Card.GOBS]: "Goblins",
   [Card.SPEARGOBS]: "Goblins lanceiros",
   [Card.ZAP]: "Zap",

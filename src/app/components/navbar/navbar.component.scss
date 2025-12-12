@@ -2,7 +2,6 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  //color: var(--text-color);
 }
 .quadrado-principal{
   width: 100%;
@@ -12,7 +11,6 @@
   align-items: center;
   margin-top: 5%;
   margin-bottom:15%;
-
 }
 
 .container-nav{
@@ -29,18 +27,17 @@
   border-right: 1px solid #1e62cd;
   border-bottom: none;
   border-radius:7px 7px  0 0 ;
-
-} //box-shadow: 100px -10px 1px -10px rgba(0,0,0,0.15);
+}
 
 nav{
   display: flex;
   justify-content: space-around;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: stretch;
   width: 90%;
-
 }
 nav div{
+  max-height: 80px;
   cursor: pointer;
   color: white;
   font-weight: bold;
@@ -48,13 +45,9 @@ nav div{
   display: flex;
   justify-content: center;
   padding: 20px;
-  //border-top:1px solid #1e62cd;
-  //border-left: 1px solid #1e62cd;
-  //border-right: 1px solid #1e62cd;
-  //border-bottom: none;
   border-radius:5px 5px 0 0 ;
-
-
+  align-items: center;
+  text-align: center;
 }
 
 nav div:hover{
@@ -75,34 +68,28 @@ nav div:hover{
 
 @media (max-width: 600px) {
   .container-conteudo{
-    padding: 0;
-    padding-bottom: 20px;
-    padding-top:20px ;
+    padding: 5px;
+    padding-top: 10px;
   }
-
+}
+@media (max-width: 400px) {
+  nav div{
+    padding-bottom: 5px;
+  }
 }
 
 
 .pagina-atual{
   background-color: var(--background-color);
-  //width: 2000px;
 }
 
 .pagina-atual p{
   color:var(--text-color);
 }
 
-@media (max-width: 775px) {
-  .container-nav{
-    height: 125px;
-  }
+//@media (max-width: 775px) {
+//  .container-nav{
+//    height: 100px;
+//  }
+//}
 
-}
-
-@media (max-width: 400px) {
-
-  #salas{
-    width: 180%;
-  }
-
-}

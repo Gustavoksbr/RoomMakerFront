@@ -39,6 +39,10 @@ html{
   --background-ja-esta-na-sala: #008fe4;
 
   --color-icon: invert(0);
+
+  --highlight-color: #1e62cd;
+  --highlight-color2: #877c04;
+  --highlight-color3: #662222;
 }
 [data-theme="claro"] {
   --background-color: #ffffff;
@@ -51,9 +55,9 @@ html{
   //--text-color2: grey;
 
 
-  --background-color2: lightgrey;
+  --background-color2: #f4f4f4;
   --background-color2-reverse: #333333;
-  --background-color3: #f1f1f1;
+  --background-color3: #dfdede;
   --text-color-link: blue;
 
   --background-color-scrollbar-default: lightgrey;
@@ -64,6 +68,10 @@ html{
 
   --background-indisponivel: lightgrey;
   --background-ja-esta-na-sala: lightblue;
+
+  --highlight-color: #699bea;
+  --highlight-color2: #d6c50a;
+  --highlight-color3: #fdd;
 
   --color-icon: invert(1);
 }
@@ -106,3 +114,16 @@ html{
   gap: 15px;
   align-items: center;
 }
+.nao-copiavel {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.hover-crescer{
+  transition: transform 0.25s ease;
+  &:hover{
+    transform: scale(1.05);
+  }
+}
+
