@@ -86,7 +86,8 @@
   <div *ngIf="participanteASerRemovido!=null" class="modal-overlay" (click)="fecharModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
         <h2>Remover participante</h2>
-      <p style="margin-top: 15px">Tem certeza que deseja remover o participante <b>{{participanteASerRemovido}}</b> da sala?</p>
+      <p style="margin-top: 15px">Tem certeza que deseja remover o participante <b style="color:red">{{participanteASerRemovido}}</b> da sala?</p>
+      <p style="font-size: 14px">OBS: ele poderá entrar na sala depois. Se não quiser a presença desse participante, crie outra sala com outra senha. A funcionalidade de banimento ainda não foi implementada</p>
       <div class="modal-opcoes">
           <button class="btn btn-danger" (click)="removerParticipante()">Remover</button>
         <button class="btn btn-secondary" (click)="fecharModalRemoverParticipante()">Cancelar</button>

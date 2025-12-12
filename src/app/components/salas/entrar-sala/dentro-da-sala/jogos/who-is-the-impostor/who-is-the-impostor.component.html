@@ -1,6 +1,11 @@
-
 <div class="who-is-the-impostor-container">
   <div class="who-is-the-impostor-content">
+    @if (carregandoComponente){
+      <div class="loading-container">
+        <div>Carregando...</div>
+      </div>
+    } @else {
+
   @if (whoIsTheImpostor.partidaSendoJogada && whoIsTheImpostor.estaNaPartida) {
     <div class="mostrar-esconder-header" (click)="mostrarEsconderCarta()">
       @if (mostrarCartaAtual){
@@ -46,7 +51,8 @@
 </div>
     @if (whoIsTheImpostor.votado==null || whoIsTheImpostor.votado=="") {
     <div class="botao-votar nao-copiavel"
-    [ngClass]="{'botao-votar-habilitado hover-crescer': votoSelecionado!='', 'botao-votar-desabilitado': votoSelecionado=='' || votoSelecionado==null}"
+    [ngClass]="{'botao-votar-habilitado hover-crescer': votoSelecionado!='', 'botao-votar-desabilitado': votoSelecionado=='' || votoSelecionado==null }"
+
     [title]="votoSelecionado=='' ? 'Selecione um jogador para votar' : 'Clique para votar em ' + votoSelecionado"
     (click)="votar()">
       VOTAR
@@ -65,7 +71,7 @@
     <div> Espere a partida terminar</div>
   } @else {
     @if (whoIsTheImpostor.impostorDaPartidaPassada!=null && whoIsTheImpostor.cartaDaPartidaPassada!=null) {
-      <div style="display: flex; flex-direction: column; align-items: center;  text-align: center; padding: 5px">
+      <div style="display: flex; flex-direction: column; align-items: center;  text-align: center;">
       @if (terminoBrusco){
 
           <div style="font-size: 28px">🤨</div>
@@ -99,7 +105,7 @@
         }
       }
       </div>
-      <div style="display: flex; flex-direction: column; align-items: start;  text-align: center;  border-radius: 8px;  background-color: var(--background-color3); padding: 5%">
+      <div style="display: flex; flex-direction: column; align-items: start;  text-align: center;  border-radius: 8px;  background-color: var(--background-color3); padding: 15px">
       <div>- O impostor da última partida foi: <b style="color: red; font-size: 26px">{{whoIsTheImpostor.impostorDaPartidaPassada}}</b> </div>
       <div>- A carta sorteada da última partida foi: <b style="font-size: 22px">{{ cardPassadaNamePortuguese }}</b> </div>
       </div>
@@ -113,13 +119,18 @@
         </tr>
         </thead>
         <tbody>
+          @if (votosDaPartidaPassadaFormatados==null || votosDaPartidaPassadaFormatados.length==0){
+            <tr>
+              <td colspan="3" style="border: 1px solid var(--text-color); padding: 8px; text-align: center;"> Nenhum voto registrado </td>
+            </tr>
+          } @else {
           @for (row of votosDaPartidaPassadaFormatados; track row.Chave) {
             <tr [style.background-color]="row.Chave === whoIsTheImpostor.impostorDaPartidaPassada ? 'var(--highlight-color3)' : ''">
               <td style="border: 1px solid var(--text-color); padding: 8px; font-weight: bold;">{{ row.Chave }}</td>
               <td style="border: 1px solid var(--text-color); padding: 8px; text-align: center;">{{ row['Quantidade de Votos'] }}</td>
               <td style="border: 1px solid var(--text-color); padding: 8px;">{{ row['Lista de Votos'] }}</td>
             </tr>
-          }
+          }}
         </tbody>
       </table>
     }
@@ -152,6 +163,8 @@
     }
   } @else if (outrosJogadores.length>=2 && !whoIsTheImpostor.partidaSendoJogada) {
       <div> Aguarde o dono iniciar a partida </div>
+    }
+
     }
     <div *ngIf="estaAbertoModalIniciarPartida" class="modal-overlay" (click)="fecharModalIniciarPartida()">
       <div class="modal-content" (click)="$event.stopPropagation()">
