@@ -51,7 +51,7 @@ export class WhoIsTheImpostorComponent implements OnInit {
   public impostorVenceu: boolean | null = null;
   public votoSelecionado: string = "";
   // public votarCarregando: boolean = false;
-  public carregandoComponente: boolean = true;
+  public carregandoComponente: boolean = false;
 
   public selecionarVoto(jogador: string): void{
     if(this.votoSelecionado==jogador){
@@ -115,7 +115,7 @@ public iniciarPartida(): void{
   }
 
   ngOnInit(): void {
-    this.carregandoComponente = true;
+    // this.carregandoComponente = true;
     this.username = this.authService.getStorage("username")!;
     this.websocketService.subscribe(this.stompClient, this.topic+"/whoistheimpostor", (msg:WhoIsTheImpostorResponse) => {
       this.carregandoComponente = false;
@@ -125,6 +125,7 @@ public iniciarPartida(): void{
         this.processarVotosEDeterminarResultado(this.whoIsTheImpostor.votosPorVotadosDaPartidaPassada);      }
     });
     this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/mostrar", {});
+    //this.carregandoComponente = false;
   }
 
   protected readonly Card = Card;
