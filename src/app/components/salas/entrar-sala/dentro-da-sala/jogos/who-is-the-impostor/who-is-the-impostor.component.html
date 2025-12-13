@@ -83,18 +83,18 @@
         @if (whoIsTheImpostor.impostorDaPartidaPassada === username ) {
           @if (impostorVenceu) {
             <div class="vitoria">
-              🎉 <b>VITÓRIA!</b><div> Você não foi pego.</div>
+              🎉 <b>VITÓRIA!</b><div> Você não foi pego</div>
             </div>
           } @else {
             <div class="derrota">
-              💀 <b>DERROTA!</b><div> Você foi pego.</div>
+              💀 <b>DERROTA!</b><div> Você foi pego</div>
             </div>
           }
         } @else {
           @if (impostorVenceu) {
             <div class="derrota">
               💀 <b>DERROTA!</b>
-              <div>O Impostor não foi pego. </div>
+              <div>O Impostor não foi pego </div>
             </div>
           } @else {
             <div class="vitoria">
@@ -181,8 +181,8 @@
     <div class="modal-content" (click)="$event.stopPropagation()">
       <h2 style="text-align: center;" >Terminar partida</h2>
       <p style="text-align: center;margin-bottom: 20px;">⚠️ ATENÇÃO!!! ⚠️</p>
-      <p>Tem certeza que deseja forçar o término da partida?</p>
-      <p>O ideal seria que todos os jogadores votassem</p>
+      <p style="text-align: center;">Tem certeza que deseja forçar o término da partida?</p>
+      <p style="text-align: center;">O ideal seria que todos os jogadores votassem</p>
       <div class="modal-opcoes">
         <button class="btn btn-warning" (click)="terminarPartida()">Sim</button>
         <button class="btn btn-secondary" (click)="fecharModalTerminarPartida()">Cancelar</button>

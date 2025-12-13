@@ -26,8 +26,8 @@ export class GlobalErrorHandler implements ErrorHandler {
         }
       }
     }
-    else{
-      toastr.error("Um erro inesperado ocorreu");
-    }
+    // else{
+    //   toastr.error("Um erro inesperado ocorreu");
+    // }
   }
 }

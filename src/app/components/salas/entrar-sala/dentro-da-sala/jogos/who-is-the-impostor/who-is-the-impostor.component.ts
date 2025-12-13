@@ -6,6 +6,8 @@ import {VotosPorVotadoRow, WhoIsTheImpostorResponse} from './who-is-the-impostor
 import { NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {Card, CardMap, CardMapToPortuguese} from './Card';
 import confetti from 'canvas-confetti';
+import {HttpClient} from '@angular/common/http';
+import {API_CONFIG} from '../../../../../../services/config/api.config';
 
 
 @Component({
@@ -24,8 +26,10 @@ export class WhoIsTheImpostorComponent implements OnInit {
   @Input() public topic: string = '';
   @Input() public stompClient: Client= new Client();
   @Input() public jogadorDono: string = '';
+  @Input() public nomeSala: string = '';
   @Input() public outrosJogadores: string[] = [];
 
+  private API = "";
   public username = "";
   public urlBaseDasCartas = "https://www.deckshop.pro/img/card_ed/";
   public mostrarCartaAtual : boolean = false;
@@ -60,14 +64,7 @@ export class WhoIsTheImpostorComponent implements OnInit {
     }
     this.votoSelecionado = jogador;
   }
-  public votar(){
-    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/votar", JSON.stringify(this.votoSelecionado));
-    // this.votoSelecionado = "";
-    // this.votarCarregando = true;
-  }
-  public cancelarVoto(){
-    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/cancelarVoto", {});
-  }
+
 
   public estaAbertoModalIniciarPartida: boolean = false;
   public estaAbertoModalTerminarPartida: boolean = false;
@@ -92,9 +89,16 @@ public iniciarPartida(): void{
     this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/terminar", {});
     this.fecharModalTerminarPartida();
   }
+  public votar(){
+    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/votar", JSON.stringify(this.votoSelecionado));
+    // this.votoSelecionado = "";
+    // this.votarCarregando = true;
+  }
+  public cancelarVoto(){
+    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/cancelarVoto", {});
+  }
 
-
-  constructor(private websocketService: WebSocketService, private authService: AuthService) {
+  constructor(private websocketService: WebSocketService, private authService: AuthService, private httpClient : HttpClient) {
   }
   public mostrarEsconderCarta(): void{
     this.mostrarCartaAtual = !this.mostrarCartaAtual;
@@ -115,18 +119,42 @@ public iniciarPartida(): void{
   }
 
   ngOnInit(): void {
-    // this.carregandoComponente = true;
+    this.carregandoComponente = true;
     this.username = this.authService.getStorage("username")!;
+    this.API = API_CONFIG.BASE_URL+'/categorias/whoistheimpostor/'+this.jogadorDono+'/'+this.nomeSala;
     this.websocketService.subscribe(this.stompClient, this.topic+"/whoistheimpostor", (msg:WhoIsTheImpostorResponse) => {
-      this.carregandoComponente = false;
       this.whoIsTheImpostor = msg;
+      if(msg.partidaSendoJogada==true){
+        this.terminoBrusco = false;
+      }
       if(msg.partidaSendoJogada==false){
         this.mostrarCartaAtual = false;
         this.processarVotosEDeterminarResultado(this.whoIsTheImpostor.votosPorVotadosDaPartidaPassada);      }
     });
-    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/mostrar", {});
-    //this.carregandoComponente = false;
-  }
+// this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/mostrar", {});
+
+// setTimeout(() => {
+//   console.log("Fake delay");
+    this.httpClient.get<WhoIsTheImpostorResponse>(this.API + "/mostrar", { headers: this.authService.getHeaders() })
+      .subscribe({
+        next: (response) => {
+          // Recebe os dados diretamente do HTTP
+          this.whoIsTheImpostor = response;
+          // Lógica de visualização
+          if(response.partidaSendoJogada==false){
+            this.mostrarCartaAtual = false;
+            this.processarVotosEDeterminarResultado(response.votosPorVotadosDaPartidaPassada);
+          }
+
+          this.carregandoComponente = false;
+        },
+        error: (err) => {
+          this.carregandoComponente = false;
+          throw err;
+        }
+      });
+    // }, 1500);
+     }
 
   protected readonly Card = Card;
   protected readonly JSON = JSON;
