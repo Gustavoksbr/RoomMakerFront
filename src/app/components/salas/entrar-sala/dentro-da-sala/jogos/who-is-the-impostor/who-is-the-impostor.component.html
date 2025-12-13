@@ -1,7 +1,8 @@
 <div class="who-is-the-impostor-container">
   <div class="who-is-the-impostor-content">
     @if (carregandoComponente){
-      <div class="loading-container">
+      <div style="display: flex; flex-direction: row; align-items: center; gap:10px;">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         <div>Carregando...</div>
       </div>
     } @else {
@@ -51,17 +52,26 @@
 </div>
     @if (whoIsTheImpostor.votado==null || whoIsTheImpostor.votado=="") {
     <div class="botao-votar nao-copiavel"
-    [ngClass]="{'botao-votar-habilitado hover-crescer': votoSelecionado!='', 'botao-votar-desabilitado': votoSelecionado=='' || votoSelecionado==null }"
+    [ngClass]="{'botao-votar-habilitado hover-crescer': votoSelecionado!='', 'botao-votar-desabilitado': votoSelecionado=='' || votoSelecionado==null,'hover-crescer': !carregandoVotar }" [ngStyle]="{'cursor': !carregandoVotar ? 'pointer' : 'default'}"
 
-    [title]="votoSelecionado=='' ? 'Selecione um jogador para votar' : 'Clique para votar em ' + votoSelecionado"
+
+         [title]="votoSelecionado=='' ? 'Selecione um jogador para votar' : 'Clique para votar em ' + votoSelecionado"
     (click)="votar()">
-      VOTAR
+      @if (carregandoVotar){
+        <div> <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> </div>
+      } @else {
+        <div>VOTAR</div>
+      }
     </div>
     }
     @else {
-      <div class="botao-votar botao-cancelar-voto hover-crescer nao-copiavel"
+      <div class="botao-votar botao-cancelar-voto nao-copiavel" [ngClass]="{'hover-crescer': !carregandoCancelarVoto }" [ngStyle]="{'cursor': !carregandoCancelarVoto ? 'pointer' : 'default'}"
            (click)="cancelarVoto()">
-        CANCELAR VOTO
+        @if (carregandoCancelarVoto){
+          <div> <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> </div>
+        } @else {
+          <div>CANCELAR VOTO</div>
+        }
       </div>
     }
     <div> Votos: {{whoIsTheImpostor.quantidadeVotos}}/{{whoIsTheImpostor.jogadoresNaPartida!.length}}</div>

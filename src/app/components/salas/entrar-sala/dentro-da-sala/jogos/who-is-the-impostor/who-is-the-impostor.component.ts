@@ -3,7 +3,7 @@ import {Client} from '@stomp/stompjs';
 import {WebSocketService} from '../../../../../../services/websocket/websocket.service';
 import {AuthService} from '../../../../../../services/auth/auth.service';
 import {VotosPorVotadoRow, WhoIsTheImpostorResponse} from './who-is-the-impostor';
-import { NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgIf, NgOptimizedImage, NgStyle} from '@angular/common';
 import {Card, CardMap, CardMapToPortuguese} from './Card';
 import confetti from 'canvas-confetti';
 import {HttpClient} from '@angular/common/http';
@@ -16,7 +16,8 @@ import {API_CONFIG} from '../../../../../../services/config/api.config';
   imports: [
     NgClass,
     NgOptimizedImage,
-    NgIf
+    NgIf,
+    NgStyle
   ],
   templateUrl: './who-is-the-impostor.component.html',
   styleUrl: './who-is-the-impostor.component.scss'
@@ -33,6 +34,7 @@ export class WhoIsTheImpostorComponent implements OnInit {
   public username = "";
   public urlBaseDasCartas = "https://www.deckshop.pro/img/card_ed/";
   public mostrarCartaAtual : boolean = false;
+
   public whoIsTheImpostor: WhoIsTheImpostorResponse = {
     partidaSendoJogada: null,
 
@@ -49,15 +51,21 @@ export class WhoIsTheImpostorComponent implements OnInit {
     jogadoresNaPartida: null,
     quantidadeVotos: null,
     votado: null
-
   }
+
   public terminoBrusco: boolean = false;
   public impostorVenceu: boolean | null = null;
-  public votoSelecionado: string = "";
-  // public votarCarregando: boolean = false;
   public carregandoComponente: boolean = false;
 
+  public votoSelecionado: string = "";
+  public carregandoVotar: boolean = false;
+  public carregandoCancelarVoto : boolean = false;
+
+
   public selecionarVoto(jogador: string): void{
+    if (this.carregandoVotar || this.carregandoCancelarVoto){
+      return;
+    }
     if(this.votoSelecionado==jogador){
       this.votoSelecionado = "";
       return;
@@ -66,6 +74,22 @@ export class WhoIsTheImpostorComponent implements OnInit {
   }
 
 
+  public votar(){
+    if (this.carregandoVotar || this.votoSelecionado==""){
+      return;
+    }
+    this.carregandoVotar = true;
+    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/votar", JSON.stringify(this.votoSelecionado));
+    // this.votoSelecionado = "";
+    // this.votarCarregando = true;
+  }
+  public cancelarVoto(){
+    if(this.carregandoCancelarVoto){
+      return;
+    }
+    this.carregandoCancelarVoto = true;
+    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/cancelarVoto", {});
+  }
   public estaAbertoModalIniciarPartida: boolean = false;
   public estaAbertoModalTerminarPartida: boolean = false;
 
@@ -89,14 +113,7 @@ public iniciarPartida(): void{
     this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/terminar", {});
     this.fecharModalTerminarPartida();
   }
-  public votar(){
-    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/votar", JSON.stringify(this.votoSelecionado));
-    // this.votoSelecionado = "";
-    // this.votarCarregando = true;
-  }
-  public cancelarVoto(){
-    this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/cancelarVoto", {});
-  }
+
 
   constructor(private websocketService: WebSocketService, private authService: AuthService, private httpClient : HttpClient) {
   }
@@ -124,13 +141,24 @@ public iniciarPartida(): void{
     this.API = API_CONFIG.BASE_URL+'/categorias/whoistheimpostor/'+this.jogadorDono+'/'+this.nomeSala;
     this.websocketService.subscribe(this.stompClient, this.topic+"/whoistheimpostor", (msg:WhoIsTheImpostorResponse) => {
       this.whoIsTheImpostor = msg;
-      if(msg.partidaSendoJogada==true){
-        this.terminoBrusco = false;
+        if (msg.partidaSendoJogada == true) {
+          this.terminoBrusco = false;
+          if(this.whoIsTheImpostor.votado !== msg.votado){
+            this.votoSelecionado = "";
+            this.carregandoVotar = false;
+            this.carregandoCancelarVoto = false;
+          }
+        }
+        if (msg.partidaSendoJogada == false) {
+          this.votoSelecionado = "";
+          this.carregandoVotar = false;
+          this.carregandoCancelarVoto = false;
+          this.mostrarCartaAtual = false;
+          this.processarVotosEDeterminarResultado(this.whoIsTheImpostor.votosPorVotadosDaPartidaPassada);
+        }
       }
-      if(msg.partidaSendoJogada==false){
-        this.mostrarCartaAtual = false;
-        this.processarVotosEDeterminarResultado(this.whoIsTheImpostor.votosPorVotadosDaPartidaPassada);      }
-    });
+    );
+
 // this.websocketService.sendMessage(this.stompClient, this.app+"/whoistheimpostor/mostrar", {});
 
 // setTimeout(() => {
