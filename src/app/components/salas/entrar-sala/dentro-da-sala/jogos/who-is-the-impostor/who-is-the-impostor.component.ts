@@ -73,6 +73,12 @@ export class WhoIsTheImpostorComponent implements OnInit {
     this.votoSelecionado = jogador;
   }
 
+  //// Abaixo o bom velho debugging sem ferramentas de dev
+  // public teste(){
+  //   console.log("carregandoVotar: " + this.carregandoVotar);
+  //   console.log("carregandoCancelarVoto: " + this.carregandoCancelarVoto);
+  //   console.log("votoSelecionado: " + this.votoSelecionado);
+  // }
 
   public votar(){
     if (this.carregandoVotar || this.votoSelecionado==""){
@@ -140,7 +146,6 @@ public iniciarPartida(): void{
     this.username = this.authService.getStorage("username")!;
     this.API = API_CONFIG.BASE_URL+'/categorias/whoistheimpostor/'+this.jogadorDono+'/'+this.nomeSala;
     this.websocketService.subscribe(this.stompClient, this.topic+"/whoistheimpostor", (msg:WhoIsTheImpostorResponse) => {
-      this.whoIsTheImpostor = msg;
         if (msg.partidaSendoJogada == true) {
           this.terminoBrusco = false;
           if(this.whoIsTheImpostor.votado !== msg.votado){
@@ -149,6 +154,7 @@ public iniciarPartida(): void{
             this.carregandoCancelarVoto = false;
           }
         }
+      this.whoIsTheImpostor = msg;
         if (msg.partidaSendoJogada == false) {
           this.votoSelecionado = "";
           this.carregandoVotar = false;
