@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {WhoIsTheImpostorComponent} from './jogos/who-is-the-impostor/who-is-the-impostor.component';
 import {FormsModule} from '@angular/forms';
+import {categoriaMap} from '../../../../models/salas/domain/Sala';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -107,4 +108,5 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
     this.isModalOpen = false;
   }
 
+  protected readonly categoriaMap = categoriaMap;
 }
