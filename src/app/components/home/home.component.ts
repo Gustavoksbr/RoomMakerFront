@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {AuthService} from '../../services/auth/auth.service';
-import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
-import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth/auth.service';
+import { NgClass, NgIf, NgOptimizedImage } from '@angular/common';
+import { GlobalErrorHandler } from '../../providers/exceptions/GlobalErrorHandler';
 import confetti from 'canvas-confetti';
 
 @Component({
@@ -18,7 +18,7 @@ import confetti from 'canvas-confetti';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
- verificarAniversario(){
+  verificarAniversario() {
     const dataNascimentoStr = localStorage.getItem("datanascimento");
     if (dataNascimentoStr) {
       const dataNascimento = new Date(dataNascimentoStr);
@@ -29,28 +29,65 @@ export class HomeComponent implements OnInit {
       const nascimentoStr = dataNascimentoStr.slice(5);
       this.seuAniversario = nascimentoStr === hojeStr;
     }
-    if(this.seuAniversario) {
+    if (this.seuAniversario) {
       this.celebrate();
     }
   }
   public username: string = '';
   public escuro: boolean = true;
   public seuAniversario: boolean = false;
-  constructor(private authService: AuthService,private errorHandler: GlobalErrorHandler) {
-   this.username =  localStorage.getItem('username')!;
-  this.verificarAniversario();
+
+  // [CANCELADO] alterarUsername - username é usado como chave em todas as coleções do MongoDB,
+  // atualizar exigiria cascade update manual em salas, chats, jogos, etc.
+  // public editandoUsername: boolean = false;
+  // public novoUsername: string = '';
+  // public erroUsername: string | null = null;
+
+  constructor(private authService: AuthService, private errorHandler: GlobalErrorHandler) {
+    this.username = localStorage.getItem('username')!;
+    this.verificarAniversario();
   }
+
+  // abrirEditarUsername() {
+  //   this.novoUsername = this.username;
+  //   this.erroUsername = null;
+  //   this.editandoUsername = true;
+  // }
+
+  // fecharEditarUsername() {
+  //   this.editandoUsername = false;
+  //   this.erroUsername = null;
+  // }
+
+  // salvarUsername() {
+  //   if (!this.novoUsername || this.novoUsername === this.username) {
+  //     this.fecharEditarUsername();
+  //     return;
+  //   }
+  //   this.erroUsername = null;
+  //   this.authService.alterarUsername(this.novoUsername).subscribe({
+  //     next: (res) => {
+  //       this.authService.saveToken(res.token);
+  //       this.authService.saveStorage('username', this.novoUsername);
+  //       this.username = this.novoUsername;
+  //       this.editandoUsername = false;
+  //     },
+  //     error: (err) => {
+  //       this.erroUsername = err?.error ?? 'Erro ao alterar username.';
+  //     }
+  //   });
+  // }
 
   logout() {
     this.authService.logout();
   }
 
   changeTheme() {
-   if(localStorage.getItem("tema") == "escuro" || localStorage.getItem("tema") == null){
-     localStorage.setItem("tema", "claro");
-   }else if (localStorage.getItem("tema") == "claro"){
-      localStorage.setItem("tema","escuro");
-   }
+    if (localStorage.getItem("tema") == "escuro" || localStorage.getItem("tema") == null) {
+      localStorage.setItem("tema", "claro");
+    } else if (localStorage.getItem("tema") == "claro") {
+      localStorage.setItem("tema", "escuro");
+    }
     this.colorir();
   }
 
@@ -59,14 +96,14 @@ export class HomeComponent implements OnInit {
       this.escuro = true;
       document.documentElement.setAttribute('data-theme', "escuro");
     } else if (localStorage.getItem("tema") == "claro") {
-  this.escuro = false;
-  // console.log("claro");
+      this.escuro = false;
+      // console.log("claro");
       document.documentElement.setAttribute('data-theme', "claro");
     }
   }
 
   ngOnInit(): void {
-   this.colorir();
+    this.colorir();
   }
 
   isModalOpen = false;

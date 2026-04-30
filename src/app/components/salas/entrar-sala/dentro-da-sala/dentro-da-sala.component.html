@@ -12,7 +12,7 @@
         @if (!editandoCapacidade) {
           <button class="btn btn-sm btn-outline-secondary" (click)="abrirEditarCapacidade()">✏️ Alterar capacidade</button>
         } @else {
-          <input type="number" class="form-control form-control-sm" style="width:100px;"
+          <input type="number" class="form-control form-control-sm" style="width:100px; background-color: var(--background-color2); color: var(--text-color); border-color: var(--text-color2);"
             [(ngModel)]="novaCapacidade"
             [min]="sala.categoria === 'whoistheimpostor' ? 3 : 2"
             placeholder="∞ = vazio">
