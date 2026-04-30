@@ -51,16 +51,22 @@
       id="salaQtdCapacidade"
       type="number"
       class="form-control"
-      style=""
-      placeholder="Digite a capacidade"
+      placeholder="∞"
       name="qtdCapacidade"
       [ngStyle]="soPodeDois() ? {'background-color': 'var(--background-color2)'} : {}"
       [(ngModel)]="sala.qtdCapacidade"
       [readonly]="soPodeDois()"
       [min]="noMinimoTres() ? 3 : 2"
-      max="100"
-      required
     >
+    <div style="margin-top:5px; margin-left: 5px; color:var(--text-color); font-size: 12px;">
+      @if (soPodeDois()) {
+        Fixo em 2 para esta categoria.
+      } @else if (noMinimoTres()) {
+        Mínimo 3. Deixe vazio para ilimitado.
+      } @else {
+        Opcional. Deixe vazio para ilimitado.
+      }
+    </div>
   </div>
 <!--  <div class="form-check form-switch">-->
 <!--    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" [(ngModel)]="publica">-->

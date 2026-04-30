@@ -6,7 +6,26 @@
   </div>
   <div class="card-header participantes-dentro-sala">
 
-    <h5>Participantes ({{sala.usernameParticipantes.length + 1}}/{{sala.qtdCapacidade}}):</h5>
+    <h5>Participantes ({{sala.usernameParticipantes.length + 1}}/{{sala.qtdCapacidade ?? '∞'}}):</h5>
+    @if (username == sala.usernameDono && !categoriaComCapacidadeFixa()) {
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+        @if (!editandoCapacidade) {
+          <button class="btn btn-sm btn-outline-secondary" (click)="abrirEditarCapacidade()">✏️ Alterar capacidade</button>
+        } @else {
+          <input type="number" class="form-control form-control-sm" style="width:100px;"
+            [(ngModel)]="novaCapacidade"
+            [min]="sala.categoria === 'whoistheimpostor' ? 3 : 2"
+            placeholder="∞ = vazio">
+          <button class="btn btn-sm btn-success" (click)="salvarCapacidade()">Salvar</button>
+          <button class="btn btn-sm btn-secondary" (click)="fecharEditarCapacidade()">Cancelar</button>
+        }
+      </div>
+      @if (erroCapacidade) {
+        <div style="color: var(--bs-danger, red); font-size: 13px; margin-top: 4px;">
+          ⚠️ {{erroCapacidade}}
+        </div>
+      }
+    }
     <ul>
       <li>{{sala.usernameDono}} (dono)</li>
       @for (u of sala.usernameParticipantes; track $index) {

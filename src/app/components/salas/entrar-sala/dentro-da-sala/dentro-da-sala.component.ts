@@ -1,17 +1,17 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {SalaResponse} from '../../../../models/salas/response/SalaResponse';
-import {WebSocketService} from '../../../../services/websocket/websocket.service';
-import {AuthService} from '../../../../services/auth/auth.service';
-import {SalasService} from '../../../../services/salas/salas.service';
-import {ChatComponent} from './chat/chat.component';
-import {Client} from '@stomp/stompjs';
-import {TictactoeComponentimplements} from './jogos/tictactoe/tictactoe.component';
-import {JokenpoComponent} from './jogos/jokenpo/jokenpo.component';
-import {Router} from '@angular/router';
-import {NgIf} from '@angular/common';
-import {WhoIsTheImpostorComponent} from './jogos/who-is-the-impostor/who-is-the-impostor.component';
-import {FormsModule} from '@angular/forms';
-import {categoriaMap} from '../../../../models/salas/domain/Sala';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { SalaResponse } from '../../../../models/salas/response/SalaResponse';
+import { WebSocketService } from '../../../../services/websocket/websocket.service';
+import { AuthService } from '../../../../services/auth/auth.service';
+import { SalasService } from '../../../../services/salas/salas.service';
+import { ChatComponent } from './chat/chat.component';
+import { Client } from '@stomp/stompjs';
+import { TictactoeComponentimplements } from './jogos/tictactoe/tictactoe.component';
+import { JokenpoComponent } from './jogos/jokenpo/jokenpo.component';
+import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
+import { WhoIsTheImpostorComponent } from './jogos/who-is-the-impostor/who-is-the-impostor.component';
+import { FormsModule } from '@angular/forms';
+import { categoriaMap } from '../../../../models/salas/domain/Sala';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -28,7 +28,7 @@ import {categoriaMap} from '../../../../models/salas/domain/Sala';
   styleUrl: './dentro-da-sala.component.scss'
 })
 export class DentroDaSalaComponent implements OnInit, OnDestroy {
-  @Input() public sala : SalaResponse = {
+  @Input() public sala: SalaResponse = {
     id: '',
     usernameDono: '',
     nome: '',
@@ -38,13 +38,42 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
     publica: false,
     usernameParticipantes: []
   }
-  protected username : string = '';
-  protected topic : string = '';
-  protected app : string = '';
-  public stompClient : Client = new Client();
-  public participanteASerRemovido : string | null = null;
+  protected username: string = '';
+  protected topic: string = '';
+  protected app: string = '';
+  public stompClient: Client = new Client();
+  public participanteASerRemovido: string | null = null;
 
-  public abrirModalRemoverParticipante(participante : string) {
+  // editar capacidade
+  public editandoCapacidade: boolean = false;
+  public novaCapacidade: number | null = null;
+  public erroCapacidade: string | null = null;
+  public categoriaComCapacidadeFixa(): boolean {
+    return this.sala.categoria === 'tictactoe' || this.sala.categoria === 'jokenpo';
+  }
+  public abrirEditarCapacidade() {
+    this.novaCapacidade = this.sala.qtdCapacidade;
+    this.erroCapacidade = null;
+    this.editandoCapacidade = true;
+  }
+  public fecharEditarCapacidade() {
+    this.editandoCapacidade = false;
+    this.erroCapacidade = null;
+  }
+  public salvarCapacidade() {
+    this.erroCapacidade = null;
+    this.salaService.alterarCapacidade(this.sala.usernameDono, this.sala.nome, this.novaCapacidade).subscribe({
+      next: (sala) => {
+        this.sala.qtdCapacidade = sala.qtdCapacidade;
+        this.editandoCapacidade = false;
+      },
+      error: (err) => {
+        this.erroCapacidade = err?.error ?? 'Erro ao alterar capacidade.';
+      }
+    });
+  }
+
+  public abrirModalRemoverParticipante(participante: string) {
     this.participanteASerRemovido = participante;
   }
 
@@ -53,27 +82,27 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
   }
 
   public removerParticipante() {
-    if (this.participanteASerRemovido==null) {
+    if (this.participanteASerRemovido == null) {
       return
     }
-    this.salaService.sairDaSala(this.sala.usernameDono,this.sala.nome,this.participanteASerRemovido).subscribe((sala :  any)=>{
+    this.salaService.sairDaSala(this.sala.usernameDono, this.sala.nome, this.participanteASerRemovido).subscribe((sala: any) => {
       console.log("removido participante: " + this.participanteASerRemovido);
       this.fecharModalRemoverParticipante();
     });
   }
 
   @Output() enviarParticipantes = new EventEmitter<string[]>();
-  sairSala(){
-    this.salaService.sairDaSala(this.sala.usernameDono,this.sala.nome,this.username).subscribe((sala :  any)=>{
+  sairSala() {
+    this.salaService.sairDaSala(this.sala.usernameDono, this.sala.nome, this.username).subscribe((sala: any) => {
       console.log("você saiu da sala");
     });
   }
-  constructor(private websocketService : WebSocketService, private authService : AuthService, private salaService : SalasService,private router : Router) {
+  constructor(private websocketService: WebSocketService, private authService: AuthService, private salaService: SalasService, private router: Router) {
     this.username = authService.getStorage("username")!;
   }
-  deletarSala(){
+  deletarSala() {
     this.router.navigate(['/salas']);
-    this.salaService.deletarSala(this.sala.usernameDono,this.sala.nome).subscribe((sala : any)=>{
+    this.salaService.deletarSala(this.sala.usernameDono, this.sala.nome).subscribe((sala: any) => {
       console.log("sala deletada");
     });
   }
@@ -87,10 +116,10 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
       () => {
       },
       topicForThis,
-      (msg : string[]) => {
+      (msg: string[]) => {
         this.sala.usernameParticipantes = msg;
         this.enviarParticipantes.emit(msg);
-        if(this.username!== this.sala.usernameDono && (!msg.includes(this.username))){
+        if (this.username !== this.sala.usernameDono && (!msg.includes(this.username))) {
           this.router.navigate(['/salas']);
         }
       });
