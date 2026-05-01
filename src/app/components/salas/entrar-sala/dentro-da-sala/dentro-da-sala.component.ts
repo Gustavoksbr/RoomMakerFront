@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { categoriaMap, formatarCapacidade } from '../../../../models/salas/domain/Sala';
 import { NoAutocompleteDirective } from '../../../../diretivas/no-autocomplete/no-autocomplete.directive';
 import { MaxDigitsDirective } from '../../../../diretivas/max-digits/max-digits.directive';
+import { GlobalErrorHandler } from '../../../../providers/exceptions/GlobalErrorHandler';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -149,7 +150,7 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
       console.log("você saiu da sala");
     });
   }
-  constructor(private websocketService: WebSocketService, private authService: AuthService, private salaService: SalasService, private router: Router) {
+  constructor(private websocketService: WebSocketService, private authService: AuthService, private salaService: SalasService, private router: Router, private globalErrorHandler: GlobalErrorHandler) {
     this.username = authService.getStorage("username")!;
   }
   deletarSala() {
@@ -166,6 +167,16 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
     this.stompClient = this.websocketService.connect(
       this.stompClient,
       () => {
+        // subscreve no tópico de erros WebSocket do usuário
+        this.websocketService.subscribe(
+          this.stompClient,
+          `/topic/${this.username}/erro`,
+          (err: any) => {
+            if (err?.error) {
+              this.globalErrorHandler.handleError(new Error(err.error));
+            }
+          }
+        );
       },
       topicForThis,
       (msg: string[]) => {
