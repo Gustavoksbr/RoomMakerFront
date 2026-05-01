@@ -59,6 +59,8 @@
       [(ngModel)]="sala.qtdCapacidade"
       [readonly]="soPodeDois()"
       [min]="noMinimoTres() ? 3 : 2"
+      [max]="99999"
+      [maxDigits]="5"
     >
     <div style="margin-top:5px; margin-left: 5px; color:var(--text-color); font-size: 12px;">
       @if (soPodeDois()) {

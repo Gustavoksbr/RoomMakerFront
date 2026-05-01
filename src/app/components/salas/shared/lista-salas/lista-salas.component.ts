@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { NgClass, NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
 import { SalaResponse } from '../../../../models/salas/response/SalaResponse';
 import { AuthService } from '../../../../services/auth/auth.service';
-import { categoriaMap } from '../../../../models/salas/domain/Sala';
+import { categoriaMap, formatarCapacidade } from '../../../../models/salas/domain/Sala';
 
 @Component({
   selector: 'app-lista-salas',
@@ -78,4 +78,5 @@ export class ListaSalasComponent implements OnInit, OnChanges {
   }
 
   protected readonly categoriaMap = categoriaMap;
+  protected readonly formatarCapacidade = formatarCapacidade;
 }

@@ -53,7 +53,7 @@
   }
 
   <div class="card-header participantes-dentro-sala">
-    <h5>Participantes ({{sala.usernameParticipantes.length + 1}}/{{sala.qtdCapacidade ?? '∞'}}):</h5>
+    <h5>Participantes ({{sala.usernameParticipantes.length + 1}}/{{formatarCapacidade(sala.qtdCapacidade)}}):</h5>
     @if (username == sala.usernameDono && !categoriaComCapacidadeFixa()) {
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
         @if (!editandoCapacidade) {
@@ -64,6 +64,8 @@
             noAutocomplete
             [(ngModel)]="novaCapacidade"
             [min]="sala.categoria === 'whoistheimpostor' ? 3 : 2"
+            max="99999"
+            [maxDigits]="5"
             placeholder="∞ = vazio">
           <button class="btn btn-sm btn-success" (click)="salvarCapacidade()">Salvar</button>
           <button class="btn btn-sm btn-secondary" (click)="fecharEditarCapacidade()">Cancelar</button>

@@ -3,7 +3,7 @@ import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { SalaResponse } from '../../../../models/salas/response/SalaResponse';
 import { EntrarSalaRequest } from '../../../../models/salas/request/EntrarSalaRequest';
-import { categoriaMap } from '../../../../models/salas/domain/Sala';
+import { categoriaMap, formatarCapacidade } from '../../../../models/salas/domain/Sala';
 import { TogglePasswordDirective } from '../../../../diretivas/only-alphanumeric/toggle-password.directive';
 import { NoAutocompleteDirective } from '../../../../diretivas/no-autocomplete/no-autocomplete.directive';
 
@@ -51,4 +51,5 @@ export class ForaDaSalaComponent {
   }
 
   protected readonly categoriaMap = categoriaMap;
+  protected readonly formatarCapacidade = formatarCapacidade;
 }

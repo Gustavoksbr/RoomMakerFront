@@ -11,8 +11,9 @@ import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { WhoIsTheImpostorComponent } from './jogos/who-is-the-impostor/who-is-the-impostor.component';
 import { FormsModule } from '@angular/forms';
-import { categoriaMap } from '../../../../models/salas/domain/Sala';
+import { categoriaMap, formatarCapacidade } from '../../../../models/salas/domain/Sala';
 import { NoAutocompleteDirective } from '../../../../diretivas/no-autocomplete/no-autocomplete.directive';
+import { MaxDigitsDirective } from '../../../../diretivas/max-digits/max-digits.directive';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -24,7 +25,8 @@ import { NoAutocompleteDirective } from '../../../../diretivas/no-autocomplete/n
     NgIf,
     WhoIsTheImpostorComponent,
     FormsModule,
-    NoAutocompleteDirective
+    NoAutocompleteDirective,
+    MaxDigitsDirective
   ],
   templateUrl: './dentro-da-sala.component.html',
   styleUrl: './dentro-da-sala.component.scss'
@@ -188,4 +190,5 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
   }
 
   protected readonly categoriaMap = categoriaMap;
+  protected readonly formatarCapacidade = formatarCapacidade;
 }

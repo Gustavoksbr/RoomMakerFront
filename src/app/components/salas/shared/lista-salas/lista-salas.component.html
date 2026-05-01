@@ -59,7 +59,7 @@
 
                   <td data-label="Participantes" class="emojis" data-bs-toggle="tooltip" data-placement="top" title="{{participantesComDono(p)}}">
                     <div>
-                      <p>{{ p.usernameParticipantes.length + 1 }}/{{ p.qtdCapacidade }}</p>
+                      <p>{{ p.usernameParticipantes.length + 1 }}/{{ formatarCapacidade(p.qtdCapacidade) }}</p>
                     </div>
                   </td>
                   <td data-label="Privacidade">
