@@ -12,6 +12,7 @@ import { NgIf } from '@angular/common';
 import { WhoIsTheImpostorComponent } from './jogos/who-is-the-impostor/who-is-the-impostor.component';
 import { FormsModule } from '@angular/forms';
 import { categoriaMap } from '../../../../models/salas/domain/Sala';
+import { NoAutocompleteDirective } from '../../../../diretivas/no-autocomplete/no-autocomplete.directive';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -22,7 +23,8 @@ import { categoriaMap } from '../../../../models/salas/domain/Sala';
     JokenpoComponent,
     NgIf,
     WhoIsTheImpostorComponent,
-    FormsModule
+    FormsModule,
+    NoAutocompleteDirective
   ],
   templateUrl: './dentro-da-sala.component.html',
   styleUrl: './dentro-da-sala.component.scss'

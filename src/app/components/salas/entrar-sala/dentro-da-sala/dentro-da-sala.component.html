@@ -34,8 +34,9 @@
         <div style="display:flex; flex-direction:column; gap:4px;">
           <div style="display:flex; align-items:center; gap:8px;">
             <input type="text"
-              class="form-control form-control-sm"
+              class="form-control form-control-sm input-senha"
               style="width:160px; background-color:var(--background-color2); color:var(--text-color); border-color:var(--text-color2);"
+              noAutocomplete
               [(ngModel)]="novaSenha"
               placeholder="Vazio = sem senha"
               (keyup.enter)="salvarSenha()"
@@ -58,7 +59,9 @@
         @if (!editandoCapacidade) {
           <button class="btn btn-sm btn-outline-secondary" (click)="abrirEditarCapacidade()">✏️ Alterar capacidade</button>
         } @else {
-          <input type="number" class="form-control form-control-sm" style="width:100px; background-color: var(--background-color2); color: var(--text-color); border-color: var(--text-color2);"
+          <input type="number" class="form-control form-control-sm input-capacidade"
+            style="width:100px; background-color: var(--background-color2); color: var(--text-color); border-color: var(--text-color2);"
+            noAutocomplete
             [(ngModel)]="novaCapacidade"
             [min]="sala.categoria === 'whoistheimpostor' ? 3 : 2"
             placeholder="∞ = vazio">

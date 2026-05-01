@@ -12,11 +12,12 @@ import { GlobalSuccess } from '../../../providers/sucesso/GlobalSuccess';
 import { categoriaMap } from '../../../models/salas/domain/Sala';
 import { OnlyAlphanumericDirective } from '../../../diretivas/only-alphanumeric/only-alphanumeric.divective';
 import { TogglePasswordDirective } from '../../../diretivas/only-alphanumeric/toggle-password.directive';
+import { NoAutocompleteDirective } from '../../../diretivas/no-autocomplete/no-autocomplete.directive';
 
 @Component({
   selector: 'app-criar-sala',
   standalone: true,
-  imports: [FormsModule, CommonModule, HomeComponent, NavbarComponent, OnlyAlphanumericDirective, TogglePasswordDirective],
+  imports: [FormsModule, CommonModule, HomeComponent, NavbarComponent, OnlyAlphanumericDirective, TogglePasswordDirective, NoAutocompleteDirective],
   templateUrl: './criar-sala.component.html',
   styleUrl: './criar-sala.component.scss'
 })

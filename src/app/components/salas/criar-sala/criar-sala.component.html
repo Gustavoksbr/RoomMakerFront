@@ -11,6 +11,7 @@
       type="text"
       class="form-control"
       onlyAlphanumeric
+      noAutocomplete
       [(ngModel)]="sala.nome"
       name="nome"
       [maxLength]="15"
@@ -51,6 +52,7 @@
       id="salaQtdCapacidade"
       type="number"
       class="form-control"
+      noAutocomplete
       placeholder="∞"
       name="qtdCapacidade"
       [ngStyle]="soPodeDois() ? {'background-color': 'var(--background-color2)'} : {}"
@@ -79,6 +81,7 @@
       type="password"
       class="form-control"
       togglePassword
+      noAutocomplete
       [(ngModel)]="sala.senha"
       name="senha"
       required
