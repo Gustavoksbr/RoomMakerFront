@@ -4,8 +4,54 @@
     <div>  {{sala.usernameDono}}/<b style="font-size: 1.2em">{{sala.nome}}</b></div>
     <div>Categoria: {{categoriaMap[sala.categoria]}}</div>
   </div>
-  <div class="card-header participantes-dentro-sala">
 
+  @if (username == sala.usernameDono) {
+    <div class="card-header">
+      @if (!editandoSenha) {
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          @if (!mostrarSenha) {
+            <span style="font-size:14px;">
+              {{ sala.publica ? 'Sem senha' : 'Senha: ••••••' }}
+            </span>
+            @if (!sala.publica) {
+              <button class="btn btn-sm btn-outline-secondary" (click)="carregarSenha()">👁️ Ver senha</button>
+            }
+          } @else {
+            <span style="font-size:14px;">
+              @if (senhaAtual === '' || senhaAtual === null) {
+                Sem senha
+              } @else {
+                Senha: <span style="font-family:monospace; background:var(--background-color2); padding:2px 8px; border-radius:4px; color:var(--text-color);">{{senhaAtual}}</span>
+              }
+            </span>
+            <button class="btn btn-sm btn-outline-secondary" (click)="carregarSenha()">🙈 Ocultar</button>
+          }
+          <button class="btn btn-sm btn-outline-secondary" (click)="abrirEditarSenha()">
+            {{ sala.publica ? '🔒 Adicionar senha' : '✏️ Alterar senha' }}
+          </button>
+        </div>
+      } @else {
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="text"
+              class="form-control form-control-sm"
+              style="width:160px; background-color:var(--background-color2); color:var(--text-color); border-color:var(--text-color2);"
+              [(ngModel)]="novaSenha"
+              placeholder="Vazio = sem senha"
+              (keyup.enter)="salvarSenha()"
+              (keyup.escape)="fecharEditarSenha()">
+            <button class="btn btn-sm btn-success" (click)="salvarSenha()">✓</button>
+            <button class="btn btn-sm btn-secondary" (click)="fecharEditarSenha()">✕</button>
+          </div>
+          @if (erroSenha) {
+            <small style="color:#ff6b6b; font-size:11px;">⚠️ {{erroSenha}}</small>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <div class="card-header participantes-dentro-sala">
     <h5>Participantes ({{sala.usernameParticipantes.length + 1}}/{{sala.qtdCapacidade ?? '∞'}}):</h5>
     @if (username == sala.usernameDono && !categoriaComCapacidadeFixa()) {
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">

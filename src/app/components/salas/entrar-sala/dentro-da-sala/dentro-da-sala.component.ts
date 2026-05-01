@@ -73,6 +73,54 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
     });
   }
 
+  // ver/editar senha
+  public senhaAtual: string | null = null;
+  public mostrarSenha: boolean = false;
+  public editandoSenha: boolean = false;
+  public novaSenha: string = '';
+  public erroSenha: string | null = null;
+
+  public carregarSenha() {
+    if (this.senhaAtual !== null) {
+      this.mostrarSenha = !this.mostrarSenha;
+      return;
+    }
+    this.salaService.verSenha(this.sala.usernameDono, this.sala.nome).subscribe({
+      next: (senha) => {
+        this.senhaAtual = senha;
+        this.mostrarSenha = true;
+      },
+      error: (err) => { throw err; }
+    });
+  }
+
+  public abrirEditarSenha() {
+    this.novaSenha = this.senhaAtual ?? '';
+    this.erroSenha = null;
+    this.editandoSenha = true;
+  }
+
+  public fecharEditarSenha() {
+    this.editandoSenha = false;
+    this.erroSenha = null;
+  }
+
+  public salvarSenha() {
+    this.erroSenha = null;
+    const senhaParaEnviar = this.novaSenha.trim() === '' ? null : this.novaSenha;
+    this.salaService.alterarSenha(this.sala.usernameDono, this.sala.nome, senhaParaEnviar).subscribe({
+      next: (sala) => {
+        this.senhaAtual = senhaParaEnviar;
+        this.sala.publica = sala.publica;
+        this.editandoSenha = false;
+        this.mostrarSenha = false;
+      },
+      error: (err) => {
+        this.erroSenha = err?.error ?? 'Erro ao alterar senha.';
+      }
+    });
+  }
+
   public abrirModalRemoverParticipante(participante: string) {
     this.participanteASerRemovido = participante;
   }

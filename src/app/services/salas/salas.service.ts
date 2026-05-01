@@ -72,6 +72,16 @@ export class SalasService {
     return this.http.patch<SalaResponse>(url, { qtdCapacidade }, { headers: this.getHeaders() });
   }
 
+  verSenha(usernameDono: string, salaNome: string): Observable<string> {
+    const url = `${this.API}/${usernameDono}/${salaNome}/senha`;
+    return this.http.get<string>(url, { headers: this.getHeaders(), responseType: 'text' as 'json' });
+  }
+
+  alterarSenha(usernameDono: string, salaNome: string, senha: string | null): Observable<SalaResponse> {
+    const url = `${this.API}/${usernameDono}/${salaNome}/senha`;
+    return this.http.patch<SalaResponse>(url, { senha }, { headers: this.getHeaders() });
+  }
+
 
   // excluir(id:string):Observable<Pensamento>{
   //   const url = `${this.API}/${id}`; //http://localhost:3000/pensamentos/{id}
