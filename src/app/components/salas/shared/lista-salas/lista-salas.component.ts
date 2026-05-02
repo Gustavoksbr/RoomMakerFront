@@ -1,9 +1,9 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {RouterLink} from '@angular/router';
-import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
-import {SalaResponse} from '../../../../models/salas/response/SalaResponse';
-import {AuthService} from '../../../../services/auth/auth.service';
-import {categoriaMap} from '../../../../models/salas/domain/Sala';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { NgClass, NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
+import { SalaResponse } from '../../../../models/salas/response/SalaResponse';
+import { AuthService } from '../../../../services/auth/auth.service';
+import { categoriaMap, formatarCapacidade } from '../../../../models/salas/domain/Sala';
 
 @Component({
   selector: 'app-lista-salas',
@@ -34,7 +34,8 @@ export class ListaSalasComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['ListaSalas']) {
       this.ordenarSalas();
-    }}
+    }
+  }
   ordenarSalas() {
     this.ListaSalas = this.ListaSalas.reverse();
 
@@ -51,30 +52,31 @@ export class ListaSalasComponent implements OnInit, OnChanges {
     return sala.usernameDono + "(dono), " + sala.usernameParticipantes.join(", ");
   }
   getDisponivel(sala: SalaResponse): string {
-    if(sala.usernameParticipantes.length +1 >= sala.qtdCapacidade){
+    if (sala.qtdCapacidade !== null && sala.usernameParticipantes.length + 1 >= sala.qtdCapacidade) {
       return "Sala cheia";
     }
-    if(!sala.disponivel){
+    if (!sala.disponivel) {
       return "Em jogo";
     }
     return "Disponível";
   }
   jaEstaNaSala(sala: SalaResponse): boolean {
-    if(sala.usernameParticipantes.includes(this.username) || sala.usernameDono === this.username){
+    if (sala.usernameParticipantes.includes(this.username) || sala.usernameDono === this.username) {
       return true;
     }
     return false;
   }
 
   classificarOrdemDeSalas(sala: SalaResponse): number {
-    if(this.jaEstaNaSala(sala)){
+    if (this.jaEstaNaSala(sala)) {
       return 3;
     }
-    if(this.getDisponivel(sala) !== "Disponível"){
+    if (this.getDisponivel(sala) !== "Disponível") {
       return 2;
     }
     return 1;
   }
 
-  protected readonly categoriaMap =  categoriaMap;
+  protected readonly categoriaMap = categoriaMap;
+  protected readonly formatarCapacidade = formatarCapacidade;
 }

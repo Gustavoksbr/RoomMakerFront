@@ -6,7 +6,7 @@
 <p>- Sala:<b> {{salaParaEntrar.usernameDono}}/{{salaParaEntrar.nome}}</b></p>
 
 <p>- Categoria: <b>{{categoriaMap[salaParaEntrar.categoria]}}</b></p>
-<p>- Quantidade de participantes: <b>{{salaParaEntrar.usernameParticipantes.length+1}}/{{salaParaEntrar.qtdCapacidade}}</b></p>
+<p>- Quantidade de participantes: <b>{{salaParaEntrar.usernameParticipantes.length+1}}/{{formatarCapacidade(salaParaEntrar.qtdCapacidade)}}</b></p>
     <div class="participantes"><p>- Participantes:</p>
       <ul>
         <li>
@@ -32,6 +32,7 @@
       name="senha"
       required
       togglePassword
+      noAutocomplete
     >
   </div>
   }

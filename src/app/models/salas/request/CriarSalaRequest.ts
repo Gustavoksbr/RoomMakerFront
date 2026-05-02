@@ -2,5 +2,5 @@
   nome: string;
   categoria: string;
   senha: string;
-  qtdCapacidade: number;
+  qtdCapacidade: number | null; // null = sem limite (infinito)
 }

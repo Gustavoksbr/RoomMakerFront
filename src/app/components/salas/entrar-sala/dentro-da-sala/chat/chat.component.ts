@@ -1,12 +1,13 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener} from '@angular/core';
-import {WebSocketService} from '../../../../../services/websocket/websocket.service';
-import {MessageResponseWs} from './MessageResponseWs';
-import {MessageRequestWs} from './MessageRequestWs';
-import {FormsModule} from '@angular/forms';
-import {Client} from '@stomp/stompjs';
-import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
-import {AuthService} from '../../../../../services/auth/auth.service';
+import { Component, Input, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
+import { WebSocketService } from '../../../../../services/websocket/websocket.service';
+import { MessageResponseWs } from './MessageResponseWs';
+import { MessageRequestWs } from './MessageRequestWs';
+import { FormsModule } from '@angular/forms';
+import { Client } from '@stomp/stompjs';
+import { NgClass, NgIf, NgOptimizedImage } from '@angular/common';
+import { AuthService } from '../../../../../services/auth/auth.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { NoAutocompleteDirective } from '../../../../../diretivas/no-autocomplete/no-autocomplete.directive';
 @Component({
   selector: 'app-chat',
   standalone: true,
@@ -14,7 +15,8 @@ import { ChangeDetectorRef } from '@angular/core';
     FormsModule,
     NgIf,
     NgClass,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NoAutocompleteDirective
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
@@ -22,82 +24,82 @@ import { ChangeDetectorRef } from '@angular/core';
 export class ChatComponent implements OnInit {
   @Input() public app: string = '';
   @Input() public topic: string = '';
-  @Input() public stompClient: Client= new Client();
+  @Input() public stompClient: Client = new Client();
 
 
   public chat: MessageResponseWs[] = [];
-public enviandoMensagem: boolean = false;
+  public enviandoMensagem: boolean = false;
   public message: MessageRequestWs = {
     message: '',
     to: null
   };
 
-  public procurarRespondido(ordem: number): MessageResponseWs | null  {
+  public procurarRespondido(ordem: number): MessageResponseWs | null {
     let mensagemRespondida = this.chat.find(mensagem => mensagem.ordem == ordem);
-    if(mensagemRespondida != null) {
+    if (mensagemRespondida != null) {
       return mensagemRespondida;
     }
     return null;
   }
-public respondendoAUsername : string | null = null;
-  public respondendoAMensagem : MessageResponseWs | null = null;
-public responderMensagem(mensagem: MessageResponseWs): void{
-  // let mensagemHtml = document.getElementById("mensagem-" + mensagem.ordem)!;
-  this.message.to = mensagem.ordem;
-  this.respondendoAUsername = mensagem.from;
-  this.respondendoAMensagem = mensagem;
-  this.mostrarOpcoes(mensagem.ordem);
-}
-public verificarSeMensagemAnteriorEhDoMesmoUsuario(mensagem: MessageResponseWs): number{
-  if(mensagem.ordem == 1){
+  public respondendoAUsername: string | null = null;
+  public respondendoAMensagem: MessageResponseWs | null = null;
+  public responderMensagem(mensagem: MessageResponseWs): void {
+    // let mensagemHtml = document.getElementById("mensagem-" + mensagem.ordem)!;
+    this.message.to = mensagem.ordem;
+    this.respondendoAUsername = mensagem.from;
+    this.respondendoAMensagem = mensagem;
+    this.mostrarOpcoes(mensagem.ordem);
+  }
+  public verificarSeMensagemAnteriorEhDoMesmoUsuario(mensagem: MessageResponseWs): number {
+    if (mensagem.ordem == 1) {
+      return 0;
+    }
+    let mensagemEncontrada = this.chat.find(mensagemEncontrada => mensagemEncontrada.ordem == mensagem.ordem - 1);
+    if (mensagemEncontrada != null) {
+      if (mensagemEncontrada.from == mensagem.from) {
+        return 1;
+      }
+    }
     return 0;
   }
-  let mensagemEncontrada = this.chat.find(mensagemEncontrada => mensagemEncontrada.ordem == mensagem.ordem - 1);
-  if(mensagemEncontrada != null){
-    if(mensagemEncontrada.from == mensagem.from){
-    return 1;
-    }
-  }
-  return 0;
-}
 
-public mensagemAnterior : MessageResponseWs | null = null;
-public cancelarResposta(): void{
-  this.message.to = null;
-  this.respondendoAUsername = null;
-  this.respondendoAMensagem = null;
-}
+  public mensagemAnterior: MessageResponseWs | null = null;
+  public cancelarResposta(): void {
+    this.message.to = null;
+    this.respondendoAUsername = null;
+    this.respondendoAMensagem = null;
+  }
   public transformarData(data: string): string {
     let dataFormatada = data.substring(0, 10);
     let hora = data.substring(11, 19);
     return dataFormatada + " às " + hora;
   }
-public opcoesMostradas: number | null = null;
-public mostrarOpcoes(ordem:number): void {
-  if(this.opcoesMostradas == null || this.opcoesMostradas != ordem){
-    this.opcoesMostradas = ordem;
-  }else{
+  public opcoesMostradas: number | null = null;
+  public mostrarOpcoes(ordem: number): void {
+    if (this.opcoesMostradas == null || this.opcoesMostradas != ordem) {
+      this.opcoesMostradas = ordem;
+    } else {
       this.opcoesMostradas = null;
     }
 
-}
-  public getNomeUsuario:String = "";
+  }
+  public getNomeUsuario: String = "";
 
 
   public sendMessage() {
-    if(this.message ==null || this.message.message.trim() === ''){
+    if (this.message == null || this.message.message.trim() === '') {
       return;
     }
     this.enviandoMensagem = true;
-  // setTimeout(() => {
+    // setTimeout(() => {
     // console.log("Enviando mensagem: " + this.message.message);
 
     // console.log("com destination: " + this.app + "/chat/message");
     this.websocketService.sendMessage(this.stompClient, this.app + "/chat/message", JSON.stringify(this.message));
     this.message.message = '';
-     setTimeout(() => this.scrollToBottom(), 1000);
+    setTimeout(() => this.scrollToBottom(), 1000);
     // this.enviandoMensagem = false;
-    if(this.message.to != null) {
+    if (this.message.to != null) {
       this.cancelarResposta();
     }
     // }, 1000);
@@ -107,10 +109,10 @@ public mostrarOpcoes(ordem:number): void {
 
     const tableContainer = document.getElementsByClassName('chat-perso')[0];
     let alturaMaxima;
-    if(tableContainer.scrollHeight!=null) {
+    if (tableContainer.scrollHeight != null) {
       alturaMaxima = tableContainer.scrollHeight;
-      tableContainer.scrollTop = alturaMaxima+9000000;
-    } else{
+      tableContainer.scrollTop = alturaMaxima + 9000000;
+    } else {
       tableContainer.scrollTop = 9999999999;
     }
 
@@ -128,33 +130,33 @@ public mostrarOpcoes(ordem:number): void {
       mensagem.classList.add("highlight");
       setTimeout(() => {
         mensagem.classList.remove("highlight");
-          mensagem.classList.add("highlight2");
-          setTimeout(() => {
-            mensagem.classList.remove("highlight2");
-          }, 700);
+        mensagem.classList.add("highlight2");
+        setTimeout(() => {
+          mensagem.classList.remove("highlight2");
+        }, 700);
       }, 1300);
     }
 
   }
-  constructor(private websocketService: WebSocketService, private authService: AuthService,private cdr: ChangeDetectorRef) {
+  constructor(private websocketService: WebSocketService, private authService: AuthService, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
 
     this.websocketService.subscribe(this.stompClient, this.topic + "/chat", (msg: any) => {
-      if(msg.usernameDono==null){
+      if (msg.usernameDono == null) {
         if (msg.message && msg.message.trim() !== '') {
           this.mensagemAnterior = null;
           this.chat.push(msg);
           // if(msg.mensagem.from==this.getNomeUsuario){
           //   console.log("msg.mensagem.from: " + msg.mensagem.from);
           //   console.log("this.getNomeUsuario: " + this.getNomeUsuario);
-            this.enviandoMensagem = false;
+          this.enviandoMensagem = false;
           // }
 
         } else {
         }
-      }else{
+      } else {
         this.chat = msg.messages;
         setTimeout(() => this.scrollToBottom(), 10);
       }
@@ -167,7 +169,8 @@ public mostrarOpcoes(ordem:number): void {
         if (!target.classList.contains("seta-para-cima") && !target.classList.contains("opcoes") && !target.classList.contains("opcoes-mostradas")) {
           this.opcoesMostradas = null;
         }
-      }});
+      }
+    });
   }
 
 }

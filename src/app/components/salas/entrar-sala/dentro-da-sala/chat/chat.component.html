@@ -63,7 +63,7 @@
     </div>
     <div class="input-group input-do-chat" style="gap:10px;">
 
-      <input type="text" class="form-control" [(ngModel)]="message.message" placeholder="Digite sua mensagem" (keydown.enter)="sendMessage()" maxlength="200">
+      <input type="text" class="form-control" noAutocomplete [(ngModel)]="message.message" placeholder="Digite sua mensagem" (keydown.enter)="sendMessage()" maxlength="200">
       <div class="input-group-append">
         @if (!enviandoMensagem){
           <button class="btn" (click)="sendMessage()"

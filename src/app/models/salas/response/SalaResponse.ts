@@ -3,7 +3,7 @@
   usernameDono: string;
   nome: string;
   categoria: string;
-  qtdCapacidade: number;
+  qtdCapacidade: number | null; // null = sem limite (infinito)
   disponivel: boolean;
   publica: boolean;
   usernameParticipantes: string[];

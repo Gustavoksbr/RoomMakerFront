@@ -1,27 +1,27 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {SalaResponse} from '../../models/salas/response/SalaResponse';
-import {AuthService} from '../auth/auth.service';
-import {Sala} from '../../models/salas/domain/Sala';
-import {CriarSalaRequest} from '../../models/salas/request/CriarSalaRequest';
-import {EntrarSalaRequest} from '../../models/salas/request/EntrarSalaRequest';
-import {API_CONFIG} from '../config/api.config';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { SalaResponse } from '../../models/salas/response/SalaResponse';
+import { AuthService } from '../auth/auth.service';
+import { Sala } from '../../models/salas/domain/Sala';
+import { CriarSalaRequest } from '../../models/salas/request/CriarSalaRequest';
+import { EntrarSalaRequest } from '../../models/salas/request/EntrarSalaRequest';
+import { API_CONFIG } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SalasService {
-  private readonly API = API_CONFIG.BASE_URL+'/salas';
+  private readonly API = API_CONFIG.BASE_URL + '/salas';
   // private readonly API = 'http://localhost:8080/sala';
-  constructor(private http: HttpClient,private authService:AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
   }
   private getHeaders(): HttpHeaders {
-    return  this.authService.getHeaders();
+    return this.authService.getHeaders();
   }
- listar(): Observable<SalaResponse[]> {
-  return this.http.get<SalaResponse[]>(this.API, { headers: this.getHeaders() });
-}
+  listar(): Observable<SalaResponse[]> {
+    return this.http.get<SalaResponse[]>(this.API, { headers: this.getHeaders() });
+  }
   listarEspecifico(usernameDono: string = '', nome: string = '', categoria: string = ''): Observable<SalaResponse[]> {
     const params = new HttpParams()
       .set('usernameDono', usernameDono)
@@ -30,41 +30,56 @@ export class SalasService {
     return this.http.get<SalaResponse[]>(this.API, { headers: this.getHeaders(), params });
   }
 
-  listarPorUsernameDono(usernameDono:string):Observable<SalaResponse[]>{
+  listarPorUsernameDono(usernameDono: string): Observable<SalaResponse[]> {
     const url = `${this.API}/_dono`;
     const params = new HttpParams()
       .set('usernameDono', usernameDono);
-    return this.http.get<SalaResponse[]>(url,{ headers: this.getHeaders(),params });
+    return this.http.get<SalaResponse[]>(url, { headers: this.getHeaders(), params });
   }
 
-  listarPorUsernameParticipante(usernameParticipante:string):Observable<SalaResponse[]>{
+  listarPorUsernameParticipante(usernameParticipante: string): Observable<SalaResponse[]> {
     const url = `${this.API}/_convidado`;
     const params = new HttpParams()
       .set('usernameParticipante', usernameParticipante);
-    return this.http.get<SalaResponse[]>(url,{ headers: this.getHeaders(),params });
+    return this.http.get<SalaResponse[]>(url, { headers: this.getHeaders(), params });
   }
 
-  criar(sala:CriarSalaRequest):Observable<SalaResponse>{
-    return this.http.post<SalaResponse>(this.API,sala,{ headers: this.getHeaders() });
+  criar(sala: CriarSalaRequest): Observable<SalaResponse> {
+    return this.http.post<SalaResponse>(this.API, sala, { headers: this.getHeaders() });
 
   }
-  buscarPorUsernameDonoESalaNome(usernameDono:string,salaNome:string):Observable<SalaResponse>{
+  buscarPorUsernameDonoESalaNome(usernameDono: string, salaNome: string): Observable<SalaResponse> {
     const url = `${this.API}/${usernameDono}/${salaNome}`;
-    return this.http.get<SalaResponse>(url,{ headers: this.getHeaders() });
+    return this.http.get<SalaResponse>(url, { headers: this.getHeaders() });
   }
 
-  entrarNaSala(sala:EntrarSalaRequest):Observable<SalaResponse>{
+  entrarNaSala(sala: EntrarSalaRequest): Observable<SalaResponse> {
     const url = `${this.API}/${sala.usernameDono}/${sala.nome}`;
-    return this.http.post<SalaResponse>(url,sala,{ headers: this.getHeaders() });
+    return this.http.post<SalaResponse>(url, sala, { headers: this.getHeaders() });
   }
 
-  sairDaSala(usernameDono:string,salaNome:string,username:string):Observable<SalaResponse>{
+  sairDaSala(usernameDono: string, salaNome: string, username: string): Observable<SalaResponse> {
     const url = `${this.API}/${usernameDono}/${salaNome}/${username}`;
-    return this.http.delete<SalaResponse>(url,{ headers: this.getHeaders() });
+    return this.http.delete<SalaResponse>(url, { headers: this.getHeaders() });
   }
-  deletarSala(usernameDono:string,salaNome:string):Observable<SalaResponse>{
+  deletarSala(usernameDono: string, salaNome: string): Observable<SalaResponse> {
     const url = `${this.API}/${usernameDono}/${salaNome}`;
-    return this.http.delete<SalaResponse>(url,{ headers: this.getHeaders() });
+    return this.http.delete<SalaResponse>(url, { headers: this.getHeaders() });
+  }
+
+  alterarCapacidade(usernameDono: string, salaNome: string, qtdCapacidade: number | null): Observable<SalaResponse> {
+    const url = `${this.API}/${usernameDono}/${salaNome}/capacidade`;
+    return this.http.patch<SalaResponse>(url, { qtdCapacidade }, { headers: this.getHeaders() });
+  }
+
+  verSenha(usernameDono: string, salaNome: string): Observable<string> {
+    const url = `${this.API}/${usernameDono}/${salaNome}/senha`;
+    return this.http.get<string>(url, { headers: this.getHeaders(), responseType: 'text' as 'json' });
+  }
+
+  alterarSenha(usernameDono: string, salaNome: string, senha: string | null): Observable<SalaResponse> {
+    const url = `${this.API}/${usernameDono}/${salaNome}/senha`;
+    return this.http.patch<SalaResponse>(url, { senha }, { headers: this.getHeaders() });
   }
 
 
