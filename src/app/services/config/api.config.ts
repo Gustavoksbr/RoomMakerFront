@@ -1,7 +1,5 @@
-﻿export const API_CONFIG = {
-  BASE_URL: 'https://roommakerback.onrender.com'
+﻿import { environment } from '../../../environments/environment';
+
+export const API_CONFIG = {
+  BASE_URL: environment.apiUrl
 };
-
-//https://roommakerback.onrender.com
-
-//http://localhost:8080

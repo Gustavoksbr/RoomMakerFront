@@ -1,4 +1,4 @@
-.container-fora-da-sala{
+.container-fora-da-sala {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -8,8 +8,8 @@
 }
 
 
-.fora-da-sala{
-padding: 4%;
+.fora-da-sala {
+  padding: 4%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,22 +19,22 @@ padding: 4%;
   border: 3px solid var(--text-color);
 }
 
-#salaSenha{
-  background-color: var(--input-background-color);
+#salaSenha {
+  background-color: var(--background-color2);
   color: var(--text-color);
 }
 
-.fora-da-sala p{
+.fora-da-sala p {
   padding: 3%;
 }
 
-.entrar{
+.entrar {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.fora-da-sala p{
+.fora-da-sala p {
   display: flex;
   flex-direction: column;
 }
