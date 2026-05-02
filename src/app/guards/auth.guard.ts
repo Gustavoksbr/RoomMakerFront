@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth/auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.authService.isLoggedIn()) {
@@ -22,7 +22,8 @@ export class AuthGuard implements CanActivate {
       }
       return true;
     } else {
-      // Se não estiver autenticado, redireciona para "login"
+      // Salva a URL que o usuário tentou acessar antes de redirecionar para login
+      this.authService.saveStorage('redirectUrl', state.url);
       this.router.navigate(['/login']);
       return false;
     }

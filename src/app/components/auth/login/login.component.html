@@ -2,6 +2,13 @@
   <div class=" container-login">
     <div class="card login">
   <h3>Login</h3>
+  
+  @if (redirectUrl) {
+    <div class="alert alert-info" style="font-size: 14px; padding: 8px 12px; margin-bottom: 12px;">
+      🔗 Você será redirecionado para: <strong>{{redirectUrl}}</strong>
+    </div>
+  }
+  
 <form (submit)="login()" class="form-group">
   <div class="mb-3 label-input label-input-username">
     <label for="username" >Username: </label>

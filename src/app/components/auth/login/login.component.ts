@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
-import {FormsModule} from '@angular/forms';
-import {Router} from '@angular/router';
-import {HomeComponent} from '../../home/home.component';
-import {TogglePasswordDirective} from '../../../diretivas/only-alphanumeric/toggle-password.directive';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HomeComponent } from '../../home/home.component';
+import { TogglePasswordDirective } from '../../../diretivas/only-alphanumeric/toggle-password.directive';
 
 
 @Component({
@@ -17,39 +17,46 @@ import {TogglePasswordDirective} from '../../../diretivas/only-alphanumeric/togg
   ],
   standalone: true
 })
-export class LoginComponent  {
+export class LoginComponent {
   tentandoLogar = false;
   credentials = { username: '', password: '' };
+  redirectUrl: string | null = null;
 
   constructor(
     private authService: AuthService,
-  private router:Router) {
+    private router: Router) {
+    // Verifica se há URL de redirecionamento salva
+    this.redirectUrl = this.authService.getStorage('redirectUrl');
   }
 
   login() {
     this.tentandoLogar = true;
-      this.authService.login(this.credentials).subscribe({
-        next: (response: { token: any; }) => {
-          this.authService.saveToken(response.token);
-          this.authService.saveStorage("username",this.credentials.username);
-          this.authService.getDataNascimento().subscribe(res => {
-            const dataNascimento = res.data;
-              this.authService.saveStorage("datanascimento",dataNascimento);
-            this.router.navigate(['/salas']);
-          });
-        },
-        error: (err: any) => {
-          this.tentandoLogar = false;
-          throw err;
-        },
-      });
+    this.authService.login(this.credentials).subscribe({
+      next: (response: { token: any; }) => {
+        this.authService.saveToken(response.token);
+        this.authService.saveStorage("username", this.credentials.username);
+        this.authService.getDataNascimento().subscribe(res => {
+          const dataNascimento = res.data;
+          this.authService.saveStorage("datanascimento", dataNascimento);
+
+          // Redireciona para a URL original ou para /salas se não houver
+          const redirectUrl = this.authService.getStorage('redirectUrl') || '/salas';
+          this.authService.deleteStorage('redirectUrl');
+          this.router.navigateByUrl(redirectUrl);
+        });
+      },
+      error: (err: any) => {
+        this.tentandoLogar = false;
+        throw err;
+      },
+    });
   }
 
-  cadastrar(){
+  cadastrar() {
     this.router.navigate(['/register']);
   }
 
-  esqueciSenha(){
+  esqueciSenha() {
     this.router.navigate(['/forget']);
   }
 }
