@@ -14,18 +14,18 @@
           <div class="xadrez-config card">
             <div class="card-header"><b>⚙️ Configurar partida</b></div>
             <div class="card-body" style="display:flex; flex-direction:column; gap:8px;">
-              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                <label style="min-width:60px;">⬜ Brancas:</label>
-                <select class="form-select form-select-sm" style="width:160px;" [(ngModel)]="configurandoBrancas">
+              <div style="display:flex; gap:8px; align-items:center; min-width:0;">
+                <label style="white-space:nowrap; flex-shrink:0;">⬜ Brancas:</label>
+                <select class="form-select form-select-sm" style="flex:1; min-width:0;" [(ngModel)]="configurandoBrancas">
                   <option value="">-- escolher --</option>
                   @for (j of jogadores; track j) {
                     <option [value]="j">{{j}}</option>
                   }
                 </select>
               </div>
-              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                <label style="min-width:60px;">⬛ Pretas:</label>
-                <select class="form-select form-select-sm" style="width:160px;" [(ngModel)]="configurandoPretas">
+              <div style="display:flex; gap:8px; align-items:center; min-width:0;">
+                <label style="white-space:nowrap; flex-shrink:0;">⬛ Pretas:</label>
+                <select class="form-select form-select-sm" style="flex:1; min-width:0;" [(ngModel)]="configurandoPretas">
                   <option value="">-- escolher --</option>
                   @for (j of jogadores; track j) {
                     <option [value]="j">{{j}}</option>

@@ -118,14 +118,16 @@
 // Histórico: coluna lateral em desktop, bloco abaixo em mobile
 .xadrez-historico {
   flex: 1 1 0;
-  min-width: 400px;
-  //max-width: 600px;
+  min-width: 300px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 
   @media (max-width: 768px) {
+    min-width: 0;
     max-width: 100%;
+    width: 100%;
   }
 }
 
