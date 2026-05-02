@@ -15,6 +15,7 @@ import { categoriaMap, formatarCapacidade } from '../../../../models/salas/domai
 import { NoAutocompleteDirective } from '../../../../diretivas/no-autocomplete/no-autocomplete.directive';
 import { MaxDigitsDirective } from '../../../../diretivas/max-digits/max-digits.directive';
 import { GlobalErrorHandler } from '../../../../providers/exceptions/GlobalErrorHandler';
+import { XadrezComponent } from './jogos/xadrez/xadrez.component';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -27,7 +28,8 @@ import { GlobalErrorHandler } from '../../../../providers/exceptions/GlobalError
     WhoIsTheImpostorComponent,
     FormsModule,
     NoAutocompleteDirective,
-    MaxDigitsDirective
+    MaxDigitsDirective,
+    XadrezComponent
   ],
   templateUrl: './dentro-da-sala.component.html',
   styleUrl: './dentro-da-sala.component.scss'

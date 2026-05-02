@@ -1,0 +1,240 @@
+<div class="xadrez-container">
+
+  @if (!estado) {
+    <div class="carregando">Carregando xadrez...</div>
+  } @else {
+
+    <div class="xadrez-layout">
+
+      <!-- ── Coluna principal ── -->
+      <div class="xadrez-principal">
+
+        <!-- Configuração (só dono, sem partida em andamento) -->
+        @if (ehDono && !estado.partidaEmAndamento) {
+          <div class="xadrez-config card">
+            <div class="card-header"><b>⚙️ Configurar partida</b></div>
+            <div class="card-body" style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <label style="min-width:60px;">⬜ Brancas:</label>
+                <select class="form-select form-select-sm" style="width:160px;" [(ngModel)]="configurandoBrancas">
+                  <option value="">-- escolher --</option>
+                  @for (j of jogadores; track j) {
+                    <option [value]="j">{{j}}</option>
+                  }
+                </select>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <label style="min-width:60px;">⬛ Pretas:</label>
+                <select class="form-select form-select-sm" style="width:160px;" [(ngModel)]="configurandoPretas">
+                  <option value="">-- escolher --</option>
+                  @for (j of jogadores; track j) {
+                    <option [value]="j">{{j}}</option>
+                  }
+                </select>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <label style="min-width:60px;">Notação:</label>
+                <span style="font-size:14px; color:var(--text-color2);">Inglesa (N=cavalo, Q=dama, R=torre, K=rei )</span>
+              </div>
+              <button class="btn btn-success btn-sm" style="width:fit-content;"
+                [disabled]="!configurandoBrancas || !configurandoPretas"
+                (click)="configurarEIniciar()">▶ Iniciar partida</button>
+            </div>
+          </div>
+        }
+
+        <!-- Não-dono aguardando o dono configurar -->
+        @if (!ehDono && !estado.partidaEmAndamento) {
+          <div class="carregando">⚙️ O dono está configurando a partida...</div>
+        }
+
+        <!-- Info (apenas durante partida em andamento) -->
+        @if (estado.partidaEmAndamento) {
+          <div class="xadrez-info">
+            <span>⬜ <b>{{estado.usernameBrancas ?? '?'}}</b></span>
+            <span style="margin:0 8px;">vs</span>
+            <span>⬛ <b>{{estado.usernamePretas ?? '?'}}</b></span>
+            <span style="margin-left:12px; font-size:12px; color:var(--text-color2);">
+              Notação: {{estado.notacao === 'PORTUGUESA' ? 'Portuguesa' : 'Inglesa'}}
+            </span>
+          </div>
+        }
+
+        <!-- Partida em andamento -->
+        @if (estado.partidaEmAndamento) {
+          <div class="xadrez-partida">
+
+            <div class="xadrez-vez">
+              @if (estado.vezDasBrancas) {
+                <span>⬜ Vez das <b>brancas</b> ({{estado.usernameBrancas}})</span>
+              } @else {
+                <span>⬛ Vez das <b>pretas</b> ({{estado.usernamePretas}})</span>
+              }
+            </div>
+
+            @if (estado.propostaEmpate) {
+              <div class="xadrez-proposta-empate">
+                <span>🤝 {{estado.propostaEmpate === 'BRANCAS' ? estado.usernameBrancas : estado.usernamePretas}} propôs empate.</span>
+                @if (meuLado && meuLado !== estado.propostaEmpate) {
+                  <button class="btn btn-sm btn-success" (click)="responderEmpate(true)">Aceitar</button>
+                  <button class="btn btn-sm btn-secondary" (click)="responderEmpate(false)">Recusar</button>
+                }
+              </div>
+            }
+
+            <div class="xadrez-pgn">
+              @for (linha of pgnFormatado; track $index) {
+                <div class="pgn-linha">{{linha}}</div>
+              }
+              @if (pgnFormatado.length === 0) {
+                @if (meuLado === 'BRANCAS' && estado.vezDasBrancas) {
+                  <div class="pgn-vazio">Faça o primeiro lance...</div>
+                } @else {
+                  <div class="pgn-vazio">Aguardando primeiro lance...</div>
+                }
+              }
+            </div>
+
+            @if (estado.lancesIlegaisBrancas > 0 || estado.lancesIlegaisPretas > 0) {
+              <div class="xadrez-ilegais">
+                ⚠️ Lances ilegais — ⬜ {{estado.lancesIlegaisBrancas}} | ⬛ {{estado.lancesIlegaisPretas}}
+              </div>
+            }
+
+            @if (minhaVez) {
+              <div class="xadrez-input">
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  noAutocomplete
+                  placeholder="Lance (ex: e4, Nf3, O-O)"
+                  [(ngModel)]="sanInput"
+                  (input)="onSanInput($event)"
+                  (keydown)="onKeyEnter($event)"
+                  maxlength="10"
+                  style="width:180px; background-color:var(--background-color2); color:var(--text-color); border-color:var(--text-color2);">
+                @if (!enviandoLance) {
+                  <button class="btn btn-sm btn-primary" (click)="enviarLance()" [disabled]="!sanInput.trim()">Jogar</button>
+                } @else {
+                  <button class="btn btn-sm btn-secondary" disabled>
+                    <span class="spinner-border spinner-border-sm"></span>
+                  </button>
+                }
+              </div>
+              @if (erroLance) {
+                <div class="xadrez-erro">⚠️ {{erroLance}}</div>
+              }
+            }
+
+            @if (meuLado) {
+              <div class="xadrez-acoes">
+                <button class="btn btn-sm btn-danger" (click)="modalDesistir = true">🏳 Desistir</button>
+                @if (!estado.propostaEmpate) {
+                  <button class="btn btn-sm btn-outline-secondary" (click)="modalEmpate = true">🤝 Propor empate</button>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Resultado da última partida -->
+        @if (!estado.partidaEmAndamento && resultadoTexto) {
+          <div class="xadrez-resultado">
+            <b>{{resultadoTexto}}</b>
+          </div>
+        }
+
+      </div><!-- /xadrez-principal -->
+
+      <!-- ── Coluna do histórico ── -->
+      <div class="xadrez-historico">
+        @if (estado.historico && estado.historico.length > 0) {
+          <button class="btn btn-sm btn-outline-secondary" (click)="historicoExpandido = !historicoExpandido">
+            {{historicoExpandido ? '▲ Ocultar' : '▼ Histórico'}} ({{estado.historico.length}} partidas)
+          </button>
+          @if (historicoExpandido) {
+            <div class="historico-lista">
+              @for (p of historicoPaginado; track p.id) {
+                <div class="historico-item">
+                  <div class="historico-titulo">
+                    <b>#{{p.id}}</b>
+                    @if (p.usernameBrancas || p.usernamePretas) {
+                      — ⬜ {{p.usernameBrancas ?? '?'}} vs ⬛ {{p.usernamePretas ?? '?'}}
+                    }
+                    — {{p.resultado}} {{p.motivo ? '/ ' + p.motivo : ''}}
+                  </div>
+                  <button class="btn btn-sm btn-outline-secondary" style="width:fit-content;" (click)="copiarPgn(p)">
+                    {{partidaCopiada === p.id ? '✓ Copiado!' : '📋 Copiar PGN'}}
+                  </button>
+                  <div class="historico-pgn">{{pgnTruncado(p)}}</div>
+                  @if (precisaTruncar(p)) {
+                    <button class="btn btn-sm btn-link historico-ver-mais" (click)="togglePgn(p.id)">
+                      Ver todos os lances
+                    </button>
+                  }
+                  @if (estaExpandido(p)) {
+                    <button class="btn btn-sm btn-link historico-ver-mais" (click)="togglePgn(p.id)">
+                      Ver menos
+                    </button>
+                  }
+                  @if (p.lancesIlegaisBrancas > 0 || p.lancesIlegaisPretas > 0) {
+                    <div class="historico-ilegais">
+                      ⚠️ Ilegais — ⬜ {{p.lancesIlegaisBrancas}} | ⬛ {{p.lancesIlegaisPretas}}
+                    </div>
+                  }
+                </div>
+              }
+              @if (totalPaginasHistorico > 1) {
+                <div class="historico-paginacao">
+                  <button class="btn btn-sm btn-outline-secondary"
+                    [disabled]="historicoPagina === 1"
+                    (click)="paginaAnterior()">‹</button>
+                  <span>{{historicoPagina}} / {{totalPaginasHistorico}}</span>
+                  <button class="btn btn-sm btn-outline-secondary"
+                    [disabled]="historicoPagina === totalPaginasHistorico"
+                    (click)="proximaPagina()">›</button>
+                </div>
+              }
+            </div>
+          }
+        } @else {
+          <div class="historico-lista">
+            <div class="historico-item">
+              <div class="historico-pgn pgn-vazio">Nenhuma partida no histórico.</div>
+            </div>
+          </div>
+        }
+      </div>
+
+    </div><!-- /xadrez-layout -->
+
+    <!-- Modais (fora do layout para não afetar o fluxo) -->
+    @if (modalDesistir) {
+      <div class="modal-overlay" (click)="modalDesistir = false">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <h2>🏳 Desistir</h2>
+          <p>Tem certeza que deseja desistir da partida?</p>
+          <div class="modal-opcoes">
+            <button class="btn btn-danger" (click)="desistir()">Desistir</button>
+            <button class="btn btn-secondary" (click)="modalDesistir = false">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (modalEmpate) {
+      <div class="modal-overlay" (click)="modalEmpate = false">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <h2>🤝 Propor empate</h2>
+          <p>Deseja propor empate ao adversário?</p>
+          <div class="modal-opcoes">
+            <button class="btn btn-primary" (click)="proporEmpate()">Propor</button>
+            <button class="btn btn-secondary" (click)="modalEmpate = false">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    }
+
+  }
+
+</div>

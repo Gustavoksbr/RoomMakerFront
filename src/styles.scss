@@ -1,20 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
-*{
+* {
   margin: 0;
   padding: 0;
 }
 
-html{
+html {
   background-color: var(--background-color);
 }
 
 
-*{
+* {
   font-family: 'Roboto', sans-serif;
 }
 
-:root { // tema escuro por padrao
+:root {
+  // tema escuro por padrao
   --background-color: #121212;
   --background-color-reverse: #ffffff;
   --border-color-sem-tema-claro: #6e6d6d;
@@ -25,7 +26,8 @@ html{
   --text-color2: darkgrey;
 
   --background-color2: #333333;
-  --background-color2-reverse: lightgrey;;
+  --background-color2-reverse: lightgrey;
+  ;
   --background-color3: #474747;
   --text-color-link: lightblue;
 
@@ -44,6 +46,7 @@ html{
   --highlight-color2: #877c04;
   --highlight-color3: #662222;
 }
+
 [data-theme="claro"] {
   --background-color: #ffffff;
   --background-color-reverse: #000000;
@@ -61,8 +64,8 @@ html{
   --text-color-link: blue;
 
   --background-color-scrollbar-default: lightgrey;
-  --background-color-scrollbar-hover:#666;
-  --background-color-scrollbar-active:#555;
+  --background-color-scrollbar-hover: #666;
+  --background-color-scrollbar-active: #555;
 
   --background-lista: cornflowerblue;
 
@@ -86,12 +89,13 @@ html{
   background-color: var(--background-lista);
 
 }
+
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: var(--background-color-scrollbar-default);
 }
 
-.carregando{
+.carregando {
   color: var(--text-color);
   display: flex;
   flex-direction: row;
@@ -107,23 +111,79 @@ html{
 //[data-theme="claro"] input[type="date"]::-webkit-calendar-picker-indicator  {
 //  filter: invert(0);
 //}
-.label-input{
+.label-input {
   display: flex;
   flex-direction: row;
 
   gap: 15px;
   align-items: center;
 }
+
 .nao-copiavel {
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
 }
 
-.hover-crescer{
+.hover-crescer {
   transition: transform 0.25s ease;
-  &:hover{
+
+  &:hover {
     transform: scale(1.05);
   }
 }
 
+// ── Tema: inputs e selects do Bootstrap respeitam as variáveis de cor ──────────
+.form-control,
+.form-select {
+  background-color: var(--background-color2) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color-sem-tema-claro) !important;
+
+  &:focus {
+    background-color: var(--background-color2) !important;
+    color: var(--text-color) !important;
+    border-color: var(--highlight-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(30, 98, 205, 0.25) !important;
+  }
+
+  &::placeholder {
+    color: var(--text-color2) !important;
+    opacity: 0.7;
+  }
+}
+
+// Opções dentro do select herdam o tema
+.form-select option {
+  background-color: var(--background-color2);
+  color: var(--text-color);
+}
+
+// Checkbox / switch do Bootstrap
+.form-check-input {
+  background-color: var(--background-color2) !important;
+  border-color: var(--border-color-sem-tema-claro) !important;
+
+  &:checked {
+    background-color: var(--highlight-color) !important;
+    border-color: var(--highlight-color) !important;
+  }
+}
+
+// Labels globais
+label {
+  color: var(--text-color);
+}
+
+// Cards do Bootstrap
+.card {
+  background-color: var(--background-color2) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color-sem-tema-claro) !important;
+}
+
+.card-header {
+  background-color: var(--background-color3) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color-sem-tema-claro) !important;
+}

@@ -14,6 +14,7 @@ export const categoriaMap: Record<string, string> = {
   ["jokenpo"]: "Jokenpô",
   ["tictactoe"]: "Jogo da Velha",
   ["whoistheimpostor"]: "Quem é o impostor?",
+  ["xadrez"]: "Xadrez às cegas",
 };
 
 // Capacidade "infinita" — exibida como ∞ na UI, mas internamente é este número

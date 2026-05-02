@@ -120,6 +120,14 @@
             </div>
           </div>
         }
+        @else if(sala.categoria == 'xadrez') {
+          <div>
+            <h2>♟ Xadrez às cegas</h2>
+            <div class="card categoria">
+              <app-xadrez [topic]="topic" [app]="app" [stompClient]="stompClient" [jogadorDono]="sala.usernameDono" [jogadorNomeSala]="sala.nome" [outrosJogadores]="sala.usernameParticipantes"/>
+            </div>
+          </div>
+        }
         <div>
           <h2>Chat</h2>
           <div class="card categoria">

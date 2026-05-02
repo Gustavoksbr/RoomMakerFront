@@ -34,7 +34,7 @@ export class CriarSalaComponent {
   public tentandoCriar: boolean = false;
 
   public soPodeDois(): boolean {
-    return this.sala.categoria == "tictactoe" || this.sala.categoria == "jokenpo";
+    return this.sala.categoria == "tictactoe" || this.sala.categoria == "jokenpo" || this.sala.categoria == "xadrez";
   }
 
   public noMinimoTres(): boolean {

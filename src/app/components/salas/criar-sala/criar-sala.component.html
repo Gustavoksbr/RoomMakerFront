@@ -34,7 +34,7 @@
         (change)="onCategoriaChange()"
         name="categoria"
         required>
-  @for (categoria of ["chat","jokenpo","tictactoe","whoistheimpostor"] ; track $index) {
+  @for (categoria of ["chat","jokenpo","tictactoe","whoistheimpostor","xadrez"] ; track $index) {
     <option value="{{categoria}}" >
       {{categoriaMap[categoria]}}
     </option>
