@@ -129,8 +129,13 @@ export class XadrezComponent implements OnInit {
     modalDesistir: boolean = false;
     modalEmpate: boolean = false;
 
+    // áudio de notificação
+    private audioNotificacao: HTMLAudioElement | null = null;
+
     constructor(private websocketService: WebSocketService, private authService: AuthService, private xadrezService: XadrezService) {
         this.username = authService.getStorage('username')!;
+        // Inicializa o áudio de notificação
+        this.audioNotificacao = new Audio('notificacao.wav');
     }
 
     ngOnInit(): void {
@@ -142,8 +147,21 @@ export class XadrezComponent implements OnInit {
 
         // Recebe atualizações em tempo real via WebSocket
         this.websocketService.subscribe(this.stompClient, this.topic + '/xadrez', (msg: XadrezResponse) => {
+            // Verifica se agora é minha vez (significa que o oponente acabou de jogar)
+            const agoraEhMinhaVez = msg.partidaEmAndamento && (
+                msg.vezDasBrancas
+                    ? this.username === msg.usernameBrancas
+                    : this.username === msg.usernamePretas
+            );
+
             this.estado = msg;
             this.enviandoLance = false;
+
+            // Toca som quando o oponente faz um lance (agora é minha vez após o lance dele)
+            if (msg.evento === 'LANCE' && agoraEhMinhaVez) {
+                this.tocarSomNotificacao();
+            }
+
             if (msg.evento === 'LANCE' || msg.evento === 'FIM' || msg.evento === 'PARTIDA_INICIADA') {
                 this.erroLance = null;
                 this.sanInput = '';
@@ -291,5 +309,14 @@ export class XadrezComponent implements OnInit {
 
     onKeyEnter(event: KeyboardEvent): void {
         if (event.key === 'Enter') this.enviarLance();
+    }
+
+    private tocarSomNotificacao(): void {
+        if (this.audioNotificacao) {
+            this.audioNotificacao.currentTime = 0; // Reinicia o áudio caso já esteja tocando
+            this.audioNotificacao.play().catch(err => {
+                console.warn('Não foi possível tocar o som de notificação:', err);
+            });
+        }
     }
 }
