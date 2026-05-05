@@ -28,4 +28,5 @@ export interface PartidaXadrezResumo {
     lancesIlegaisPretas: number;
     usernameBrancas: string | null;
     usernamePretas: string | null;
+    notacao: 'PORTUGUESA' | 'INGLESA' | null;
 }

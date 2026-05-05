@@ -164,6 +164,7 @@
                     @if (p.usernameBrancas || p.usernamePretas) {
                       — ⬜ {{p.usernameBrancas ?? '?'}} vs ⬛ {{p.usernamePretas ?? '?'}}
                     }
+                    — 📝 {{p.notacao === 'PORTUGUESA' ? 'Português' : p.notacao === 'INGLESA' ? 'Inglês' : 'N/A'}}
                     — {{p.resultado}} {{p.motivo ? '/ ' + p.motivo : ''}}
                   </div>
                   <button class="btn btn-sm btn-outline-secondary" style="width:fit-content;" (click)="copiarPgn(p)">
