@@ -12,12 +12,18 @@
 <form (submit)="login()" class="form-group">
   <div class="mb-3 label-input label-input-username">
     <label for="username" >Username: </label>
-    <input type="text" [(ngModel)]="credentials.username" class="form-control"  required id="username" name="username" />
+    <input type="text" [(ngModel)]="credentials.username" class="form-control" [class.is-invalid]="errorMessage" required id="username" name="username" />
   </div>
   <div class="mb-3 label-input label-input-senha">
     <label for="password" ><p>Senha:</p> </label>
-    <input type="password" [(ngModel)]="credentials.password" class="form-control"  required id="password" name="password" togglePassword/>
+    <input type="password" [(ngModel)]="credentials.password" class="form-control" [class.is-invalid]="errorMessage" required id="password" name="password" togglePassword/>
   </div>
+
+  @if (errorMessage) {
+    <div class="error-message">
+      ⚠️ {{errorMessage}}
+    </div>
+  }
 
     @if (!tentandoLogar){
       <button type="submit" class="btn btn-primary">

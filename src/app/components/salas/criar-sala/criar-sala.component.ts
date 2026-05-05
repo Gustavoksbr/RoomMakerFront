@@ -32,6 +32,7 @@ export class CriarSalaComponent {
   }
   public publica: boolean = false;
   public tentandoCriar: boolean = false;
+  public errorMessage: string = '';
 
   public soPodeDois(): boolean {
     return this.sala.categoria == "tictactoe" || this.sala.categoria == "jokenpo" || this.sala.categoria == "xadrez";
@@ -63,6 +64,7 @@ export class CriarSalaComponent {
 
   criarSalaRequest() {
     this.tentandoCriar = true;
+    this.errorMessage = '';
     this.service.criar(this.sala).subscribe({
       next: (response: any) => {
         this.router.navigate([`/salas/${this.username}/${this.sala.nome}`])
@@ -70,7 +72,7 @@ export class CriarSalaComponent {
       },
       error: (err: any) => {
         this.tentandoCriar = false;
-        throw err;
+        this.errorMessage = err.error || 'Erro ao criar sala. Tente novamente.';
       },
     });
   }

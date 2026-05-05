@@ -1,17 +1,17 @@
-
-.criar-sala{
+.criar-sala {
 
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  h3{
+
+  h3 {
     color: var(--text-color);
   }
 }
 
-.container-forms{
+.container-forms {
   //width: 600px;
   //height: 450px;
   width: 80%;
@@ -21,48 +21,64 @@
   align-items: center;
   background-color: var(--background-color);
   border: 1px solid var(--text-color);
-  label{
+
+  label {
     color: var(--text-color);
   }
 }
 
-.formulario{
+.formulario {
   width: 80%;
   height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  input,select{
+
+  input,
+  select {
     background-color: var(--background-color);
     color: var(--text-color);
     border: 1px solid var(--text-color);
   }
-  select{
+
+  select {
     min-width: 150px;
   }
-  ::placeholder{
+
+  ::placeholder {
     color: var(--text-color);
   }
 }
 
-.selecionarCategoria{
+.selecionarCategoria {
   width: 30%;
 }
 
 #flexSwitchCheckDefault:checked {
   background-color: blue;
 }
-.acoes{
+
+.acoes {
   margin: 10px;
   display: flex;
   justify-content: space-around;
 }
 
-@media (min-width: 950px ) {
-  .formulario{
+@media (min-width: 950px) {
+  .formulario {
     width: 338px
   }
-  .container-forms{
+
+  .container-forms {
     width: 467px;
   }
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: 500;
+  width: 100%;
 }

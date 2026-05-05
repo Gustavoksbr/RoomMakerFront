@@ -13,8 +13,8 @@
   height: 850px;
 }
 
-.label-input{
-  label{
+.label-input {
+  label {
     min-width: 100px;
   }
 }
@@ -58,4 +58,18 @@
     width: 300px;
   }
 
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: -8px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
 }

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {AuthService} from '../../../services/auth/auth.service';
-import {HomeComponent} from '../../home/home.component';
-import {Router} from '@angular/router';
-import {TogglePasswordDirective} from '../../../diretivas/only-alphanumeric/toggle-password.directive';
-import {OnlyAlphanumericDirective} from '../../../diretivas/only-alphanumeric/only-alphanumeric.divective';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth/auth.service';
+import { HomeComponent } from '../../home/home.component';
+import { Router } from '@angular/router';
+import { TogglePasswordDirective } from '../../../diretivas/only-alphanumeric/toggle-password.directive';
+import { OnlyAlphanumericDirective } from '../../../diretivas/only-alphanumeric/only-alphanumeric.divective';
 
 @Component({
   selector: 'app-register',
@@ -20,29 +20,31 @@ import {OnlyAlphanumericDirective} from '../../../diretivas/only-alphanumeric/on
 })
 export class RegisterComponent {
   public tentandoCadastrar = false;
-  user = { username: '', email:'', password: '' ,dataNascimento:''};
+  user = { username: '', email: '', password: '', dataNascimento: '' };
+  errorMessage: string = '';
 
-  constructor(private authService: AuthService,  private router:Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   register() {
     this.tentandoCadastrar = true;
+    this.errorMessage = '';
     this.authService.register(this.user).subscribe({
       next: (response: { token: any; }) => {
         this.authService.saveToken(response.token);
-        this.authService.saveStorage("username",this.user.username);
+        this.authService.saveStorage("username", this.user.username);
         this.authService.getDataNascimento().subscribe(res => {
           const dataNascimento = res.data;
-          this.authService.saveStorage("datanascimento",dataNascimento);
+          this.authService.saveStorage("datanascimento", dataNascimento);
           this.router.navigate(['/salas']);
         });
       },
       error: (err: any) => {
         this.tentandoCadastrar = false;
-        throw err;
+        this.errorMessage = err.error || 'Erro ao cadastrar. Tente novamente.';
       },
     });
   }
-  logar(){
+  logar() {
     this.router.navigate(['/login']);
   }
 }

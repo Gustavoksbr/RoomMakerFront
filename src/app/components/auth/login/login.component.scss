@@ -4,7 +4,7 @@
   cursor: pointer;
 }
 
-.container-login{
+.container-login {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
   height: 850px;
 }
 
-.login{
+.login {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,7 +25,7 @@
   gap: 10px;
 }
 
-form{
+form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,22 +33,23 @@ form{
 
 
 
-.label-input-username{
+.label-input-username {
   width: 300px;
 }
 
-.label-input-senha{
+.label-input-senha {
   width: 300px;
-  label{
+
+  label {
     min-width: 78px;
   }
 }
 
-form{
+form {
   margin-bottom: 10px;
 }
 
-.login form input{
+.login form input {
   background-color: var(--background-color);
   color: var(--text-color);
   //caret-color: var(--text-color);
@@ -59,7 +60,21 @@ form{
 }
 
 
-.login h3{
+.login h3 {
   text-align: center;
   margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: -8px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
 }

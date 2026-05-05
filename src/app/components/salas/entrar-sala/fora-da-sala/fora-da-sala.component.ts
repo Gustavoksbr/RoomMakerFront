@@ -35,19 +35,26 @@ export class ForaDaSalaComponent {
     usernameDono: '',
     senha: '',
   }
+  errorMessage: string = '';
 
   @Output() enviarSala = new EventEmitter<EntrarSalaRequest>();
+  @Output() enviarErro = new EventEmitter<string>();
 
   // futuramente seria bom implementar um carregando
   // public carregando: boolean = false;
   entrarSala() {
     // this.tentandoEntrar = true;
     // setTimeout(() => {
+    this.errorMessage = '';
     this.salaRequest.nome = this.salaParaEntrar.nome;
     this.salaRequest.usernameDono = this.salaParaEntrar.usernameDono;
     this.enviarSala.emit(this.salaRequest);
     // }, 3000);
     //    this.tentandoEntrar = false;
+  }
+
+  setError(message: string) {
+    this.errorMessage = message;
   }
 
   protected readonly categoriaMap = categoriaMap;

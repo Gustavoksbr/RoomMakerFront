@@ -28,6 +28,7 @@
       id="salaSenha"
       type="password"
       class="form-control"
+      [class.is-invalid]="errorMessage"
       [(ngModel)]="salaRequest.senha"
       name="senha"
       required
@@ -35,6 +36,9 @@
       noAutocomplete
     >
   </div>
+  }
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
   }
   <div class="form-group mt-3 entrar">
     <button (click)="entrarSala()" class="btn btn-primary">Entrar</button>

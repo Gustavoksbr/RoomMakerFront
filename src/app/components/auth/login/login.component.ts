@@ -21,6 +21,7 @@ export class LoginComponent {
   tentandoLogar = false;
   credentials = { username: '', password: '' };
   redirectUrl: string | null = null;
+  errorMessage: string = '';
 
   constructor(
     private authService: AuthService,
@@ -31,6 +32,7 @@ export class LoginComponent {
 
   login() {
     this.tentandoLogar = true;
+    this.errorMessage = '';
     this.authService.login(this.credentials).subscribe({
       next: (response: { token: any; }) => {
         this.authService.saveToken(response.token);
@@ -47,7 +49,7 @@ export class LoginComponent {
       },
       error: (err: any) => {
         this.tentandoLogar = false;
-        throw err;
+        this.errorMessage = err.error || 'Erro ao fazer login. Tente novamente.';
       },
     });
   }
