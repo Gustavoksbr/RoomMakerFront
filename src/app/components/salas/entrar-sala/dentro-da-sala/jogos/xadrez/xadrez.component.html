@@ -32,9 +32,12 @@
                   }
                 </select>
               </div>
-              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                <label style="min-width:60px;">Notação:</label>
-                <span style="font-size:14px; color:var(--text-color2);">Inglesa (N=cavalo, Q=dama, R=torre, K=rei )</span>
+              <div style="display:flex; gap:8px; align-items:center; min-width:0;">
+                <label style="white-space:nowrap; flex-shrink:0;">📝 Notação:</label>
+                <select class="form-select form-select-sm" style="flex:1; min-width:0;" [(ngModel)]="configurandoNotacao">
+                  <option value="INGLESA">Inglesa (K=rei, Q=dama, R=torre, N=cavalo)</option>
+                  <option value="PORTUGUESA">Portuguesa (R=rei, D=dama, T=torre, C=cavalo)</option>
+                </select>
               </div>
               <button class="btn btn-success btn-sm" style="width:fit-content;"
                 [disabled]="!configurandoBrancas || !configurandoPretas"
@@ -107,7 +110,7 @@
                   type="text"
                   class="form-control form-control-sm"
                   noAutocomplete
-                  placeholder="Lance (ex: e4, Nf3, O-O)"
+                  [placeholder]="estado.notacao === 'PORTUGUESA' ? 'Lance (ex: e4, Cf3, O-O)' : 'Lance (ex: e4, Nf3, O-O)'"
                   [(ngModel)]="sanInput"
                   (input)="onSanInput($event)"
                   (keydown)="onKeyEnter($event)"

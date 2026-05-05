@@ -8,9 +8,11 @@ import { NgClass, NgIf, NgFor } from '@angular/common';
 import { XadrezResponse, PartidaXadrezResumo } from '../../../../../../models/xadrez/XadrezResponse';
 import { NoAutocompleteDirective } from '../../../../../../diretivas/no-autocomplete/no-autocomplete.directive';
 
-// Regex para bloquear caracteres impossíveis em SAN de xadrez
-// Permite: a-h, 1-8, K Q R B N O = + # x - ! ?
-const SAN_CHARS_REGEX = /^[a-hKQRBNO1-8=+#x\-!?]*$/;
+// Regex para notação INGLESA: K Q R B N (Rei, Dama, Torre, Bispo, Cavalo)
+const SAN_CHARS_REGEX_INGLESA = /^[a-hKQRBNO1-8=+#x\-!?]*$/;
+
+// Regex para notação PORTUGUESA: R D T B C (Rei, Dama, Torre, Bispo, Cavalo)
+const SAN_CHARS_REGEX_PORTUGUESA = /^[a-hRDTBCO1-8=+#x\-!?]*$/;
 
 @Component({
     selector: 'app-xadrez',
@@ -35,10 +37,10 @@ export class XadrezComponent implements OnInit {
     enviandoLance: boolean = false;
     erroLance: string | null = null;
 
-    // configuração (só dono) — notação sempre INGLESA até implementar a portuguesa
+    // configuração (só dono) — notação pode ser escolhida
     configurandoBrancas: string = '';
     configurandoPretas: string = '';
-    readonly configurandoNotacao: 'PORTUGUESA' | 'INGLESA' = 'INGLESA';
+    configurandoNotacao: 'PORTUGUESA' | 'INGLESA' = 'INGLESA';
 
     // histórico expandido + paginação
     historicoExpandido: boolean = false;
@@ -236,8 +238,18 @@ export class XadrezComponent implements OnInit {
     onSanInput(event: Event): void {
         const input = event.target as HTMLInputElement;
         const valor = input.value;
-        if (!SAN_CHARS_REGEX.test(valor)) {
-            input.value = valor.replace(/[^a-hKQRBNO1-8=+#x\-!?]/g, '');
+
+        // Escolhe o regex baseado na notação configurada
+        const regex = this.estado?.notacao === 'PORTUGUESA'
+            ? SAN_CHARS_REGEX_PORTUGUESA
+            : SAN_CHARS_REGEX_INGLESA;
+
+        const caracteresPermitidos = this.estado?.notacao === 'PORTUGUESA'
+            ? /[^a-hRDTBCO1-8=+#x\-!?]/g
+            : /[^a-hKQRBNO1-8=+#x\-!?]/g;
+
+        if (!regex.test(valor)) {
+            input.value = valor.replace(caracteresPermitidos, '');
             this.sanInput = input.value;
         }
     }
