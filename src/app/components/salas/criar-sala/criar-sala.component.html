@@ -93,13 +93,13 @@
     >
   </div>
 
+  @if (errorMessage) {
+    <div class="error-message">
+      ⚠️ {{errorMessage}}
+    </div>
+  }
+
   <div class="acoes">
-    @if (errorMessage) {
-      <div class="error-message">
-        ⚠️ {{errorMessage}}
-      </div>
-    }
-    
     @if (!tentandoCriar){
       <button (click)="criarSalaRequest()" class="btn btn-primary">
         Salvar
