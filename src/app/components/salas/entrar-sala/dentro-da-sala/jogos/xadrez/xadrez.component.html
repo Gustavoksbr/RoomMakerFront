@@ -242,8 +242,9 @@
                     @if (p.usernameBrancas || p.usernamePretas) {
                       — ⬜ {{p.usernameBrancas ?? '?'}} vs ⬛ {{p.usernamePretas ?? '?'}}
                     }
-                    — 📝 {{p.notacao === 'PORTUGUESA' ? 'Português' : p.notacao === 'INGLESA' ? 'Inglês' : 'N/A'}}
-                    — {{p.resultado}} {{p.motivo ? '/ ' + p.motivo : ''}}
+                  </div>
+                  <div class="historico-resultado">
+                    {{p.resultado}} {{p.motivo ? '/ ' + p.motivo : ''}}
                   </div>
                   <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <button class="btn btn-sm btn-outline-secondary" style="width:fit-content;" (click)="copiarPgn(p)">
@@ -331,6 +332,9 @@
             <h3>Jogadores</h3>
             <p>⬜ Brancas: <b>{{partidaInfoSelecionada.usernameBrancas ?? 'N/A'}}</b></p>
             <p>⬛ Pretas: <b>{{partidaInfoSelecionada.usernamePretas ?? 'N/A'}}</b></p>
+            <p style="font-size:12px; color:var(--text-color2); margin-top:4px;">
+              📝 {{partidaInfoSelecionada.notacao === 'PORTUGUESA' ? 'Português' : partidaInfoSelecionada.notacao === 'INGLESA' ? 'Inglês' : 'N/A'}}
+            </p>
           </div>
 
           <div class="info-secao">
