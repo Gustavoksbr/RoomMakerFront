@@ -29,6 +29,44 @@
   border: 1px solid var(--border-color-sem-tema-claro);
 }
 
+// Configuração de tempo responsiva
+.tempo-config-grupo {
+  margin-bottom: 8px;
+}
+
+.tempo-inputs {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tempo-input {
+  width: 60px;
+  min-width: 50px;
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    width: 55px;
+    min-width: 45px;
+  }
+}
+
+.tempo-label {
+  font-size: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    font-size: 11px;
+  }
+}
+
+.tempo-separador {
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
 .xadrez-info {
   display: flex;
   align-items: center;
@@ -60,6 +98,11 @@
   border-radius: 8px;
   min-width: 140px;
   transition: all 0.3s ease;
+
+  @media (max-width: 480px) {
+    min-width: 120px;
+    padding: 8px 12px;
+  }
 }
 
 .relogio-ativo {
@@ -274,6 +317,9 @@
   gap: 12px;
   width: 30%;
   min-width: 260px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
   color: var(--text-color);
   background-color: var(--background-color2);
   padding: 24px;
@@ -283,6 +329,16 @@
   h2,
   p {
     margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    width: 85%;
+    padding: 20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 90%;
+    padding: 16px;
   }
 }
 
@@ -307,6 +363,28 @@
     font-size: 14px;
     margin: 4px 0;
   }
+
+  @media (max-width: 768px) {
+    width: 85%;
+    min-width: 280px;
+  }
+
+  @media (max-width: 480px) {
+    width: 90%;
+    min-width: 260px;
+
+    h2 {
+      font-size: 18px;
+    }
+
+    h3 {
+      font-size: 14px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
 }
 
 .info-secao {
@@ -323,5 +401,9 @@
   >div {
     flex: 1;
     min-width: 200px;
+
+    @media (max-width: 480px) {
+      min-width: 100%;
+    }
   }
 }

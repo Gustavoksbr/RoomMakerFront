@@ -52,42 +52,42 @@
 
                 @if (!tempoInfinito) {
                   <!-- Brancas -->
-                  <div style="margin-bottom:8px;">
+                  <div class="tempo-config-grupo">
                     <label style="font-size:12px; display:block; margin-bottom:4px;">⬜ Brancas:</label>
-                    <div style="display:flex; gap:4px; align-items:center;">
-                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                    <div class="tempo-inputs">
+                      <input type="number" class="form-control form-control-sm tempo-input"
                         [(ngModel)]="tempoBrancasMinutos" min="0" max="180" placeholder="min">
-                      <span style="font-size:12px;">min</span>
-                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                      <span class="tempo-label">min</span>
+                      <input type="number" class="form-control form-control-sm tempo-input"
                         [(ngModel)]="tempoBrancasSegundos" min="0" max="59" placeholder="seg">
-                      <span style="font-size:12px;">seg</span>
-                      <span style="margin:0 4px;">+</span>
-                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                      <span class="tempo-label">seg</span>
+                      <span class="tempo-separador">+</span>
+                      <input type="number" class="form-control form-control-sm tempo-input"
                         [(ngModel)]="incrementoBrancas" min="0" max="60" placeholder="inc">
-                      <span style="font-size:12px;">seg/lance</span>
+                      <span class="tempo-label">seg/lance</span>
                     </div>
                   </div>
 
                   <!-- Pretas -->
-                  <div style="margin-bottom:8px;">
-                    <label style="font-size:12px; display:flex; align-items:center; gap:4px; margin-bottom:4px;">
+                  <div class="tempo-config-grupo">
+                    <label style="font-size:12px; display:flex; align-items:center; gap:4px; margin-bottom:4px; flex-wrap:wrap;">
                       ⬛ Pretas:
                       <button type="button" class="btn btn-sm btn-outline-secondary" style="font-size:10px; padding:2px 6px;"
                         (click)="copiarTempoDasBrancas()">
                         = Brancas
                       </button>
                     </label>
-                    <div style="display:flex; gap:4px; align-items:center;">
-                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                    <div class="tempo-inputs">
+                      <input type="number" class="form-control form-control-sm tempo-input"
                         [(ngModel)]="tempoPretasMinutos" min="0" max="180" placeholder="min">
-                      <span style="font-size:12px;">min</span>
-                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                      <span class="tempo-label">min</span>
+                      <input type="number" class="form-control form-control-sm tempo-input"
                         [(ngModel)]="tempoPretasSegundos" min="0" max="59" placeholder="seg">
-                      <span style="font-size:12px;">seg</span>
-                      <span style="margin:0 4px;">+</span>
-                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                      <span class="tempo-label">seg</span>
+                      <span class="tempo-separador">+</span>
+                      <input type="number" class="form-control form-control-sm tempo-input"
                         [(ngModel)]="incrementoPretas" min="0" max="60" placeholder="inc">
-                      <span style="font-size:12px;">seg/lance</span>
+                      <span class="tempo-label">seg/lance</span>
                     </div>
                   </div>
                 }
