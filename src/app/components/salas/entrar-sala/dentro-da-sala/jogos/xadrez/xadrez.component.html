@@ -39,6 +39,60 @@
                   <option value="PORTUGUESA">Portuguesa (R=rei, D=dama, T=torre, C=cavalo)</option>
                 </select>
               </div>
+
+              <!-- Configuração de Tempo -->
+              <div style="border-top: 1px solid var(--text-color); padding-top: 8px; margin-top: 4px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                  <label style="white-space:nowrap; flex-shrink:0; font-weight:bold;">⏱️ Tempo:</label>
+                  <label style="display:flex; align-items:center; gap:4px; font-size:12px;">
+                    <input type="checkbox" [(ngModel)]="tempoInfinito" (change)="onTempoInfinitoChange()">
+                    Tempo infinito
+                  </label>
+                </div>
+
+                @if (!tempoInfinito) {
+                  <!-- Brancas -->
+                  <div style="margin-bottom:8px;">
+                    <label style="font-size:12px; display:block; margin-bottom:4px;">⬜ Brancas:</label>
+                    <div style="display:flex; gap:4px; align-items:center;">
+                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                        [(ngModel)]="tempoBrancasMinutos" min="0" max="180" placeholder="min">
+                      <span style="font-size:12px;">min</span>
+                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                        [(ngModel)]="tempoBrancasSegundos" min="0" max="59" placeholder="seg">
+                      <span style="font-size:12px;">seg</span>
+                      <span style="margin:0 4px;">+</span>
+                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                        [(ngModel)]="incrementoBrancas" min="0" max="60" placeholder="inc">
+                      <span style="font-size:12px;">seg/lance</span>
+                    </div>
+                  </div>
+
+                  <!-- Pretas -->
+                  <div style="margin-bottom:8px;">
+                    <label style="font-size:12px; display:flex; align-items:center; gap:4px; margin-bottom:4px;">
+                      ⬛ Pretas:
+                      <button type="button" class="btn btn-sm btn-outline-secondary" style="font-size:10px; padding:2px 6px;"
+                        (click)="copiarTempoDasBrancas()">
+                        = Brancas
+                      </button>
+                    </label>
+                    <div style="display:flex; gap:4px; align-items:center;">
+                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                        [(ngModel)]="tempoPretasMinutos" min="0" max="180" placeholder="min">
+                      <span style="font-size:12px;">min</span>
+                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                        [(ngModel)]="tempoPretasSegundos" min="0" max="59" placeholder="seg">
+                      <span style="font-size:12px;">seg</span>
+                      <span style="margin:0 4px;">+</span>
+                      <input type="number" class="form-control form-control-sm" style="width:60px;"
+                        [(ngModel)]="incrementoPretas" min="0" max="60" placeholder="inc">
+                      <span style="font-size:12px;">seg/lance</span>
+                    </div>
+                  </div>
+                }
+              </div>
+
               <button class="btn btn-success btn-sm" style="width:fit-content;"
                 [disabled]="!configurandoBrancas || !configurandoPretas"
                 (click)="configurarEIniciar()">▶ Iniciar partida</button>
@@ -66,6 +120,30 @@
         <!-- Partida em andamento -->
         @if (estado.partidaEmAndamento) {
           <div class="xadrez-partida">
+
+            <!-- Relógios -->
+            @if (estado.tempoInicialBrancas !== null || estado.tempoInicialPretas !== null) {
+              <div class="xadrez-relogios">
+                <div class="relogio" [class.relogio-ativo]="estado.vezDasBrancas">
+                  <span class="relogio-jogador">⬜ {{estado.usernameBrancas}}</span>
+                  <span class="relogio-tempo" [class.relogio-critico]="tempoRestanteBrancasAtual !== null && tempoRestanteBrancasAtual < 30">
+                    {{formatarTempo(tempoRestanteBrancasAtual)}}
+                  </span>
+                  @if (estado.incrementoBrancas && estado.incrementoBrancas > 0) {
+                    <span class="relogio-incremento">+{{estado.incrementoBrancas}}s</span>
+                  }
+                </div>
+                <div class="relogio" [class.relogio-ativo]="!estado.vezDasBrancas">
+                  <span class="relogio-jogador">⬛ {{estado.usernamePretas}}</span>
+                  <span class="relogio-tempo" [class.relogio-critico]="tempoRestantePretasAtual !== null && tempoRestantePretasAtual < 30">
+                    {{formatarTempo(tempoRestantePretasAtual)}}
+                  </span>
+                  @if (estado.incrementoPretas && estado.incrementoPretas > 0) {
+                    <span class="relogio-incremento">+{{estado.incrementoPretas}}s</span>
+                  }
+                </div>
+              </div>
+            }
 
             <div class="xadrez-vez">
               @if (estado.vezDasBrancas) {
@@ -167,9 +245,14 @@
                     — 📝 {{p.notacao === 'PORTUGUESA' ? 'Português' : p.notacao === 'INGLESA' ? 'Inglês' : 'N/A'}}
                     — {{p.resultado}} {{p.motivo ? '/ ' + p.motivo : ''}}
                   </div>
-                  <button class="btn btn-sm btn-outline-secondary" style="width:fit-content;" (click)="copiarPgn(p)">
-                    {{partidaCopiada === p.id ? '✓ Copiado!' : '📋 Copiar PGN'}}
-                  </button>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn btn-sm btn-outline-secondary" style="width:fit-content;" (click)="copiarPgn(p)">
+                      {{partidaCopiada === p.id ? '✓ Copiado!' : '📋 Copiar PGN'}}
+                    </button>
+                    <button class="btn btn-sm btn-outline-info" style="width:fit-content;" (click)="abrirModalInfo(p)">
+                      ℹ️ Info
+                    </button>
+                  </div>
                   <div class="historico-pgn">{{pgnTruncado(p)}}</div>
                   @if (precisaTruncar(p)) {
                     <button class="btn btn-sm btn-link historico-ver-mais" (click)="togglePgn(p.id)">
@@ -234,6 +317,52 @@
           <div class="modal-opcoes">
             <button class="btn btn-primary" (click)="proporEmpate()">Propor</button>
             <button class="btn btn-secondary" (click)="modalEmpate = false">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (modalInfo && partidaInfoSelecionada) {
+      <div class="modal-overlay" (click)="fecharModalInfo()">
+        <div class="modal-content modal-info" (click)="$event.stopPropagation()">
+          <h2>ℹ️ Informações da Partida #{{partidaInfoSelecionada.id}}</h2>
+          
+          <div class="info-secao">
+            <h3>Jogadores</h3>
+            <p>⬜ Brancas: <b>{{partidaInfoSelecionada.usernameBrancas ?? 'N/A'}}</b></p>
+            <p>⬛ Pretas: <b>{{partidaInfoSelecionada.usernamePretas ?? 'N/A'}}</b></p>
+          </div>
+
+          <div class="info-secao">
+            <h3>Configuração de Tempo</h3>
+            @if (partidaInfoSelecionada.tempoInicialBrancas !== null || partidaInfoSelecionada.tempoInicialPretas !== null) {
+              <div class="info-tempo">
+                <div>
+                  <p><b>⬜ Brancas:</b></p>
+                  <p>Tempo inicial: {{formatarTempoInfo(partidaInfoSelecionada.tempoInicialBrancas)}}</p>
+                  <p>Incremento: {{formatarIncrementoInfo(partidaInfoSelecionada.incrementoBrancas)}}</p>
+                </div>
+                <div>
+                  <p><b>⬛ Pretas:</b></p>
+                  <p>Tempo inicial: {{formatarTempoInfo(partidaInfoSelecionada.tempoInicialPretas)}}</p>
+                  <p>Incremento: {{formatarIncrementoInfo(partidaInfoSelecionada.incrementoPretas)}}</p>
+                </div>
+              </div>
+            } @else {
+              <p style="color: var(--text-color2); font-style: italic;">Tempo infinito</p>
+            }
+          </div>
+
+          <div class="info-secao">
+            <h3>Resultado</h3>
+            <p><b>{{partidaInfoSelecionada.resultado}}</b></p>
+            @if (partidaInfoSelecionada.motivo) {
+              <p>Motivo: {{partidaInfoSelecionada.motivo}}</p>
+            }
+          </div>
+
+          <div class="modal-opcoes">
+            <button class="btn btn-secondary" (click)="fecharModalInfo()">Fechar</button>
           </div>
         </div>
       </div>
