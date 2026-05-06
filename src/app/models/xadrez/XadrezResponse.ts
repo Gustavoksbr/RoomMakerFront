@@ -13,6 +13,15 @@ export interface XadrezResponse {
     lancesIlegaisPretas: number;
     vezDasBrancas: boolean | null;
 
+    // Controle de tempo
+    tempoInicialBrancas: number | null; // segundos (null = infinito)
+    tempoInicialPretas: number | null;
+    incrementoBrancas: number | null;
+    incrementoPretas: number | null;
+    tempoRestanteBrancas: number | null;
+    tempoRestantePretas: number | null;
+    timestampUltimoLance: number | null; // milissegundos
+
     evento: string | null; // LANCE, LANCE_ILEGAL, FIM, CONFIGURACAO_ALTERADA, etc.
 
     historico: PartidaXadrezResumo[];
@@ -29,4 +38,10 @@ export interface PartidaXadrezResumo {
     usernameBrancas: string | null;
     usernamePretas: string | null;
     notacao: 'PORTUGUESA' | 'INGLESA' | null;
+
+    // Informações de tempo
+    tempoInicialBrancas: number | null;
+    tempoInicialPretas: number | null;
+    incrementoBrancas: number | null;
+    incrementoPretas: number | null;
 }

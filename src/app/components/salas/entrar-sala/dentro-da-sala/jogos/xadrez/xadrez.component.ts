@@ -42,6 +42,20 @@ export class XadrezComponent implements OnInit {
     configurandoPretas: string = '';
     configurandoNotacao: 'PORTUGUESA' | 'INGLESA' = 'INGLESA';
 
+    // configuração de tempo
+    tempoInfinito: boolean = true;
+    tempoBrancasMinutos: number | null = null;
+    tempoBrancasSegundos: number | null = null;
+    incrementoBrancas: number | null = null;
+    tempoPretasMinutos: number | null = null;
+    tempoPretasSegundos: number | null = null;
+    incrementoPretas: number | null = null;
+
+    // controle do relógio em tempo real
+    tempoRestanteBrancasAtual: number | null = null;
+    tempoRestantePretasAtual: number | null = null;
+    intervalRelogio: any = null;
+
     // histórico expandido + paginação
     historicoExpandido: boolean = false;
     partidaCopiada: number | null = null;
@@ -131,6 +145,10 @@ export class XadrezComponent implements OnInit {
     modalDesistir: boolean = false;
     modalEmpate: boolean = false;
 
+    // modal de informações de tempo
+    modalInfo: boolean = false;
+    partidaInfoSelecionada: PartidaXadrezResumo | null = null;
+
     // áudio de notificação
     private audioNotificacao: HTMLAudioElement | null = null;
 
@@ -170,10 +188,16 @@ export class XadrezComponent implements OnInit {
             }
             if (msg.evento === 'FIM') {
                 this.historicoPagina = 1; // volta para a primeira página (mais recente) ao terminar partida
+                this.pararRelogio();
             }
             if (msg.evento === 'LANCE_ILEGAL') {
                 this.erroLance = 'Lance ilegal na posição atual. +1 lance ilegal contabilizado.';
                 this.sanInput = '';
+            }
+
+            // Inicia/atualiza o relógio quando há um lance ou partida iniciada
+            if (msg.evento === 'LANCE' || msg.evento === 'PARTIDA_INICIADA') {
+                this.iniciarRelogio();
             }
         });
     }
@@ -274,8 +298,32 @@ export class XadrezComponent implements OnInit {
                 usernameBrancas: this.configurandoBrancas,
                 usernamePretas: this.configurandoPretas,
                 notacao: this.configurandoNotacao,
+                tempoInicialBrancasMinutos: this.tempoInfinito ? null : this.tempoBrancasMinutos,
+                tempoInicialBrancasSegundos: this.tempoInfinito ? null : this.tempoBrancasSegundos,
+                incrementoBrancasSegundos: this.tempoInfinito ? null : this.incrementoBrancas,
+                tempoInicialPretasMinutos: this.tempoInfinito ? null : this.tempoPretasMinutos,
+                tempoInicialPretasSegundos: this.tempoInfinito ? null : this.tempoPretasSegundos,
+                incrementoPretasSegundos: this.tempoInfinito ? null : this.incrementoPretas,
             })
         );
+    }
+
+    onTempoInfinitoChange(): void {
+        if (this.tempoInfinito) {
+            // Limpa os campos quando marca tempo infinito
+            this.tempoBrancasMinutos = null;
+            this.tempoBrancasSegundos = null;
+            this.incrementoBrancas = null;
+            this.tempoPretasMinutos = null;
+            this.tempoPretasSegundos = null;
+            this.incrementoPretas = null;
+        }
+    }
+
+    copiarTempoDasBrancas(): void {
+        this.tempoPretasMinutos = this.tempoBrancasMinutos;
+        this.tempoPretasSegundos = this.tempoBrancasSegundos;
+        this.incrementoPretas = this.incrementoBrancas;
     }
 
     configurar(): void {
@@ -330,5 +378,79 @@ export class XadrezComponent implements OnInit {
                 console.warn('Não foi possível tocar o som de notificação:', err);
             });
         }
+    }
+
+    formatarTempo(segundos: number | null): string {
+        if (segundos === null) return '∞';
+        const min = Math.floor(segundos / 60);
+        const seg = Math.floor(segundos % 60);
+        return `${min}:${seg.toString().padStart(2, '0')}`;
+    }
+
+    iniciarRelogio(): void {
+        this.pararRelogio(); // Para qualquer relógio anterior
+
+        if (!this.estado?.partidaEmAndamento) return;
+        if (this.estado.tempoRestanteBrancas === null && this.estado.tempoRestantePretas === null) return;
+
+        // Atualiza o relógio a cada 100ms para maior precisão
+        this.intervalRelogio = setInterval(() => {
+            if (!this.estado?.partidaEmAndamento) {
+                this.pararRelogio();
+                return;
+            }
+
+            // Recalcula o tempo baseado no timestamp do backend
+            const agora = Date.now();
+            const timestampUltimoLance = this.estado.timestampUltimoLance ?? agora;
+            const tempoDecorrido = (agora - timestampUltimoLance) / 1000; // em segundos
+
+            // Atualiza o tempo do jogador atual baseado no tempo do backend
+            if (this.estado.vezDasBrancas && this.estado.tempoRestanteBrancas !== null) {
+                this.tempoRestanteBrancasAtual = Math.max(0, this.estado.tempoRestanteBrancas - tempoDecorrido);
+                this.tempoRestantePretasAtual = this.estado.tempoRestantePretas;
+            } else if (!this.estado.vezDasBrancas && this.estado.tempoRestantePretas !== null) {
+                this.tempoRestantePretasAtual = Math.max(0, this.estado.tempoRestantePretas - tempoDecorrido);
+                this.tempoRestanteBrancasAtual = this.estado.tempoRestanteBrancas;
+            } else {
+                this.tempoRestanteBrancasAtual = this.estado.tempoRestanteBrancas;
+                this.tempoRestantePretasAtual = this.estado.tempoRestantePretas;
+            }
+        }, 100);
+    }
+
+    pararRelogio(): void {
+        if (this.intervalRelogio) {
+            clearInterval(this.intervalRelogio);
+            this.intervalRelogio = null;
+        }
+    }
+
+    abrirModalInfo(partida: PartidaXadrezResumo): void {
+        this.partidaInfoSelecionada = partida;
+        this.modalInfo = true;
+    }
+
+    fecharModalInfo(): void {
+        this.modalInfo = false;
+        this.partidaInfoSelecionada = null;
+    }
+
+    formatarTempoInfo(segundos: number | null): string {
+        if (segundos === null) return 'Infinito';
+        const min = Math.floor(segundos / 60);
+        const seg = Math.floor(segundos % 60);
+        if (min > 0 && seg > 0) {
+            return `${min} min ${seg} seg`;
+        } else if (min > 0) {
+            return `${min} min`;
+        } else {
+            return `${seg} seg`;
+        }
+    }
+
+    formatarIncrementoInfo(segundos: number | null): string {
+        if (segundos === null || segundos === 0) return 'Sem incremento';
+        return `+${segundos} seg/lance`;
     }
 }
