@@ -393,35 +393,30 @@ export class XadrezComponent implements OnInit {
         if (!this.estado?.partidaEmAndamento) return;
         if (this.estado.tempoRestanteBrancas === null && this.estado.tempoRestantePretas === null) return;
 
-        // Inicializa os tempos atuais com os valores do backend
-        this.tempoRestanteBrancasAtual = this.estado.tempoRestanteBrancas;
-        this.tempoRestantePretasAtual = this.estado.tempoRestantePretas;
-
-        // Calcula quanto tempo já passou desde o último lance
-        const agora = Date.now();
-        const timestampUltimoLance = this.estado.timestampUltimoLance ?? agora;
-        const tempoDecorrido = (agora - timestampUltimoLance) / 1000; // em segundos
-
-        // Atualiza o tempo do jogador atual
-        if (this.estado.vezDasBrancas && this.tempoRestanteBrancasAtual !== null) {
-            this.tempoRestanteBrancasAtual = Math.max(0, this.tempoRestanteBrancasAtual - tempoDecorrido);
-        } else if (!this.estado.vezDasBrancas && this.tempoRestantePretasAtual !== null) {
-            this.tempoRestantePretasAtual = Math.max(0, this.tempoRestantePretasAtual - tempoDecorrido);
-        }
-
-        // Atualiza o relógio a cada segundo
+        // Atualiza o relógio a cada 100ms para maior precisão
         this.intervalRelogio = setInterval(() => {
             if (!this.estado?.partidaEmAndamento) {
                 this.pararRelogio();
                 return;
             }
 
-            if (this.estado.vezDasBrancas && this.tempoRestanteBrancasAtual !== null) {
-                this.tempoRestanteBrancasAtual = Math.max(0, this.tempoRestanteBrancasAtual - 1);
-            } else if (!this.estado.vezDasBrancas && this.tempoRestantePretasAtual !== null) {
-                this.tempoRestantePretasAtual = Math.max(0, this.tempoRestantePretasAtual - 1);
+            // Recalcula o tempo baseado no timestamp do backend
+            const agora = Date.now();
+            const timestampUltimoLance = this.estado.timestampUltimoLance ?? agora;
+            const tempoDecorrido = (agora - timestampUltimoLance) / 1000; // em segundos
+
+            // Atualiza o tempo do jogador atual baseado no tempo do backend
+            if (this.estado.vezDasBrancas && this.estado.tempoRestanteBrancas !== null) {
+                this.tempoRestanteBrancasAtual = Math.max(0, this.estado.tempoRestanteBrancas - tempoDecorrido);
+                this.tempoRestantePretasAtual = this.estado.tempoRestantePretas;
+            } else if (!this.estado.vezDasBrancas && this.estado.tempoRestantePretas !== null) {
+                this.tempoRestantePretasAtual = Math.max(0, this.estado.tempoRestantePretas - tempoDecorrido);
+                this.tempoRestanteBrancasAtual = this.estado.tempoRestanteBrancas;
+            } else {
+                this.tempoRestanteBrancasAtual = this.estado.tempoRestanteBrancas;
+                this.tempoRestantePretasAtual = this.estado.tempoRestantePretas;
             }
-        }, 1000);
+        }, 100);
     }
 
     pararRelogio(): void {
