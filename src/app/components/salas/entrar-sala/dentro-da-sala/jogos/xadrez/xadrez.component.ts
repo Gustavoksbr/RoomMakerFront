@@ -199,10 +199,17 @@ export class XadrezComponent implements OnInit {
                 this.tocarSomNotificacao();
             }
 
-            if (msg.evento === 'LANCE' || msg.evento === 'FIM' || msg.evento === 'PARTIDA_INICIADA') {
+            // Limpa erro e input apenas em eventos específicos e quando for minha vez
+            if (msg.evento === 'LANCE' && agoraEhMinhaVez) {
+                this.erroLance = null;
+                // Não limpa o input para permitir que o jogador prepare o próximo lance
+            }
+
+            if (msg.evento === 'FIM' || msg.evento === 'PARTIDA_INICIADA') {
                 this.erroLance = null;
                 this.sanInput = '';
             }
+
             if (msg.evento === 'FIM') {
                 this.historicoPagina = 1; // volta para a primeira página (mais recente) ao terminar partida
                 this.pararRelogio();
@@ -297,7 +304,7 @@ export class XadrezComponent implements OnInit {
 
     // --- Ações ---
     enviarLance(): void {
-        if (!this.sanInput.trim() || this.enviandoLance) return;
+        if (!this.sanInput.trim() || this.enviandoLance || !this.minhaVez) return;
         this.enviandoLance = true;
         this.erroLance = null;
         this.websocketService.sendMessage(
@@ -305,6 +312,8 @@ export class XadrezComponent implements OnInit {
             this.app + '/xadrez/lance',
             JSON.stringify({ san: this.sanInput.trim() })
         );
+        // Limpa o input imediatamente após enviar
+        this.sanInput = '';
     }
 
     configurarEIniciar(): void {

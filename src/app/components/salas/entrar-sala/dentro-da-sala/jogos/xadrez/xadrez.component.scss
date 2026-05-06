@@ -233,6 +233,11 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+
+  button[disabled]:not(.btn-secondary) {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
 .xadrez-erro {
