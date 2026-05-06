@@ -144,6 +144,7 @@ export class XadrezComponent implements OnInit {
     // modais de confirmação
     modalDesistir: boolean = false;
     modalEmpate: boolean = false;
+    modalConfiguracao: boolean = false;
 
     // modal de informações de tempo
     modalInfo: boolean = false;
@@ -151,11 +152,27 @@ export class XadrezComponent implements OnInit {
 
     // áudio de notificação
     private audioNotificacao: HTMLAudioElement | null = null;
+    private _notificacoesSonorasAtivadas: boolean = true;
+
+    get notificacoesSonorasAtivadas(): boolean {
+        return this._notificacoesSonorasAtivadas;
+    }
+
+    set notificacoesSonorasAtivadas(value: boolean) {
+        this._notificacoesSonorasAtivadas = value;
+        localStorage.setItem('xadrez_notificacoes_sonoras', JSON.stringify(value));
+    }
 
     constructor(private websocketService: WebSocketService, private authService: AuthService, private xadrezService: XadrezService) {
         this.username = authService.getStorage('username')!;
         // Inicializa o áudio de notificação
         this.audioNotificacao = new Audio('notificacao.wav');
+
+        // Carrega preferência de notificações do localStorage
+        const notificacoesSalvas = localStorage.getItem('xadrez_notificacoes_sonoras');
+        if (notificacoesSalvas !== null) {
+            this._notificacoesSonorasAtivadas = JSON.parse(notificacoesSalvas);
+        }
     }
 
     ngOnInit(): void {
@@ -372,8 +389,9 @@ export class XadrezComponent implements OnInit {
     }
 
     private tocarSomNotificacao(): void {
-        if (this.audioNotificacao) {
-            this.audioNotificacao.currentTime = 0; // Reinicia o áudio caso já esteja tocando
+        console.log('Tentando tocar notificação. Ativadas:', this.notificacoesSonorasAtivadas);
+        if (this.notificacoesSonorasAtivadas && this.audioNotificacao) {
+            this.audioNotificacao.currentTime = 0;
             this.audioNotificacao.play().catch(err => {
                 console.warn('Não foi possível tocar o som de notificação:', err);
             });

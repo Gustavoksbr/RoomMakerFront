@@ -114,6 +114,11 @@
             <span style="margin-left:12px; font-size:12px; color:var(--text-color2);">
               Notação: {{estado.notacao === 'PORTUGUESA' ? 'Portuguesa' : 'Inglesa'}}
             </span>
+            @if (meuLado) {
+              <button class="btn btn-sm btn-outline-secondary" style="margin-left:auto;" (click)="modalConfiguracao = true" title="Configurações">
+                ⚙️
+              </button>
+            }
           </div>
         }
 
@@ -318,6 +323,26 @@
           <div class="modal-opcoes">
             <button class="btn btn-primary" (click)="proporEmpate()">Propor</button>
             <button class="btn btn-secondary" (click)="modalEmpate = false">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (modalConfiguracao) {
+      <div class="modal-overlay" (click)="modalConfiguracao = false">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <h2>⚙️ Configurações</h2>
+          <div class="config-opcao">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" [(ngModel)]="notificacoesSonorasAtivadas">
+              <span>🔔 Notificações sonoras quando for sua vez</span>
+            </label>
+            <p style="font-size:12px; color:var(--text-color2); margin:4px 0 0 24px;">
+              Toca um som quando o oponente fizer um lance
+            </p>
+          </div>
+          <div class="modal-opcoes">
+            <button class="btn btn-secondary" (click)="modalConfiguracao = false">Fechar</button>
           </div>
         </div>
       </div>

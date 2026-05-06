@@ -71,7 +71,47 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: 8px;
   font-size: 15px;
+}
+
+.config-opcao {
+  padding: 12px;
+  background-color: var(--background-color3);
+  border-radius: 6px;
+  margin: 8px 0;
+
+  label {
+    margin: 0;
+    user-select: none;
+    font-size: 14px;
+
+    input[type="checkbox"] {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+
+    span {
+      flex: 1;
+    }
+  }
+}
+
+.xadrez-notificacao-controle {
+  padding: 6px 10px;
+  background-color: var(--background-color2);
+  border: 1px solid var(--border-color-sem-tema-claro);
+  border-radius: 6px;
+
+  label {
+    margin: 0;
+    user-select: none;
+
+    input[type="checkbox"] {
+      cursor: pointer;
+    }
+  }
 }
 
 .xadrez-partida {
