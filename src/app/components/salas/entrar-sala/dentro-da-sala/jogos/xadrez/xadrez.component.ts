@@ -178,7 +178,13 @@ export class XadrezComponent implements OnInit {
     ngOnInit(): void {
         // Carrega estado inicial via HTTP
         this.xadrezService.mostrar(this.jogadorDono, this.jogadorNomeSala).subscribe({
-            next: (estado) => { this.estado = estado; },
+            next: (estado) => {
+                this.estado = estado;
+                // Inicia o relógio se a partida já estiver em andamento (ex: reload da página)
+                if (estado.partidaEmAndamento) {
+                    this.iniciarRelogio();
+                }
+            },
             error: (err) => { console.error('Erro ao carregar xadrez:', err); }
         });
 
