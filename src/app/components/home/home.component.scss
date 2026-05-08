@@ -1,7 +1,4 @@
-
-
-
-.header-perso{
+.header-perso {
   display: flex;
   background-color: rgba(64, 118, 255, 1);
   justify-content: center;
@@ -9,7 +6,8 @@
   height: 100px;
   //box-shadow: 0 10px 10px 0 rgba(0,0,0,0.1);
 }
-.logo-container{
+
+.logo-container {
   //background-color: rgba(64, 118, 255, 0.71);
   width: 200px;
   //height: 50px;
@@ -19,7 +17,7 @@
   align-items: center;
 }
 
-.logo-container img{
+.logo-container img {
   width: 100%;
 }
 
@@ -36,13 +34,16 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  min-height: 70px;
+  /* reserva espaço para evitar CLS quando o conteúdo carrega */
 }
-.homecard p{
+
+.homecard p {
   font-size: 150%;
   color: white;
 }
 
-.sair{
+.sair {
   background-color: rgba(64, 118, 255, 1);
   display: flex;
   flex-direction: row;
@@ -53,11 +54,12 @@
   padding: 5%;
 }
 
-.sair img{
+.sair img {
   width: 30%;
 
 }
-.sair:hover{
+
+.sair:hover {
   cursor: pointer;
   background-color: grey;
   border-radius: 10px;
@@ -65,23 +67,24 @@
 
 
 
-footer{
+footer {
   background-color: rgb(64, 118, 255);
   //position: absolute;
   bottom: 0;
   width: 100%;
-    height: 70px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
+
 //body, *{
 //  background-color: var(--background-color);
 //}
 
-.home{
+.home {
   background-color: var(--background-color);
   position: relative;
   display: flex;
@@ -89,21 +92,21 @@ footer{
   min-height: 100vh;
 }
 
-.tema-escuro{
+.tema-escuro {
   background-color: black;
   color: white;
 }
 
-.tema-claro{
+.tema-claro {
   background-color: white;
   color: black;
 }
 
-footer p{
+footer p {
   color: white;
 }
 
-footer a{
+footer a {
   color: white;
 }
 
@@ -111,47 +114,51 @@ footer a{
 //  bottom:0;
 //}
 
-.mudar-tema{
+.mudar-tema {
   //width: 120px;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+
   //justify-content: space-between;
   @media (min-width: 571px) {
     width: 120px;
   }
-input{
-  cursor: pointer;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  border: 1px solid var(--text-color);
-}
+
+  input {
+    cursor: pointer;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+  }
 }
 
-.mudar-tema{
+.mudar-tema {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 5%;
 }
 
-.nao-homecard{
+.nao-homecard {
   display: flex;
   flex-direction: row;
 }
 
 @media (max-width: 570px) {
-  .header-perso{
+  .header-perso {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
   }
-  .nao-homecard{
+
+  .nao-homecard {
     display: flex;
     flex-direction: column;
   }
-  .mudar-tema{
+
+  .mudar-tema {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -159,31 +166,33 @@ input{
 }
 
 @media (max-width: 400px) {
-  .homecard p{
+  .homecard p {
     font-size: 100%;
   }
-.sair{
-  width: 80px;
-  height: 35px;
-}
+
+  .sair {
+    width: 80px;
+    height: 35px;
+  }
 
 }
 
 
-.aniversario-container{
+.aniversario-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  p{
+
+  p {
     font-size: 150%;
     color: var(--text-color);
   }
 }
 
-.aniversario-content{
+.aniversario-content {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -215,13 +224,15 @@ input{
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.modal-opcoes{
+.modal-opcoes {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
 
-.conteudo{
+.conteudo {
   flex: 1;
+  min-height: 400px;
+  /* evita CLS: reserva espaço antes do conteúdo assíncrono carregar */
   //border: 1px solid gold;
 }

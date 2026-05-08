@@ -3,17 +3,12 @@
   <header class="header-perso">
     <div class="nao-homecard">
     <div class="logo-container">
-      <img src="RoomMaker.png" alt="RoomMaker">
+      <img src="RoomMaker.png" alt="RoomMaker" width="200" height="67">
     </div>
     <div>
       <div class="form-switch mudar-tema">
-        @if(!escuro) {
-          <label class="form-check-label" >Tema Claro</label>
-          <input class="form-check-input" type="checkbox" role="switch"  (click)="changeTheme()">
-          }@else{
-          <label class="form-check-label" >Tema Escuro</label>
-          <input class="form-check-input" type="checkbox" role="switch" (click)="changeTheme()" checked>
-          }
+        <label class="form-check-label">{{ escuro ? 'Tema Escuro' : 'Tema Claro' }}</label>
+        <input class="form-check-input" type="checkbox" role="switch" [checked]="escuro" (click)="changeTheme()">
       </div>
     </div>
     </div>
@@ -46,7 +41,7 @@
           }
           -->
           <div class="sair" (click)="abrirModal()">
-            <img src="logout.png" alt="logout">
+            <img src="logout.png" alt="logout" width="30" height="30">
             <p>logout</p>
           </div>
         </div>
@@ -70,9 +65,9 @@
   @if (seuAniversario) {
     <div class="aniversario-container">
       <div class="aniversario-content">
-        <img src="boloaniversario.gif" width="100px">
+        <img src="boloaniversario.gif" width="100" height="100" alt="bolo de aniversário">
         <p>Feliz Aniversário!!!</p>
-        <img src="boloaniversario.gif" width="100px">
+        <img src="boloaniversario.gif" width="100" height="100" alt="bolo de aniversário">
       </div>
     </div>
   }

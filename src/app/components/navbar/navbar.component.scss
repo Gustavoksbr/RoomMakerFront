@@ -1,19 +1,22 @@
-.container{
+.container {
   flex: 1;
   display: flex;
   justify-content: center;
 }
-.quadrado-principal{
+
+.quadrado-principal {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 5%;
-  margin-bottom:15%;
+  margin-bottom: 15%;
+  min-height: 400px;
+  /* reserva espaço para evitar CLS quando o conteúdo carrega */
 }
 
-.container-nav{
+.container-nav {
   height: 100px;
   width: 100%;
   margin: 0 auto;
@@ -22,21 +25,22 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-end;
-  border-top:1px solid #1e62cd;
+  border-top: 1px solid #1e62cd;
   border-left: 1px solid #1e62cd;
   border-right: 1px solid #1e62cd;
   border-bottom: none;
-  border-radius:7px 7px  0 0 ;
+  border-radius: 7px 7px 0 0;
 }
 
-nav{
+nav {
   display: flex;
   justify-content: space-around;
   flex-direction: row;
   align-items: stretch;
   width: 90%;
 }
-nav div{
+
+nav div {
   max-height: 80px;
   cursor: pointer;
   color: white;
@@ -45,21 +49,21 @@ nav div{
   display: flex;
   justify-content: center;
   padding: 20px;
-  border-radius:5px 5px 0 0 ;
+  border-radius: 5px 5px 0 0;
   align-items: center;
   text-align: center;
 }
 
-nav div:hover{
+nav div:hover {
   background-color: var(--background-color2);
-  color:var(--text-color);
+  color: var(--text-color);
 }
 
-.container-conteudo{
+.container-conteudo {
   width: 100%;
   margin: 0 auto;
   padding: 20px;
-  border-top:none;
+  border-top: none;
   border-left: 1px solid #1e62cd;
   border-right: 1px solid #1e62cd;
   border-bottom: 1px solid #1e62cd;
@@ -67,24 +71,25 @@ nav div:hover{
 }
 
 @media (max-width: 600px) {
-  .container-conteudo{
+  .container-conteudo {
     padding: 5px;
     padding-top: 10px;
   }
 }
+
 @media (max-width: 400px) {
-  nav div{
+  nav div {
     padding-bottom: 5px;
   }
 }
 
 
-.pagina-atual{
+.pagina-atual {
   background-color: var(--background-color);
 }
 
-.pagina-atual p{
-  color:var(--text-color);
+.pagina-atual p {
+  color: var(--text-color);
 }
 
 //@media (max-width: 775px) {
@@ -92,4 +97,3 @@ nav div:hover{
 //    height: 100px;
 //  }
 //}
-
