@@ -78,16 +78,30 @@
       }
     }
     <ul>
-      <li>{{sala.usernameDono}} (dono)</li>
+      <li>
+        <div class="d-flex flex-row align-items-center gap-2">
+          <span 
+            class="status-dot" 
+            [class.online]="isUsuarioOnline(sala.usernameDono)"
+            [title]="isUsuarioOnline(sala.usernameDono) ? 'Online' : 'Offline'">
+          </span>
+          <div>{{sala.usernameDono}} (dono)</div>
+        </div>
+      </li>
       @for (u of sala.usernameParticipantes; track $index) {
-<li>
-  <div class="d-flex flex-row align-items-center gap-3 w-100">
-    <div>{{u}}</div>
-    @if (username==sala.usernameDono){
-      <button class="btn btn-sm btn-danger btn-remover-participante" style="font-size:14px; padding:0.15rem 0.25rem; line-height:1;" (click)="abrirModalRemoverParticipante(u)">x</button>
-    }
-  </div>
-</li>
+        <li>
+          <div class="d-flex flex-row align-items-center gap-2">
+            <span 
+              class="status-dot" 
+              [class.online]="isUsuarioOnline(u)"
+              [title]="isUsuarioOnline(u) ? 'Online' : 'Offline'">
+            </span>
+            <div>{{u}}</div>
+            @if (username==sala.usernameDono){
+              <button class="btn btn-sm btn-danger btn-remover-participante" style="font-size:14px; padding:0.15rem 0.25rem; line-height:1;" (click)="abrirModalRemoverParticipante(u)">x</button>
+            }
+          </div>
+        </li>
       }
     </ul>
   </div>

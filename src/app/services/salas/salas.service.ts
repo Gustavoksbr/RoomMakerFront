@@ -82,6 +82,11 @@ export class SalasService {
     return this.http.patch<SalaResponse>(url, { senha }, { headers: this.getHeaders() });
   }
 
+  getUsuariosOnline(): Observable<string[]> {
+    const url = `${this.API}/online-users`;
+    return this.http.get<string[]>(url, { headers: this.getHeaders() });
+  }
+
 
   // excluir(id:string):Observable<Pensamento>{
   //   const url = `${this.API}/${id}`; //http://localhost:3000/pensamentos/{id}

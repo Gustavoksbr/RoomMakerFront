@@ -3,7 +3,7 @@
   <header class="header-perso">
     <div class="nao-homecard">
     <div class="logo-container">
-      <img src="RoomMaker.png" alt="RoomMaker" width="200" height="67">
+      <img ngSrc="RoomMaker.png" alt="RoomMaker" width="200" height="67" priority>
     </div>
     <div>
       <div class="form-switch mudar-tema">
@@ -41,7 +41,7 @@
           }
           -->
           <div class="sair" (click)="abrirModal()">
-            <img src="logout.png" alt="logout" width="30" height="30">
+            <img ngSrc="logout.png" alt="logout" width="30" height="30" priority>
             <p>logout</p>
           </div>
         </div>
@@ -65,9 +65,9 @@
   @if (seuAniversario) {
     <div class="aniversario-container">
       <div class="aniversario-content">
-        <img src="boloaniversario.gif" width="100" height="100" alt="bolo de aniversário">
+        <img ngSrc="boloaniversario.gif" width="100" height="100" alt="bolo de aniversário">
         <p>Feliz Aniversário!!!</p>
-        <img src="boloaniversario.gif" width="100" height="100" alt="bolo de aniversário">
+        <img ngSrc="boloaniversario.gif" width="100" height="100" alt="bolo de aniversário">
       </div>
     </div>
   }

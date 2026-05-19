@@ -9,6 +9,15 @@ html {
   background-color: var(--background-color);
 }
 
+// Previne animações indesejadas ao mudar de página ou tema
+// Remove transições de propriedades que usam variáveis CSS
+*,
+*::before,
+*::after {
+  transition-property: transform, opacity, box-shadow, filter, width, height, margin, padding !important;
+  // NÃO inclui: background-color, color, border-color (que usam variáveis CSS)
+}
+
 
 * {
   font-family: 'Roboto', sans-serif;
@@ -126,7 +135,8 @@ html {
 }
 
 .hover-crescer {
-  transition: transform 0.25s ease;
+  // Transição APENAS para transform (não afeta cores)
+  transition: transform 0.25s ease !important;
 
   &:hover {
     transform: scale(1.05);

@@ -50,6 +50,7 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
   protected app: string = '';
   public stompClient: Client = new Client();
   public participanteASerRemovido: string | null = null;
+  public usuariosOnline: Set<string> = new Set();
 
   // editar capacidade
   public editandoCapacidade: boolean = false;
@@ -166,6 +167,8 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
     this.app = `/app/sala/${this.sala.usernameDono}/${this.sala.nome}/${this.username}`;
 
     let topicForThis = this.topic + "/sala";
+    let topicStatusOnline = this.topic + "/status-online";
+
     this.stompClient = this.websocketService.connect(
       this.stompClient,
       () => {
@@ -179,6 +182,19 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
             }
           }
         );
+
+        // subscreve no tópico de status online
+        this.websocketService.subscribe(
+          this.stompClient,
+          topicStatusOnline,
+          (message: any) => this.handleStatusOnline(message)
+        );
+
+        // Carrega usuários online DEPOIS de conectar ao WebSocket
+        // Aguarda 500ms para garantir que o backend registrou a conexão
+        setTimeout(() => {
+          this.carregarUsuariosOnline();
+        }, 500);
       },
       topicForThis,
       (msg: string[]) => {
@@ -200,6 +216,32 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
 
   fecharModal() {
     this.isModalOpen = false;
+  }
+
+  carregarUsuariosOnline() {
+    this.salaService.getUsuariosOnline().subscribe({
+      next: (usuarios: string[]) => {
+        this.usuariosOnline = new Set(usuarios);
+        console.log('👥 Usuários online carregados na sala:', usuarios.length);
+      },
+      error: (error) => {
+        console.error('❌ Erro ao carregar usuários online:', error);
+      }
+    });
+  }
+
+  handleStatusOnline(message: any) {
+    console.log('📡 Status online atualizado:', message);
+
+    if (message.online) {
+      this.usuariosOnline.add(message.username);
+    } else {
+      this.usuariosOnline.delete(message.username);
+    }
+  }
+
+  isUsuarioOnline(username: string): boolean {
+    return this.usuariosOnline.has(username);
   }
 
   protected readonly categoriaMap = categoriaMap;

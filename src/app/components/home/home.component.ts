@@ -12,7 +12,8 @@ import confetti from 'canvas-confetti';
     FormsModule,
     ReactiveFormsModule,
     NgOptimizedImage,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

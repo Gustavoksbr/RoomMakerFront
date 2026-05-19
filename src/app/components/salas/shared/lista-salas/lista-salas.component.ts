@@ -21,6 +21,7 @@ import { categoriaMap, formatarCapacidade } from '../../../../models/salas/domai
 export class ListaSalasComponent implements OnInit, OnChanges {
   @Input() ListaSalas: SalaResponse[] = [];
   @Input() suasSalas: boolean = false;
+  @Input() usuariosOnline: Set<string> = new Set();
   public username: string = '';
   @Input() public carregando: boolean = false;
 

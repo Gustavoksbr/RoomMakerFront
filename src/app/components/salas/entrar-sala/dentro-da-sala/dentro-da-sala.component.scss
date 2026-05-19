@@ -66,3 +66,47 @@
   color: var(--text-color2);
   opacity: 1;
 }
+
+
+// Estilos para indicador de status online
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #6c757d; // Offline (cinza)
+  transition: all 0.3s ease;
+  cursor: help;
+  flex-shrink: 0; // Impede que a bolinha encolha
+
+  &.online {
+    background-color: #28a745; // Online (verde)
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.6);
+    animation: pulse-online 2s infinite;
+  }
+}
+
+@keyframes pulse-online {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 12px rgba(40, 167, 69, 0.8);
+  }
+}
+
+// Ajusta o layout da lista de participantes
+.participantes-dentro-sala ul {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    margin-bottom: 8px;
+
+    .d-flex {
+      align-items: center;
+    }
+  }
+}
