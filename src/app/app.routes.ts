@@ -7,7 +7,7 @@ import {ListarSalasComponent} from './components/salas/listar-salas/listar-salas
 import {EntrarSalaComponent} from './components/salas/entrar-sala/entrar-sala.component';
 import {CriarSalaComponent} from './components/salas/criar-sala/criar-sala.component';
 import {SuasSalasComponent} from './components/salas/suas-salas/suas-salas.component';
-import {ForgetComponent} from './components/auth/forget/forget.component';
+// import {ForgetComponent} from './components/auth/forget/forget.component';
 
 
 
@@ -30,7 +30,7 @@ export  const routes: Routes = [
   {path:"salas/:usernameDono/:nomeSala", component: EntrarSalaComponent, canActivate: [AuthGuard]},
   {path:"criar-sala", component: CriarSalaComponent, canActivate: [AuthGuard]},
   {path:"suas-salas", component: SuasSalasComponent, canActivate: [AuthGuard]},
-   {path:"forget", component: ForgetComponent},
+   // {path:"forget", component: ForgetComponent},
 
   {path:'**', redirectTo: 'default', pathMatch: 'full'}
 ];

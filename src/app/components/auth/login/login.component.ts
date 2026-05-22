@@ -58,7 +58,7 @@ export class LoginComponent {
     this.router.navigate(['/register']);
   }
 
-  esqueciSenha() {
-    this.router.navigate(['/forget']);
-  }
+  // esqueciSenha() {
+  //   this.router.navigate(['/forget']);
+  // }
 }
