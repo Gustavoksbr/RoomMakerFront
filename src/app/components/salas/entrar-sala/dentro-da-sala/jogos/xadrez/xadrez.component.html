@@ -16,8 +16,7 @@
             <div class="card-body" style="display:flex; flex-direction:column; gap:8px;">
               <div style="display:flex; gap:8px; align-items:center; min-width:0;">
                 <label style="white-space:nowrap; flex-shrink:0;">⬜ Brancas:</label>
-                <select class="form-select form-select-sm" style="flex:1; min-width:0;" [(ngModel)]="configurandoBrancas">
-                  <option value="">-- escolher --</option>
+                <select class="form-select form-select-sm" style="flex:1; min-width:0;" [(ngModel)]="configurandoBrancas" (ngModelChange)="onConfigManualChange()">
                   @for (j of jogadores; track j) {
                     <option [value]="j">{{j}}</option>
                   }
@@ -25,8 +24,7 @@
               </div>
               <div style="display:flex; gap:8px; align-items:center; min-width:0;">
                 <label style="white-space:nowrap; flex-shrink:0;">⬛ Pretas:</label>
-                <select class="form-select form-select-sm" style="flex:1; min-width:0;" [(ngModel)]="configurandoPretas">
-                  <option value="">-- escolher --</option>
+                <select class="form-select form-select-sm" style="flex:1; min-width:0;" [(ngModel)]="configurandoPretas" (ngModelChange)="onConfigManualChange()">
                   @for (j of jogadores; track j) {
                     <option [value]="j">{{j}}</option>
                   }
@@ -45,7 +43,7 @@
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
                   <label style="white-space:nowrap; flex-shrink:0; font-weight:bold;">⏱️ Tempo:</label>
                   <label style="display:flex; align-items:center; gap:4px; font-size:12px;">
-                    <input type="checkbox" [(ngModel)]="tempoInfinito" (change)="onTempoInfinitoChange()">
+                    <input type="checkbox" [(ngModel)]="tempoInfinito" (change)="onTempoManualChange(); onTempoInfinitoChange()">
                     Tempo infinito
                   </label>
                 </div>
@@ -56,14 +54,14 @@
                     <label style="font-size:12px; display:block; margin-bottom:4px;">⬜ Brancas:</label>
                     <div class="tempo-inputs">
                       <input type="number" class="form-control form-control-sm tempo-input"
-                        [(ngModel)]="tempoBrancasMinutos" min="0" max="180" placeholder="min">
+                        [(ngModel)]="tempoBrancasMinutos" (ngModelChange)="onTempoManualChange()" min="0" max="180" placeholder="min">
                       <span class="tempo-label">min</span>
                       <input type="number" class="form-control form-control-sm tempo-input"
-                        [(ngModel)]="tempoBrancasSegundos" min="0" max="59" placeholder="seg">
+                        [(ngModel)]="tempoBrancasSegundos" (ngModelChange)="onTempoManualChange()" min="0" max="59" placeholder="seg">
                       <span class="tempo-label">seg</span>
                       <span class="tempo-separador">+</span>
                       <input type="number" class="form-control form-control-sm tempo-input"
-                        [(ngModel)]="incrementoBrancas" min="0" max="60" placeholder="inc">
+                        [(ngModel)]="incrementoBrancas" (ngModelChange)="onTempoManualChange()" min="0" max="60" placeholder="inc">
                       <span class="tempo-label">seg/lance</span>
                     </div>
                   </div>
@@ -79,23 +77,28 @@
                     </label>
                     <div class="tempo-inputs">
                       <input type="number" class="form-control form-control-sm tempo-input"
-                        [(ngModel)]="tempoPretasMinutos" min="0" max="180" placeholder="min">
+                        [(ngModel)]="tempoPretasMinutos" (ngModelChange)="onTempoManualChange()" min="0" max="180" placeholder="min">
                       <span class="tempo-label">min</span>
                       <input type="number" class="form-control form-control-sm tempo-input"
-                        [(ngModel)]="tempoPretasSegundos" min="0" max="59" placeholder="seg">
+                        [(ngModel)]="tempoPretasSegundos" (ngModelChange)="onTempoManualChange()" min="0" max="59" placeholder="seg">
                       <span class="tempo-label">seg</span>
                       <span class="tempo-separador">+</span>
                       <input type="number" class="form-control form-control-sm tempo-input"
-                        [(ngModel)]="incrementoPretas" min="0" max="60" placeholder="inc">
+                        [(ngModel)]="incrementoPretas" (ngModelChange)="onTempoManualChange()" min="0" max="60" placeholder="inc">
                       <span class="tempo-label">seg/lance</span>
                     </div>
                   </div>
                 }
               </div>
 
-              <button class="btn btn-success btn-sm" style="width:fit-content;"
-                [disabled]="!configurandoBrancas || !configurandoPretas"
-                (click)="configurarEIniciar()">▶ Iniciar partida</button>
+              <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-success btn-sm btn-iniciar" style="width:fit-content;"
+                  [disabled]="!podeIniciarPartida"
+                  (click)="configurarEIniciar()">▶ Iniciar partida</button>
+                @if (!podeIniciarPartida && motivoNaoPodeIniciarPartida) {
+                  <span class="xadrez-config-erro">{{motivoNaoPodeIniciarPartida}}</span>
+                }
+              </div>
             </div>
           </div>
         }
@@ -113,6 +116,13 @@
             <span>⬛ <b>{{estado.usernamePretas ?? '?'}}</b></span>
             <span style="margin-left:12px; font-size:12px; color:var(--text-color2);">
               Notação: {{estado.notacao === 'PORTUGUESA' ? 'Portuguesa' : 'Inglesa'}}
+            </span>
+            <span style="font-size:12px; color:var(--text-color2);">
+              @if (estado.notacao === 'PORTUGUESA') {
+                (R=Rei, D=Dama, T=Torre, B=Bispo, C=Cavalo)
+              } @else {
+                (K=Rei, Q=Dama, R=Torre, B=Bispo, N=Cavalo)
+              }
             </span>
             @if (meuLado) {
               <button class="btn btn-sm btn-outline-secondary" style="margin-left:auto;" (click)="modalConfiguracao = true" title="Configurações">
@@ -168,7 +178,7 @@
               </div>
             }
 
-            <div class="xadrez-pgn">
+            <div class="xadrez-pgn" #pgnContainer>
               @for (linha of pgnFormatado; track $index) {
                 <div class="pgn-linha">{{linha}}</div>
               }
@@ -214,6 +224,9 @@
               </div>
               @if (erroLance) {
                 <div class="xadrez-erro">⚠️ {{erroLance}}</div>
+              }
+              @if (avisoLance) {
+                <div class="xadrez-aviso">⚠️ {{avisoLance}}</div>
               }
             }
 

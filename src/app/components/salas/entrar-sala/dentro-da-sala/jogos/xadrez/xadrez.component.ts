@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { Client } from '@stomp/stompjs';
 import { WebSocketService } from '../../../../../../services/websocket/websocket.service';
 import { AuthService } from '../../../../../../services/auth/auth.service';
@@ -21,7 +21,9 @@ const SAN_CHARS_REGEX_PORTUGUESA = /^[a-hRDTBCO1-8=+#x\-!?]*$/;
     templateUrl: './xadrez.component.html',
     styleUrl: './xadrez.component.scss'
 })
-export class XadrezComponent implements OnInit {
+export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
+    @ViewChild('pgnContainer') private pgnContainer?: ElementRef<HTMLDivElement>;
+    private deveScrollarPgnParaFim: boolean = false;
     @Input() topic: string = '';
     @Input() app: string = '';
     @Input() stompClient: Client = new Client();
@@ -36,11 +38,14 @@ export class XadrezComponent implements OnInit {
     sanInput: string = '';
     enviandoLance: boolean = false;
     erroLance: string | null = null;
+    avisoLance: string | null = null;
 
     // configuração (só dono) — notação pode ser escolhida
     configurandoBrancas: string = '';
     configurandoPretas: string = '';
     configurandoNotacao: 'PORTUGUESA' | 'INGLESA' = 'INGLESA';
+    private configuracaoInicializada: boolean = false;
+    private configuracaoAlteradaManualmente: boolean = false;
 
     // configuração de tempo
     tempoInfinito: boolean = true;
@@ -50,6 +55,9 @@ export class XadrezComponent implements OnInit {
     tempoPretasMinutos: number | null = null;
     tempoPretasSegundos: number | null = null;
     incrementoPretas: number | null = null;
+
+    private tempoConfiguracaoInicializada: boolean = false;
+    private tempoConfiguracaoAlteradaManualmente: boolean = false;
 
     // controle do relógio em tempo real
     tempoRestanteBrancasAtual: number | null = null;
@@ -150,6 +158,30 @@ export class XadrezComponent implements OnInit {
     modalInfo: boolean = false;
     partidaInfoSelecionada: PartidaXadrezResumo | null = null;
 
+    // subscrição de erros
+    private erroSubscription: any = null;
+    private xadrezSubscription: any = null;
+
+    private normalizarAvisoNotacao(msg: string): string {
+        if (!msg) return msg;
+
+        let texto = msg;
+
+        // Remove a parte explicativa do backend (UI já tem dica fixa)
+        const idxUseSan = texto.toLowerCase().indexOf('. use san');
+        if (idxUseSan >= 0) {
+            texto = texto.slice(0, idxUseSan + 1);
+        }
+
+        // Remove status code se vier no texto
+        const idxStatus = texto.toLowerCase().indexOf('status code');
+        if (idxStatus >= 0) {
+            texto = texto.slice(0, idxStatus).trim();
+        }
+
+        return texto.trim();
+    }
+
     // áudio de notificação
     private audioNotificacao: HTMLAudioElement | null = null;
     private _notificacoesSonorasAtivadas: boolean = true;
@@ -175,11 +207,168 @@ export class XadrezComponent implements OnInit {
         }
     }
 
+    ngAfterViewChecked(): void {
+        if (!this.deveScrollarPgnParaFim) return;
+        const el = this.pgnContainer?.nativeElement;
+        if (!el) return;
+        el.scrollTop = el.scrollHeight;
+        this.deveScrollarPgnParaFim = false;
+    }
+
+    private solicitarScrollPgnParaFim(): void {
+        this.deveScrollarPgnParaFim = true;
+    }
+
+    private ultimaPartidaDoHistorico(): PartidaXadrezResumo | null {
+        const historico = this.estado?.historico ?? [];
+        if (historico.length === 0) return null;
+
+        // Mais seguro do que assumir ordem: pega o maior id
+        return historico.reduce((acc, cur) => (cur.id > acc.id ? cur : acc));
+    }
+
+    private aplicarDefaultsConfiguracao(): void {
+        if (!this.estado) return;
+        if (!this.ehDono) return;
+        if (this.estado.partidaEmAndamento) return;
+
+        const jogadores = this.jogadores;
+        if (jogadores.length === 0) return;
+
+        // Se só tem o dono, ambos ficam no dono
+        if (jogadores.length === 1) {
+            this.configurandoBrancas = jogadores[0];
+            this.configurandoPretas = jogadores[0];
+            this.configuracaoInicializada = true;
+            return;
+        }
+
+        const valoresAtuaisValidos =
+            jogadores.includes(this.configurandoBrancas) && jogadores.includes(this.configurandoPretas);
+
+        // Não sobrescreve escolhas do dono, a menos que esteja vazio/ inválido
+        if (this.configuracaoInicializada && this.configuracaoAlteradaManualmente && valoresAtuaisValidos) {
+            return;
+        }
+
+        const ultima = this.ultimaPartidaDoHistorico();
+
+        let brancasSugeridas: string | null = null;
+        let pretasSugeridas: string | null = null;
+
+        // Sugere invertido em relação à última partida
+        if (ultima?.usernameBrancas && ultima?.usernamePretas) {
+            brancasSugeridas = ultima.usernamePretas;
+            pretasSugeridas = ultima.usernameBrancas;
+        }
+
+        // Fallback: dono de brancas, primeiro outro de pretas
+        if (!brancasSugeridas || !jogadores.includes(brancasSugeridas)) {
+            brancasSugeridas = this.jogadorDono;
+        }
+
+        if (!pretasSugeridas || !jogadores.includes(pretasSugeridas)) {
+            pretasSugeridas = jogadores.find(j => j !== brancasSugeridas) ?? this.jogadorDono;
+        }
+
+        this.configurandoBrancas = brancasSugeridas;
+        this.configurandoPretas = pretasSugeridas;
+        this.configuracaoInicializada = true;
+        this.configuracaoAlteradaManualmente = false;
+
+        this.aplicarDefaultsTempo();
+    }
+
+    private segundosParaMinSeg(total: number | null): { min: number | null; seg: number | null } {
+        if (total === null || total === undefined) return { min: null, seg: null };
+        const t = Math.max(0, Math.floor(total));
+        return { min: Math.floor(t / 60), seg: t % 60 };
+    }
+
+    private aplicarDefaultsTempo(): void {
+        if (!this.estado) return;
+        if (!this.ehDono) return;
+        if (this.estado.partidaEmAndamento) return;
+
+        // Não sobrescreve se o dono já mexeu
+        if (this.tempoConfiguracaoInicializada && this.tempoConfiguracaoAlteradaManualmente) {
+            return;
+        }
+
+        const ultima = this.ultimaPartidaDoHistorico();
+
+        // Se não tiver histórico, mantém o default atual
+        if (!ultima) {
+            this.tempoConfiguracaoInicializada = true;
+            return;
+        }
+
+        const semTempo = ultima.tempoInicialBrancas === null && ultima.tempoInicialPretas === null;
+        if (semTempo) {
+            this.tempoInfinito = true;
+            this.onTempoInfinitoChange();
+            this.tempoConfiguracaoInicializada = true;
+            this.tempoConfiguracaoAlteradaManualmente = false;
+            return;
+        }
+
+        this.tempoInfinito = false;
+
+        const tempoBaseBrancas = ultima.tempoInicialBrancas ?? ultima.tempoInicialPretas;
+        const tempoBasePretas = ultima.tempoInicialPretas ?? ultima.tempoInicialBrancas;
+
+        const brancas = this.segundosParaMinSeg(tempoBaseBrancas);
+        const pretas = this.segundosParaMinSeg(tempoBasePretas);
+
+        this.tempoBrancasMinutos = brancas.min;
+        this.tempoBrancasSegundos = brancas.seg;
+        this.incrementoBrancas = ultima.incrementoBrancas ?? ultima.incrementoPretas;
+
+        this.tempoPretasMinutos = pretas.min;
+        this.tempoPretasSegundos = pretas.seg;
+        this.incrementoPretas = ultima.incrementoPretas ?? ultima.incrementoBrancas;
+
+        this.tempoConfiguracaoInicializada = true;
+        this.tempoConfiguracaoAlteradaManualmente = false;
+    }
+
+    onConfigManualChange(): void {
+        this.configuracaoAlteradaManualmente = true;
+    }
+
+    onTempoManualChange(): void {
+        this.tempoConfiguracaoAlteradaManualmente = true;
+    }
+
+    get motivoNaoPodeIniciarPartida(): string | null {
+        const jogadores = this.jogadores;
+        if (!this.configurandoBrancas || !this.configurandoPretas) {
+            return 'Selecione os jogadores de brancas e pretas.';
+        }
+        if (!jogadores.includes(this.configurandoBrancas) || !jogadores.includes(this.configurandoPretas)) {
+            return 'Jogador selecionado não está na sala.';
+        }
+        if (this.configurandoBrancas === this.configurandoPretas) {
+            return 'Brancas e pretas não podem ser o mesmo usuário.';
+        }
+        return null;
+    }
+
+    get podeIniciarPartida(): boolean {
+        return this.motivoNaoPodeIniciarPartida === null;
+    }
+
     ngOnInit(): void {
         // Carrega estado inicial via HTTP
         this.xadrezService.mostrar(this.jogadorDono, this.jogadorNomeSala).subscribe({
             next: (estado) => {
                 this.estado = estado;
+                this.aplicarDefaultsConfiguracao();
+
+                // Se já existe PGN/lances (reload com partida em andamento), rola pro fim
+                if ((estado.lances?.length ?? 0) > 0) {
+                    this.solicitarScrollPgnParaFim();
+                }
                 // Inicia o relógio se a partida já estiver em andamento (ex: reload da página)
                 if (estado.partidaEmAndamento) {
                     this.iniciarRelogio();
@@ -189,7 +378,7 @@ export class XadrezComponent implements OnInit {
         });
 
         // Recebe atualizações em tempo real via WebSocket
-        this.websocketService.subscribe(this.stompClient, this.topic + '/xadrez', (msg: XadrezResponse) => {
+        this.xadrezSubscription = this.websocketService.subscribe(this.stompClient, this.topic + '/xadrez', (msg: XadrezResponse) => {
             // Verifica se agora é minha vez (significa que o oponente acabou de jogar)
             const agoraEhMinhaVez = msg.partidaEmAndamento && (
                 msg.vezDasBrancas
@@ -200,6 +389,10 @@ export class XadrezComponent implements OnInit {
             this.estado = msg;
             this.enviandoLance = false;
 
+            if (msg.evento === 'LANCE') {
+                this.solicitarScrollPgnParaFim();
+            }
+
             // Toca som quando o oponente faz um lance (agora é minha vez após o lance dele)
             if (msg.evento === 'LANCE' && agoraEhMinhaVez) {
                 this.tocarSomNotificacao();
@@ -208,11 +401,13 @@ export class XadrezComponent implements OnInit {
             // Limpa erro e input apenas em eventos específicos e quando for minha vez
             if (msg.evento === 'LANCE' && agoraEhMinhaVez) {
                 this.erroLance = null;
+                this.avisoLance = null;
                 // Não limpa o input para permitir que o jogador prepare o próximo lance
             }
 
             if (msg.evento === 'FIM' || msg.evento === 'PARTIDA_INICIADA') {
                 this.erroLance = null;
+                this.avisoLance = null;
                 this.sanInput = '';
             }
 
@@ -221,15 +416,55 @@ export class XadrezComponent implements OnInit {
                 this.pararRelogio();
             }
             if (msg.evento === 'LANCE_ILEGAL') {
-                this.erroLance = 'Lance ilegal na posição atual. +1 lance ilegal contabilizado.';
-                this.sanInput = '';
+                // Verifica se o lance ilegal foi feito por mim (a vez não muda após lance ilegal)
+                const lanceIlegalFoiMeu = msg.vezDasBrancas
+                    ? this.username === msg.usernameBrancas
+                    : this.username === msg.usernamePretas;
+                if (lanceIlegalFoiMeu) {
+                    this.erroLance = 'Lance ilegal na posição atual. +1 lance ilegal contabilizado.';
+                    this.avisoLance = null;
+                    this.sanInput = '';
+                }
             }
 
             // Inicia/atualiza o relógio quando há um lance ou partida iniciada
             if (msg.evento === 'LANCE' || msg.evento === 'PARTIDA_INICIADA') {
                 this.iniciarRelogio();
             }
+
+            // Se a partida não está em andamento, atualiza defaults (sem sobrescrever escolhas manuais)
+            if (!this.estado.partidaEmAndamento) {
+                this.aplicarDefaultsConfiguracao();
+            }
         });
+
+        // Subscreve no tópico de erros WebSocket para capturar mensagens de aviso
+        this.erroSubscription = this.websocketService.subscribe(
+            this.stompClient,
+            `/topic/${this.username}/erro`,
+            (err: any) => {
+                if (err?.error) {
+                    const msg = err.error as string;
+                    // Verifica se é um erro de notação inválida ou caracteres inválidos (não contabilizado)
+                    const ehNotacaoInvalida = msg.toLowerCase().includes('notação inválida')
+                        || msg.toLowerCase().includes('caracteres inválidos');
+                    if (ehNotacaoInvalida) {
+                        this.avisoLance = this.normalizarAvisoNotacao(msg);
+                        this.erroLance = null;
+                        this.enviandoLance = false;
+                    }
+                }
+            },
+            { handleErrorsGlobally: false }
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.pararRelogio();
+        this.xadrezSubscription?.unsubscribe?.();
+        this.erroSubscription?.unsubscribe?.();
+        this.xadrezSubscription = null;
+        this.erroSubscription = null;
     }
 
     get jogadores(): string[] {
@@ -323,6 +558,7 @@ export class XadrezComponent implements OnInit {
     }
 
     configurarEIniciar(): void {
+        if (!this.podeIniciarPartida) return;
         this.websocketService.sendMessage(
             this.stompClient,
             this.app + '/xadrez/configurar-e-iniciar',
@@ -353,6 +589,7 @@ export class XadrezComponent implements OnInit {
     }
 
     copiarTempoDasBrancas(): void {
+        this.onTempoManualChange();
         this.tempoPretasMinutos = this.tempoBrancasMinutos;
         this.tempoPretasSegundos = this.tempoBrancasSegundos;
         this.incrementoPretas = this.incrementoBrancas;

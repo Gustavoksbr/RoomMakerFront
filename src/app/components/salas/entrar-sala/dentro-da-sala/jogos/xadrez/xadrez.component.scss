@@ -29,6 +29,15 @@
   border: 1px solid var(--border-color-sem-tema-claro);
 }
 
+.btn-iniciar:disabled {
+  cursor: not-allowed;
+}
+
+.xadrez-config-erro {
+  font-size: 12px;
+  color: var(--bs-danger);
+}
+
 // Configuração de tempo responsiva
 .tempo-config-grupo {
   margin-bottom: 8px;
@@ -242,6 +251,12 @@
 
 .xadrez-erro {
   color: #ff6b6b;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.xadrez-aviso {
+  color: var(--bs-warning);
   font-size: 13px;
   margin-top: 2px;
 }
