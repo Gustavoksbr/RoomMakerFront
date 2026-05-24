@@ -27,7 +27,7 @@
               name="categoria"
               required
             >
-              <option value="" selected ></option>
+              <option value="" selected >Todas</option>
               @for (categoria of ["chat","jokenpo","tictactoe","whoistheimpostor","xadrez"] ; track $index) {
                 <option value="{{categoria}}" >
                   {{categoriaMap[categoria]}}
