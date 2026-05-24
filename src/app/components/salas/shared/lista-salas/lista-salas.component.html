@@ -39,20 +39,28 @@
                   <td data-label="Ação">
                     <div>
                     @if (jaEstaNaSala(p)) {
-                      <button
-                        class = "btn btn-primary"
+                      <a
+                        class="btn btn-primary"
                         [routerLink]="['/salas', p.usernameDono, p.nome]">
                         Continuar
-                      </button>
+                      </a>
 
                     } @else {
-                      <button
-                        class="btn"
-                        [ngClass]="{  'btn-success': p.publica && getDisponivel(p)=='Disponível', 'btn-warning': !p.publica && getDisponivel(p)=='Disponível','nao-pode-entrar-botao':getDisponivel(p)!='Disponível'}"
-                        [routerLink]="classificarOrdemDeSalas(p) ==1 ? ['/salas', p.usernameDono, p.nome] : null"
-                      >
-                        {{ p.publica ? 'Entrar' : 'Entrar com senha' }}
-                      </button>
+                      @if (classificarOrdemDeSalas(p) == 1) {
+                        <a
+                          class="btn"
+                          [ngClass]="{  'btn-success': p.publica && getDisponivel(p)=='Disponível', 'btn-warning': !p.publica && getDisponivel(p)=='Disponível'}"
+                          [routerLink]="['/salas', p.usernameDono, p.nome]"
+                        >
+                          {{ p.publica ? 'Entrar' : 'Entrar com senha' }}
+                        </a>
+                      } @else {
+                        <button
+                          class="btn nao-pode-entrar-botao"
+                          disabled>
+                          {{ p.publica ? 'Entrar' : 'Entrar com senha' }}
+                        </button>
+                      }
                     }
                     </div>
                   </td>

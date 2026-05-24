@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { NgClass, NgIf, NgOptimizedImage } from '@angular/common';
 import { GlobalErrorHandler } from '../../providers/exceptions/GlobalErrorHandler';
 import confetti from 'canvas-confetti';
+import { AuthModalService } from '../../services/auth/auth-modal.service';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,7 @@ import confetti from 'canvas-confetti';
 })
 export class HomeComponent implements OnInit {
   verificarAniversario() {
-    const dataNascimentoStr = localStorage.getItem("datanascimento");
+    const dataNascimentoStr = this.authService.getStorage('datanascimento');
     if (dataNascimentoStr) {
       const dataNascimento = new Date(dataNascimentoStr);
       const hoje = new Date();
@@ -34,7 +35,6 @@ export class HomeComponent implements OnInit {
       this.celebrate();
     }
   }
-  public username: string = '';
   public escuro: boolean = true;
   public seuAniversario: boolean = false;
 
@@ -44,9 +44,30 @@ export class HomeComponent implements OnInit {
   // public novoUsername: string = '';
   // public erroUsername: string | null = null;
 
-  constructor(private authService: AuthService, private errorHandler: GlobalErrorHandler) {
-    this.username = localStorage.getItem('username')!;
+  constructor(
+    private authService: AuthService,
+    private authModalService: AuthModalService,
+    private errorHandler: GlobalErrorHandler
+  ) {
     this.verificarAniversario();
+  }
+
+  get username(): string | null {
+    return this.authService.getStorage('username');
+  }
+
+  get email(): string | null {
+    return this.authService.getStorage('email');
+  }
+
+  abrirLogin(): void {
+    this.authService.deleteStorage('redirectUrl');
+    this.authModalService.openLogin();
+  }
+
+  abrirCadastro(): void {
+    this.authService.deleteStorage('redirectUrl');
+    this.authModalService.openRegister();
   }
 
   // abrirEditarUsername() {
@@ -80,23 +101,26 @@ export class HomeComponent implements OnInit {
   // }
 
   logout() {
+    this.fecharModal();
     this.authService.logout();
   }
 
   changeTheme() {
-    if (localStorage.getItem("tema") == "escuro" || localStorage.getItem("tema") == null) {
-      localStorage.setItem("tema", "claro");
-    } else if (localStorage.getItem("tema") == "claro") {
-      localStorage.setItem("tema", "escuro");
+    const tema = this.authService.getStorage('tema');
+    if (tema == 'escuro' || tema == null) {
+      this.authService.saveStorage('tema', 'claro');
+    } else if (tema == 'claro') {
+      this.authService.saveStorage('tema', 'escuro');
     }
     this.colorir();
   }
 
   colorir() {
-    if (localStorage.getItem("tema") == "escuro" || localStorage.getItem("tema") == null) {
+    const tema = this.authService.getStorage('tema');
+    if (tema == 'escuro' || tema == null) {
       this.escuro = true;
       document.documentElement.setAttribute('data-theme', "escuro");
-    } else if (localStorage.getItem("tema") == "claro") {
+    } else if (tema == 'claro') {
       this.escuro = false;
       // console.log("claro");
       document.documentElement.setAttribute('data-theme', "claro");

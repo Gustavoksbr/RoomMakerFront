@@ -4,7 +4,7 @@
 <section class="container">
   <header class="header d-flex">
   </header>
-  <button routerLink="/salas" class="btn btn btn-secondary voltar-a-lista">Ver outras salas</button>
+  <a [routerLink]="['/salas']" class="btn btn btn-secondary voltar-a-lista">Ver outras salas</a>
   @if (carregando){
     <div class="ff-inter carregando">
       <p>Carregando</p>

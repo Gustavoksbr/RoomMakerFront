@@ -1,21 +1,34 @@
 <div class="home" id="home"  >
 <!--  [ngClass]="{'tema-escuro': escuro, 'tema-claro': !escuro}"-->
   <header class="header-perso">
-    <div class="nao-homecard">
-    <div class="logo-container">
-      <img ngSrc="RoomMaker.png" alt="RoomMaker" width="200" height="67" priority>
-    </div>
-    <div>
-      <div class="form-switch mudar-tema">
-        <label class="form-check-label">{{ escuro ? 'Tema Escuro' : 'Tema Claro' }}</label>
-        <input class="form-check-input" type="checkbox" role="switch" [checked]="escuro" (click)="changeTheme()">
+    <div class="header-inner">
+      <div class="nao-homecard">
+      <div class="logo-container">
+        <img ngSrc="RoomMaker.png" alt="RoomMaker" width="200" height="67" priority>
       </div>
-    </div>
-    </div>
-    <div class="  homecard">
-      @if (username != null) {
-        <div class="d-flex flex-column align-items-center">
-          <p>Olá, {{username}}</p>
+      <div>
+        <div class="mudar-tema">
+          <span
+            class="theme-icon"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="escuro ? 'Ativar tema claro' : 'Ativar tema escuro'"
+            (click)="changeTheme()"
+            (keydown.enter)="changeTheme()"
+            (keydown.space)="changeTheme()"
+          >{{ escuro ? '🌙' : '☀️' }}</span>
+        </div>
+      </div>
+      </div>
+      <div class="homecard">
+        @if (username != null) {
+          <div class="header-user">
+          <div class="user-text">
+            <p class="user-name">Olá, {{username}}</p>
+          @if (email != null) {
+            <p class="email-usuario">{{email}}</p>
+          }
+          </div>
           <!-- [CANCELADO] alterarUsername - username é usado como chave em todas as coleções do MongoDB,
                atualizar exigiria cascade update manual em salas, chats, jogos, etc.
           @if (!editandoUsername) {
@@ -45,6 +58,13 @@
             <p>logout</p>
           </div>
         </div>
+      } @else {
+        <div class="d-flex flex-column align-items-center" style="gap: 10px;">
+          <div class="d-flex" style="gap: 10px;">
+            <button class="btn btn-secondary" type="button" (click)="abrirLogin()">Login</button>
+            <button class="btn btn-primary" type="button" (click)="abrirCadastro()">Cadastro</button>
+          </div>
+        </div>
       }
       <div *ngIf="isModalOpen" class="modal-overlay" (click)="fecharModal()">
         <div class="modal-content" (click)="$event.stopPropagation()">
@@ -59,6 +79,7 @@
         </div>
       </div>
     </div>
+  </div>
     <!-- <button (click)="throwErro()"> throw error de proposito</button> -->
   </header>
   <!-- <div class="with-ng-content"> -->

@@ -10,6 +10,7 @@ import { API_CONFIG } from '../config/api.config';
 })
 export class AuthService {
   private apiUrl = API_CONFIG.BASE_URL;
+  private static readonly STORAGE_PREFIX = 'roommaker_';
 
   // private apiUrl = 'http://localhost:8080';
   constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) { }
@@ -34,37 +35,66 @@ export class AuthService {
   }
 
   //chamadas para storage
+  private storageKey(chave: string): string {
+    if (chave.startsWith(AuthService.STORAGE_PREFIX)) return chave;
+    return `${AuthService.STORAGE_PREFIX}${chave}`;
+  }
+
   saveStorage(chave: string, valor: string) {
-    localStorage.setItem(chave, valor);
+    localStorage.setItem(this.storageKey(chave), valor);
   }
+
   getStorage(chave: string) {
-    return localStorage.getItem(chave);
+    const key = this.storageKey(chave);
+    const value = localStorage.getItem(key);
+    if (value != null) return value;
+
+    // Fallback para chaves antigas (sem prefixo) e migra automaticamente.
+    if (!chave.startsWith(AuthService.STORAGE_PREFIX)) {
+      const legacyValue = localStorage.getItem(chave);
+      if (legacyValue != null) {
+        localStorage.setItem(key, legacyValue);
+        localStorage.removeItem(chave);
+        return legacyValue;
+      }
+    }
+
+    return null;
   }
+
   deleteStorage(chave: string) {
-    localStorage.removeItem(chave);
+    localStorage.removeItem(this.storageKey(chave));
+
+    // Remove também a versão antiga (sem prefixo), por segurança.
+    if (!chave.startsWith(AuthService.STORAGE_PREFIX)) {
+      localStorage.removeItem(chave);
+    }
   }
 
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
   saveToken(token: string): void {
-    localStorage.setItem('token', token);
+    this.saveStorage('token', token);
   }
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return this.getStorage('token');
   }
   getHeaders(): HttpHeaders {
-    return new HttpHeaders({ Authorization: `Bearer ${this.getToken()}` });
+    const token = this.getToken();
+    if (!token) return new HttpHeaders();
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
   logout(from401 = false): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('datanascimento');
-    if (this.router.url != "/register" && this.router.url != "/forget" && this.router.url != "/login") {
-      this.router.navigate(['/login']).then(() => {
-        if (from401) window.location.reload();
-      });
-    }
+    this.deleteStorage('token');
+    this.deleteStorage('username');
+    this.deleteStorage('datanascimento');
+    this.deleteStorage('email');
+
+    // Rotas /login e /register foram removidas: volta para uma rota pública.
+    this.router.navigate(['/salas']).then(() => {
+      if (from401) window.location.reload();
+    });
   }
 
   getDataNascimento(): Observable<any> {

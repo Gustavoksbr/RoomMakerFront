@@ -1,45 +1,43 @@
 <app-home>
   <app-navbar [paginaAtual]=PaginaAtual.SALAS>
-  <div class="barra-pesquisa">
-    <h3>Procurar</h3>
-    <div class="main-search">
-      <div class="inputs-search row mb-3 ">
-    <div class="col">
-      <label for="searchUsernameDono">Dono</label>
-      <input id="searchUsernameDono" type="text" class="form-control" noAutocomplete [(ngModel)]="searchUsernameDono" (ngModelChange)="onFiltroChange()">
-    </div>
-    <div class="col" id="input-nome-sala">
-      <label for="searchNomeSala">Nome da Sala</label>
-      <input id="searchNomeSala" type="text" class="form-control" noAutocomplete [(ngModel)]="searchNomeSala" (ngModelChange)="onFiltroChange()">
-    </div>
-    <div class="col">
-      <label for="searchCategoria">Categoria</label>
-      <select
-        [(ngModel)]="searchCategoria"
-        (ngModelChange)="onFiltroChange()"
-        id="searchCategoria"
-        class="form-select selecionarCategoria"
-        name="categoria"
-        required
-      >
-        <option value="" selected ></option>
-        @for (categoria of ["chat","jokenpo","tictactoe","whoistheimpostor","xadrez"] ; track $index) {
-          <option value="{{categoria}}" >
-            {{categoriaMap[categoria]}}
-          </option>
+    <div class="barra-pesquisa">
+      <div class="barra-pesquisa-header">
+        <h3>Procurar</h3>
+        @if (searchUsernameDono || searchNomeSala || searchCategoria) {
+          <button (click)="limpar()" class="btn btn-secondary btn-limpar">Limpar</button>
         }
-      </select>
-    </div>
       </div>
-    @if (searchUsernameDono || searchNomeSala || searchCategoria) {
-      <div class="col conjunto-botoes">
-        <div class="">
-          <button (click)="limpar()" class="btn btn-secondary">Limpar</button>
+
+      <div class="main-search inputs-search">
+          <div class="col-md">
+            <label for="searchUsernameDono">Dono</label>
+            <input id="searchUsernameDono" type="text" class="form-control" noAutocomplete [(ngModel)]="searchUsernameDono" (ngModelChange)="onFiltroChange()">
+          </div>
+          <div class="col-md">
+            <label for="searchNomeSala">Nome da Sala</label>
+            <input id="searchNomeSala" type="text" class="form-control" noAutocomplete [(ngModel)]="searchNomeSala" (ngModelChange)="onFiltroChange()">
+          </div>
+          <div class="col-md">
+            <label for="searchCategoria">Categoria</label>
+            <select
+              [(ngModel)]="searchCategoria"
+              (ngModelChange)="onFiltroChange()"
+              id="searchCategoria"
+              class="form-select selecionarCategoria"
+              name="categoria"
+              required
+            >
+              <option value="" selected ></option>
+              @for (categoria of ["chat","jokenpo","tictactoe","whoistheimpostor","xadrez"] ; track $index) {
+                <option value="{{categoria}}" >
+                  {{categoriaMap[categoria]}}
+                </option>
+              }
+            </select>
+          </div>
         </div>
       </div>
-    }
-    </div>
-  </div>
+
     <app-lista-salas 
       [ListaSalas]="ListaSalas" 
       [carregando]="carregando"

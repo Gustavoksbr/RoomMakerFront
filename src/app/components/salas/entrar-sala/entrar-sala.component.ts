@@ -58,7 +58,7 @@ export class EntrarSalaComponent implements OnInit {
 
   ngOnInit(): void {
     this.carregando = true;
-    this.username = this.authService.getStorage("username")!;
+    this.username = this.authService.getStorage("username") ?? '';
     this.usernameDono = this.route.snapshot.paramMap.get('usernameDono');
     this.salaNome = this.route.snapshot.paramMap.get('nomeSala');
     this.url = this.usernameDono! + "/" + this.salaNome!;
@@ -73,14 +73,24 @@ export class EntrarSalaComponent implements OnInit {
       }
     });
   }
+
+  private atualizarUsernameAtual(): string {
+    this.username = this.authService.getStorage('username') ?? '';
+    return this.username;
+  }
+
   usuarioEstaNaSala() {
-    return this.sala.usernameParticipantes.concat(this.sala.usernameDono).includes(this.username);
+    const usernameAtual = this.atualizarUsernameAtual();
+    if (!usernameAtual) return false;
+    return this.sala.usernameParticipantes.concat(this.sala.usernameDono).includes(usernameAtual);
   }
 
   entrarSala(salaRequest: EntrarSalaRequest) {
     this.service.entrarNaSala(salaRequest).subscribe({
       next: (salaResponse: SalaResponse) => {
         this.sala = salaResponse;
+        // garante que o template recalcula com o username atualizado
+        this.atualizarUsernameAtual();
       },
       error: (err) => {
         const errorMessage = err.error || 'Erro ao entrar na sala. Tente novamente.';

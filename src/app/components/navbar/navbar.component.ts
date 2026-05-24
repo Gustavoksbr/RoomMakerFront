@@ -18,5 +18,9 @@ export class NavbarComponent {
   }
 @Input() paginaAtual: PaginaAtual = PaginaAtual.SALAS;
 
+  get suasSalasDesabilitado(): boolean {
+    return !this.authService.isLoggedIn();
+  }
+
   protected readonly PaginaAtual = PaginaAtual;
 }

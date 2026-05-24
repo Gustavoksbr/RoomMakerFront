@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {HomeComponent} from './components/home/home.component';
-import {ModalComponent} from './components/geral/modal/modal.component';
+import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomeComponent,ModalComponent],
+  imports: [RouterOutlet, AuthModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

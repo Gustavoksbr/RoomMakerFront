@@ -22,12 +22,13 @@ export class ListaSalasComponent implements OnInit, OnChanges {
   @Input() ListaSalas: SalaResponse[] = [];
   @Input() suasSalas: boolean = false;
   @Input() usuariosOnline: Set<string> = new Set();
-  public username: string = '';
   @Input() public carregando: boolean = false;
 
-
   constructor(private authService: AuthService) {
-    this.username = this.authService.getStorage("username")!;
+  }
+
+  get username(): string {
+    return this.authService.getStorage('username') ?? '';
   }
   ngOnInit() {
     this.ordenarSalas();
@@ -62,6 +63,7 @@ export class ListaSalasComponent implements OnInit, OnChanges {
     return "Disponível";
   }
   jaEstaNaSala(sala: SalaResponse): boolean {
+    if (!this.username) return false;
     if (sala.usernameParticipantes.includes(this.username) || sala.usernameDono === this.username) {
       return true;
     }

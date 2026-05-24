@@ -3,9 +3,13 @@
   <div class=" quadrado-principal">
     <div class="container-nav">
 <nav>
-  <div id="salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.SALAS}" routerLink="/salas"><p>Lista de salas</p></div>
-  <div id="suas-salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.SUAS_SALAS}" routerLink="/suas-salas"><p>Suas salas</p></div>
-  <div id="criar-salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.CRIAR_SALA}" routerLink="/criar-sala"><p>Criar sala</p></div>
+  <a id="salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.SALAS}" [routerLink]="['/salas']"><p>Lista de salas</p></a>
+  @if (!suasSalasDesabilitado) {
+    <a id="suas-salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.SUAS_SALAS}" [routerLink]="['/suas-salas']"><p>Suas salas</p></a>
+  } @else {
+    <div id="suas-salas" class="nav-disabled"><p>Suas salas</p></div>
+  }
+  <a id="criar-salas" [ngClass]="{'pagina-atual': paginaAtual == PaginaAtual.CRIAR_SALA}" [routerLink]="['/criar-sala']"><p>Criar sala</p></a>
 </nav>
     </div>
     <div class="container-conteudo">

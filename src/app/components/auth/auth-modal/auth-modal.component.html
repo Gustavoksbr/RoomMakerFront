@@ -1,0 +1,80 @@
+@if (state.open) {
+  <div class="modal-overlay" (click)="close()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="header">
+        <div></div>
+        <button type="button" class="icon-button" (click)="close()" aria-label="Fechar">✕</button>
+      </div>
+
+      <div class="mode-switch" aria-label="Alternar entre login e cadastro">
+        <button type="button" class="mode-link" [class.active]="state.mode === 'login'" (click)="setMode('login')">Login</button>
+        <span class="divider">|</span>
+        <button type="button" class="mode-link" [class.active]="state.mode === 'register'" (click)="setMode('register')">Cadastro</button>
+      </div>
+
+      @if (state.mode === 'login') {
+        <form (submit)="login()" class="form">
+          <div class="field">
+            <label for="modal-username">Username</label>
+            <input id="modal-username" type="text" [(ngModel)]="credentials.username" name="username" required class="input" [class.invalid]="errorMessage" />
+          </div>
+
+          <div class="field">
+            <label for="modal-password">Senha</label>
+            <input id="modal-password" type="password" [(ngModel)]="credentials.password" name="password" required class="input" [class.invalid]="errorMessage" togglePassword />
+            <div class="hint-actions">
+              <!-- <span class="annotated">Esqueceu a senha? Recupere-a</span> -->
+            </div>
+          </div>
+
+          @if (errorMessage) {
+            <div class="error">{{ errorMessage }}</div>
+          }
+
+          <button type="submit" class="primary" [disabled]="tentandoLogar">
+            @if (!tentandoLogar) { Entrar } @else { Entrando... }
+          </button>
+
+          <div class="switch-text">
+            <span>Não possui conta? </span>
+            <button type="button" class="text-link" (click)="setMode('register')">Cadastre-se</button>
+          </div>
+        </form>
+      } @else {
+        <form (submit)="register()" class="form">
+          <div class="field">
+            <label for="modal-register-username">Username</label>
+            <input id="modal-register-username" type="text" [(ngModel)]="user.username" name="registerUsername" required class="input" [class.invalid]="errorMessage" onlyAlphanumeric maxlength="15" />
+            <div class="hint-row">
+              <span>{{user.username.length}}/15</span>
+              <span>Apenas letras e números.</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="modal-register-email">Email</label>
+            <input id="modal-register-email" type="email" [(ngModel)]="user.email" name="registerEmail" required class="input" [class.invalid]="errorMessage" />
+          </div>
+
+          <div class="field">
+            <label for="modal-register-password">Senha</label>
+            <input id="modal-register-password" type="password" [(ngModel)]="user.password" name="registerPassword" required class="input" [class.invalid]="errorMessage" togglePassword />
+          </div>
+
+          @if (errorMessage) {
+            <div class="error">{{ errorMessage }}</div>
+          }
+
+          <button type="submit" class="primary" [disabled]="tentandoCadastrar">
+            @if (!tentandoCadastrar) { Criar conta } @else { Criando... }
+          </button>
+
+          <div class="switch-text">
+            <span>Já possui conta? </span>
+            <button type="button" class="text-link" (click)="setMode('login')">Login</button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+}

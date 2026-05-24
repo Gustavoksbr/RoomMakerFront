@@ -192,7 +192,7 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     set notificacoesSonorasAtivadas(value: boolean) {
         this._notificacoesSonorasAtivadas = value;
-        localStorage.setItem('xadrez_notificacoes_sonoras', JSON.stringify(value));
+        this.authService.saveStorage('xadrez_notificacoes_sonoras', JSON.stringify(value));
     }
 
     constructor(private websocketService: WebSocketService, private authService: AuthService, private xadrezService: XadrezService) {
@@ -201,7 +201,7 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.audioNotificacao = new Audio('notificacao.wav');
 
         // Carrega preferência de notificações do localStorage
-        const notificacoesSalvas = localStorage.getItem('xadrez_notificacoes_sonoras');
+        const notificacoesSalvas = this.authService.getStorage('xadrez_notificacoes_sonoras');
         if (notificacoesSalvas !== null) {
             this._notificacoesSonorasAtivadas = JSON.parse(notificacoesSalvas);
         }

@@ -1,0 +1,161 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  max-width: calc(100% - 32px);
+  color: var(--text-color);
+  background-color: var(--background-color2);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid var(--text-color2);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.icon-button {
+  border: 1px solid var(--text-color2);
+  background: transparent;
+  color: var(--text-color);
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+}
+
+.mode-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  user-select: none;
+}
+
+.divider {
+  opacity: 0.6;
+}
+
+.mode-link {
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+.mode-link.active {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 13px;
+  opacity: 0.95;
+}
+
+.input {
+  width: 100%;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--text-color2);
+  background-color: var(--background-color2);
+  color: var(--text-color);
+  padding: 0 12px;
+}
+
+.input.invalid {
+  border-color: #dc3545;
+}
+
+.hint-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.hint-actions {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.annotated {
+  opacity: 0.85;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.primary {
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--text-color2);
+  background-color: var(--text-color);
+  color: var(--background-color);
+  font-weight: 700;
+}
+
+.primary:disabled {
+  opacity: 0.65;
+}
+
+.switch-text {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 13px;
+  opacity: 0.95;
+}
+
+.text-link {
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0;
+}
+
+@media (max-width: 420px) {
+  .modal-content {
+    padding: 14px;
+  }
+}

@@ -1,15 +1,27 @@
 .header-perso {
-  display: flex;
   background-color: rgba(64, 118, 255, 1);
-  justify-content: center;
+  padding: 12px 16px;
   width: 100%;
-  height: 100px;
+  min-height: 112px;
+  height: auto;
   //box-shadow: 0 10px 10px 0 rgba(0,0,0,0.1);
+}
+
+.header-inner {
+  display: flex;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: nowrap;
+  min-height: 112px;
 }
 
 .logo-container {
   //background-color: rgba(64, 118, 255, 0.71);
-  width: 200px;
+  width: 180px;
   //height: 50px;
   display: flex;
   justify-content: center;
@@ -27,11 +39,12 @@
 //}
 
 .homecard {
-  min-width: 170px;
-  max-width: 400px;
-  margin-right: 5%;
+  min-width: 0;
+  max-width: 520px;
+  width: 100%;
+  margin-right: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   flex-direction: row;
   min-height: 70px;
@@ -39,32 +52,107 @@
 }
 
 .homecard p {
+  color: white;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.homecard p:not(.email-usuario) {
   font-size: 150%;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 150%;
+  font-weight: 600;
+}
+
+.email-usuario {
+  margin-top: -6px;
+  opacity: 0.9;
+  font-size: 12px;
+  color: white;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   color: white;
 }
 
+.user-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.15;
+}
+
+.user-greeting {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.user-email {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.9;
+  color: white;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .sair {
-  background-color: rgba(64, 118, 255, 1);
+  background-color: rgba(255, 255, 255, 0.14);
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 120px;
-  height: 45px;
-  padding: 5%;
+  height: 42px;
+  padding: 0 10px;
+  border-radius: 12px;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
 }
 
 .sair img {
-  width: 30%;
+  width: 22px;
+  height: 22px;
 
 }
 
 .sair:hover {
   cursor: pointer;
-  background-color: grey;
-  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.22);
   // Transição suave APENAS para o hover do botão de sair
-  transition: background-color 0.2s ease, border-radius 0.2s ease !important;
+  transition: background-color 0.2s ease !important;
 }
 
 
@@ -117,23 +205,44 @@ footer a {
 //}
 
 .mudar-tema {
-  //width: 120px;
   color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
 
   //justify-content: space-between;
   @media (min-width: 571px) {
     width: 120px;
   }
 
-  input {
-    cursor: pointer;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    border: 1px solid var(--text-color);
-  }
+}
+
+.theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(2px);
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.theme-icon:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.theme-icon:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
 }
 
 .mudar-tema {
@@ -146,37 +255,139 @@ footer a {
 .nao-homecard {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  gap: 12px;
 }
 
-@media (max-width: 570px) {
+@media (max-width: 600px) {
   .header-perso {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    padding: 10px 12px;
+    min-height: auto;
+  }
+
+  .header-inner {
+    gap: 12px;
+    flex-wrap: nowrap;
+    align-items: center;
   }
 
   .nao-homecard {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
   }
 
   .mudar-tema {
+    width: 100%;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .homecard {
+    max-width: 320px;
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .header-user {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .user-text {
+    align-items: flex-start;
+    text-align: left;
+    width: min(100%, 100%);
+  }
+
+  .sair {
+    margin-left: 0;
+    width: 110px;
+    height: 40px;
+    padding: 0 8px;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 500px) {
+  .header-perso {
+    padding: 10px 10px;
+  }
+
+  .header-inner {
+    gap: 10px;
+  }
+
+  .logo-container {
+    width: 160px;
+  }
+
+  .theme-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .homecard {
+    max-width: 280px;
+  }
+
+  .email-usuario {
+    max-width: 200px;
+    font-size: 11px;
+  }
+
+  .sair {
+    width: 105px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 430px) {
+  .logo-container {
+    width: 130px;
+  }
+
+  .theme-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+
+  .homecard {
+    max-width: 240px;
+  }
+
+  .user-name {
+    font-size: 120%;
+  }
+
+  .email-usuario {
+    max-width: 150px;
+  }
+
+  .sair {
+    width: 95px;
+    height: 36px;
   }
 }
 
 @media (max-width: 400px) {
-  .homecard p {
-    font-size: 100%;
+  .email-usuario {
+    max-width: 160px;
+    font-size: 10px;
   }
 
   .sair {
-    width: 80px;
-    height: 35px;
+    width: 90px;
   }
-
 }
 
 

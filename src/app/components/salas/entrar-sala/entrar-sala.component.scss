@@ -1,7 +1,11 @@
-.voltar-a-lista{
-  display: flex;
+.voltar-a-lista {
+  display: inline-flex;
   justify-content: center;
-  margin-bottom: 3%;
+  width: auto;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  align-self: center;
 }
 
 .pagina-not-found {
@@ -9,4 +13,4 @@
   flex-direction: column;
   justify-content: center;
   color: var(--text-color);
-    }
+}

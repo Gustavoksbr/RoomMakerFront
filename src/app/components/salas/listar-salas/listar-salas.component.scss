@@ -31,20 +31,46 @@
 
 
 .barra-pesquisa{
-  display: flex;
-  flex-direction: column;
-  //justify-content: space-around;
-background: var(--background-color2);
+  background: var(--background-color2);
   color: var(--text-color);
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  //max-width: 200px;
+  padding: 18px;
+  border-radius: 12px;
+  margin: 0 auto 18px;
+  width: min(100%, 960px);
+  max-width: 960px;
+  box-shadow: 0 1px 18px rgba(0,0,0,0.05);
 }
 
-.barra-pesquisa input,.barra-pesquisa select{
+.barra-pesquisa-header{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.barra-pesquisa-header h3{
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.btn-limpar{
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+.barra-pesquisa input,
+.barra-pesquisa select{
   background-color: var(--background-color);
   color: var(--text-color);
+}
+
+.barra-pesquisa label{
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
 }
 
 .lista-de-salas{
@@ -98,42 +124,38 @@ background: var(--background-color2);
 //
 //
 .main-search{
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 1rem;
+}
 
+.main-search .col-md{
+  min-width: 0;
+  width: 100%;
 }
-.conjunto-botoes{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  max-width: 200px;
-}
-@media (max-width: 1000px) {
-  .barra-pesquisa{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+
+@media (max-width: 1100px) {
   .main-search{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
-  //.conjunto-botoes{
-  //  display: flex;
-  //  flex-direction: row;
-  //  justify-content: space-between;
-  //}
+}
 
+@media (max-width: 900px) {
+  .main-search{
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 490px) {
+  .barra-pesquisa{
+    padding: 14px;
+  }
+
+  .barra-pesquisa-header{
+    align-items: stretch;
+  }
+
   .inputs-search{
-    font-size: 80%;
+    font-size: 90%;
   }
-  #input-nome-sala label{
-    width: 180%;
-
-  }
-
 }

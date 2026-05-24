@@ -10,7 +10,6 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { PaginaAtual } from '../../navbar/PaginaAtual';
 import { ListaSalasComponent } from '../shared/lista-salas/lista-salas.component';
-import { ModalComponent } from '../../geral/modal/modal.component';
 import { categoriaMap } from '../../../models/salas/domain/Sala';
 import { NoAutocompleteDirective } from '../../../diretivas/no-autocomplete/no-autocomplete.directive';
 import { WebSocketService } from '../../../services/websocket/websocket.service';
@@ -19,7 +18,7 @@ import { Client } from '@stomp/stompjs';
 @Component({
   selector: 'app-listar-salas',
   standalone: true,
-  imports: [RouterLink, NgFor, NgIf, SalaComponent, HomeComponent, NgClass, FormsModule, NavbarComponent, ListaSalasComponent, ModalComponent, NoAutocompleteDirective],
+  imports: [RouterLink, NgFor, NgIf, SalaComponent, HomeComponent, NgClass, FormsModule, NavbarComponent, ListaSalasComponent, NoAutocompleteDirective],
   templateUrl: './listar-salas.component.html',
   styleUrl: './listar-salas.component.scss'
 })
@@ -43,12 +42,14 @@ export class ListarSalasComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private websocketService: WebSocketService
   ) {
-    this.username = localStorage.getItem('username')!;
+    this.username = this.authService.getStorage('username') ?? '';
   }
 
   ngOnInit() {
     this.carregarSalas();
-    this.conectarWebSocket();
+    if (this.authService.isLoggedIn() && this.username) {
+      this.conectarWebSocket();
+    }
   }
 
   ngOnDestroy() {
@@ -77,6 +78,7 @@ export class ListarSalasComponent implements OnInit, OnDestroy {
   }
 
   conectarWebSocket() {
+    if (!this.authService.isLoggedIn() || !this.username) return;
     const topic = `/topic/user/${this.username}/salas/updates`;
 
     this.websocketService.connect(
