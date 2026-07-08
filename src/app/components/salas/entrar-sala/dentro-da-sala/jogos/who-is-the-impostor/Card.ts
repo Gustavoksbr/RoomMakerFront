@@ -120,6 +120,7 @@
   ELECTROGIANT = "ELECTROGIANT",
   LAVA = "LAVA",
   GOLEM = "GOLEM",
+  RONIN = "RONIN",
 }
 export const CardMap: Record<string, string> = {
   [Card.MIRROR]: "Mirror",
@@ -243,6 +244,7 @@ export const CardMap: Record<string, string> = {
   [Card.ELECTROGIANT]: "ElectroGiant",
   [Card.LAVA]: "Lava",
   [Card.GOLEM]: "Golem",
+  [Card.RONIN]: "Ronin",
 
 };
 
@@ -368,4 +370,5 @@ export const CardMapToPortuguese: Record<string, string> = {
   [Card.ELECTROGIANT]: "Gigante Elétrico",
   [Card.LAVA]: "Lava Hound",
   [Card.GOLEM]: "Golem",
+  [Card.RONIN]: "Ronin",
 }
