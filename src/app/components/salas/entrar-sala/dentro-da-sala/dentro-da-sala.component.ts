@@ -15,6 +15,7 @@ import { categoriaMap, formatarCapacidade } from '../../../../models/salas/domai
 import { NoAutocompleteDirective } from '../../../../diretivas/no-autocomplete/no-autocomplete.directive';
 import { MaxDigitsDirective } from '../../../../diretivas/max-digits/max-digits.directive';
 import { XadrezComponent } from './jogos/xadrez/xadrez.component';
+import { VideoLocalComponent } from './video-local/video-local.component';
 
 @Component({
   selector: 'app-dentro-da-sala',
@@ -28,7 +29,8 @@ import { XadrezComponent } from './jogos/xadrez/xadrez.component';
     FormsModule,
     NoAutocompleteDirective,
     MaxDigitsDirective,
-    XadrezComponent
+    XadrezComponent,
+    VideoLocalComponent
   ],
   templateUrl: './dentro-da-sala.component.html',
   styleUrl: './dentro-da-sala.component.scss'
@@ -175,7 +177,7 @@ export class DentroDaSalaComponent implements OnInit, OnDestroy {
         this.websocketService.subscribe(
           this.stompClient,
           `/topic/${this.username}/erro`,
-          () => {}
+          () => { }
         );
 
         // subscreve no tópico de status online

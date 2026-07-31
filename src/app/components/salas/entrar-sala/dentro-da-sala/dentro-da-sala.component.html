@@ -109,6 +109,13 @@
 
     @if (stompClient.connected) {
       <div class="game-section">
+        <!-- Seção de Vídeo e Áudio Local -->
+        <div>
+          <div class="card categoria">
+            <app-video-local />
+          </div>
+        </div>
+
         @if (sala.categoria == 'tictactoe') {
           <div>
             <h2>Jogo da velha</h2>

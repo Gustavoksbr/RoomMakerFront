@@ -1,0 +1,92 @@
+<div class="video-local-container">
+  <div class="video-header">
+    <h5>📹 Minha Câmera e Microfone</h5>
+    <span class="status-badge" [ngClass]="{'status-ativo': mediaIniciada, 'status-inativo': !mediaIniciada, 'status-carregando': carregando}">
+      {{ statusMensagem }}
+    </span>
+  </div>
+
+  <div class="video-wrapper">
+    @if (!mediaIniciada && !carregando) {
+      <div class="video-placeholder">
+        <div class="placeholder-content">
+          <i class="placeholder-icon">📷</i>
+          <p>Câmera desligada</p>
+          <button class="btn btn-primary btn-iniciar" (click)="iniciarMedia()">
+            🎥 Abrir Webcam
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (carregando) {
+      <div class="video-placeholder">
+        <div class="placeholder-content">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+          <p>Iniciando câmera e microfone...</p>
+        </div>
+      </div>
+    }
+
+    <!-- Vídeo sempre presente, mas oculto quando não está em uso -->
+    <div class="video-content" [style.display]="mediaIniciada ? 'block' : 'none'">
+      <video #videoElement controls [class.video-off]="!videoAtivo"></video>
+      
+      @if (!videoAtivo && mediaIniciada) {
+        <div class="video-off-overlay">
+          <i class="video-off-icon">📷</i>
+          <p>Câmera desligada</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (erro) {
+    <div class="alert alert-danger erro-mensagem">
+      ⚠️ {{ erro }}
+    </div>
+  }
+
+  @if (mediaIniciada) {
+    <div class="controles">
+      <button 
+        class="btn btn-controle" 
+        [ngClass]="audioAtivo ? 'btn-outline-success' : 'btn-outline-danger'"
+        (click)="alternarAudio()"
+        [title]="audioAtivo ? 'Desativar microfone' : 'Ativar microfone'">
+        {{ audioAtivo ? '🎤' : '🎤🔇' }} {{ audioAtivo ? 'Microfone' : 'Mudo' }}
+      </button>
+
+      <button 
+        class="btn btn-controle" 
+        [ngClass]="videoAtivo ? 'btn-outline-success' : 'btn-outline-danger'"
+        (click)="alternarVideo()"
+        [title]="videoAtivo ? 'Desativar câmera' : 'Ativar câmera'">
+        {{ videoAtivo ? '📹' : '📹❌' }} {{ videoAtivo ? 'Câmera' : 'Desligada' }}
+      </button>
+
+      <button 
+        class="btn btn-controle btn-outline-info"
+        (click)="recarregarVideo()"
+        title="Recarregar vídeo">
+        🔄 Recarregar
+      </button>
+
+      <button 
+        class="btn btn-controle btn-outline-secondary"
+        (click)="pararMedia()"
+        title="Parar câmera e microfone">
+        🛑 Desligar Tudo
+      </button>
+    </div>
+  }
+
+  <div class="info-box">
+    <small>
+      ℹ️ <strong>Modo de teste:</strong> Apenas você pode ver sua câmera e ouvir seu microfone. 
+      Outros usuários ainda não podem ver/ouvir você nesta versão.
+    </small>
+  </div>
+</div>
