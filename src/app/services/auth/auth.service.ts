@@ -91,10 +91,19 @@ export class AuthService {
     this.deleteStorage('datanascimento');
     this.deleteStorage('email');
 
-    // Rotas /login e /register foram removidas: volta para uma rota pública.
-    this.router.navigate(['/salas']).then(() => {
-      if (from401) window.location.reload();
-    });
+    if (from401) {
+      // O token expirou enquanto a pessoa estava numa página pública — por
+      // exemplo, o link de uma sala que alguém compartilhou. Recarrega a
+      // MESMA página em vez de mandar para /salas: assim ela não perde o link
+      // que estava tentando acessar. Se a página exigir login, o AuthGuard já
+      // cuida de guardar essa URL e redirecionar de volta após o login.
+      window.location.reload();
+      return;
+    }
+
+    // Logout manual (botão "sair"): comportamento de sempre, volta para a
+    // lista pública de salas.
+    this.router.navigate(['/salas']);
   }
 
   getDataNascimento(): Observable<any> {
