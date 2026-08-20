@@ -301,9 +301,16 @@ export class TabuleiroComponent implements OnChanges {
         const casa = this.casaEm(evento.clientX, evento.clientY);
         if (!casa) return;
 
-        // Botão direito: anotações do jogador (marca ou seta).
+        // Botão direito: anotações do jogador (marca ou seta) — a MENOS que
+        // haja pré-lances na fila, caso em que o botão direito os cancela em
+        // vez de anotar, como no chess.com e no lichess. Enquanto a fila
+        // existe, o jogador não desenha seta nem marca casa de vermelho.
         if (evento.button === 2) {
             evento.preventDefault();
+            if (this.fila && !this.fila.vazia) {
+                this.cancelarPreLances();
+                return;
+            }
             this.setaEmCurso = { de: casa, para: casa };
             this.grade?.nativeElement.setPointerCapture(evento.pointerId);
             return;

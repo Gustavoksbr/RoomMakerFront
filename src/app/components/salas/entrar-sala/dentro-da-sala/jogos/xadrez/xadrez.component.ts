@@ -649,10 +649,35 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
         // Enquanto há pré-lances enfileirados, o tabuleiro mostra a posição
         // PROJETADA (como se todos já tivessem sido jogados) — é a peça já
         // aparecendo no destino final, e não só a casa de origem destacada.
-        if (this.fila && !this.fila.vazia) {
-            this.fenVisivel = ocupacaoParaFenPecas(this.fila.ocupacaoProjetada) + ' w - - 0 1';
-            // Essa posição é uma hipótese geométrica, não uma sequência de
-            // lances validada: xeque nela seria ruído, não informação.
+        this.mostrarFilaNoTabuleiro();
+    }
+
+    /**
+     * Aplica a fila de pré-lances ao que o tabuleiro desenha: a posição
+     * projetada (peça já no destino final) e sem destaque de xeque — essa
+     * posição é uma hipótese geométrica, não uma sequência de lances validada,
+     * então marcar xeque nela seria ruído, não informação.
+     *
+     * Chamado tanto por `recalcularDerivados()` quanto — e é isso que importa
+     * aqui — direto de `onPreLanceDoTabuleiro`/`onCancelarPreLances`, na hora
+     * em que o PRÓPRIO jogador mexe na fila. Sem essa segunda chamada, a peça
+     * só ia pro destino quando a confirmação do servidor voltasse pelo
+     * WebSocket (evento PRE_LANCES_ATUALIZADOS): a fila em si já era otimista
+     * (`this.fila` mudava na hora), mas o TABULEIRO ficava esperando a rede
+     * pra desenhar essa mudança — o delay de ~1s que se via ao enfileirar ou
+     * cancelar um pré-lance era exatamente esse round-trip.
+     */
+    private mostrarFilaNoTabuleiro(): void {
+        if (!this.fila) return;
+        // Vazia ou não, sempre bate com a posição confirmada: uma fila vazia
+        // projeta pra ela mesma. Não precisa de caso especial pro cancelamento.
+        this.fenVisivel = ocupacaoParaFenPecas(this.fila.ocupacaoProjetada) + ' w - - 0 1';
+
+        // Só suprime o xeque quando há de fato uma hipótese sendo projetada.
+        // Fila vazia = a posição exibida É a confirmada, e o xeque nela
+        // continua sendo informação de verdade (ex.: acabei de dar xeque e
+        // agora é a vez do adversário) — não um ruído de projeção.
+        if (!this.fila.vazia) {
             this.casaXeque = null;
         }
     }
@@ -716,15 +741,21 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
         // `enfileirar` devolve a mesma instância quando recusa o pedido.
         if (nova === this.fila) return;
 
-        // Otimista: a fila aparece na tela antes da confirmação do servidor, que
-        // é justamente o ponto do pré-lance — nada deve esperar a rede.
+        // Otimista: a fila (e o TABULEIRO — mostrarFilaNoTabuleiro) aparecem na
+        // tela antes da confirmação do servidor, que é justamente o ponto do
+        // pré-lance. Nada disso precisa da rede: a fila é um cálculo puramente
+        // local (FilaPreLances.enfileirar), então não há por que esperar.
         this.fila = nova;
+        this.mostrarFilaNoTabuleiro();
         this.enviarFilaDePreLances();
     }
 
     onCancelarPreLances(): void {
         if (!this.fila || this.fila.vazia) return;
         this.fila = this.fila.limpar();
+        // Mesma lógica do enfileirar: a peça volta pro lugar na hora, sem
+        // esperar o servidor confirmar que recebeu o cancelamento.
+        this.mostrarFilaNoTabuleiro();
         this.websocketService.sendMessage(
             this.stompClient, this.app + '/xadrez/cancelar-pre-lances', '');
     }
