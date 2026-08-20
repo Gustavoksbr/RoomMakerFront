@@ -30,6 +30,19 @@
                   }
                 </select>
               </div>
+              <div class="modo-escolha">
+                <label class="modo-opcao" [class.ativa]="configurandoModoVisual">
+                  <input type="radio" name="modoXadrez" [value]="true" [(ngModel)]="configurandoModoVisual">
+                  <span class="modo-titulo">👁️ Visual</span>
+                  <span class="modo-descricao">Tabuleiro com peças, setinhas e pré-lances</span>
+                </label>
+                <label class="modo-opcao" [class.ativa]="!configurandoModoVisual">
+                  <input type="radio" name="modoXadrez" [value]="false" [(ngModel)]="configurandoModoVisual">
+                  <span class="modo-titulo">🙈 Às cegas</span>
+                  <span class="modo-descricao">Sem tabuleiro; os lances são digitados</span>
+                </label>
+              </div>
+
               <div style="display:flex; gap:8px; align-items:center; min-width:0;">
                 <label style="white-space:nowrap; flex-shrink:0;">📝 Notação:</label>
                 <select class="form-select form-select-sm" style="flex:1; min-width:0;" [(ngModel)]="configurandoNotacao">
@@ -117,6 +130,7 @@
             <span style="margin-left:12px; font-size:12px; color:var(--text-color2);">
               Notação: {{estado.notacao === 'PORTUGUESA' ? 'Portuguesa' : 'Inglesa'}}
             </span>
+            <span class="badge-modo">{{ modoVisual ? '👁️ Visual' : '🙈 Às cegas' }}</span>
             <span style="font-size:12px; color:var(--text-color2);">
               @if (estado.notacao === 'PORTUGUESA') {
                 (R=Rei, D=Dama, T=Torre, B=Bispo, C=Cavalo)
@@ -125,9 +139,16 @@
               }
             </span>
             @if (meuLado) {
-              <button class="btn btn-sm btn-outline-secondary" style="margin-left:auto;" (click)="modalConfiguracao = true" title="Configurações">
-                ⚙️
-              </button>
+              <span style="margin-left:auto; display:flex; gap:6px;">
+                @if (modoVisual) {
+                  <button class="btn btn-sm btn-outline-secondary" (click)="girarTabuleiro()" title="Girar tabuleiro">
+                    ⇅
+                  </button>
+                }
+                <button class="btn btn-sm btn-outline-secondary" (click)="modalConfiguracao = true" title="Configurações">
+                  ⚙️
+                </button>
+              </span>
             }
           </div>
         }
@@ -162,15 +183,15 @@
 
             <div class="xadrez-vez">
               @if (estado.vezDasBrancas) {
-                <span>⬜ Vez das <b>brancas</b> ({{estado.usernameBrancas}})</span>
+                <span>&#11036; Vez das <b>brancas</b> ({{estado.usernameBrancas}})</span>
               } @else {
-                <span>⬛ Vez das <b>pretas</b> ({{estado.usernamePretas}})</span>
+                <span>&#11035; Vez das <b>pretas</b> ({{estado.usernamePretas}})</span>
               }
             </div>
 
             @if (estado.propostaEmpate) {
               <div class="xadrez-proposta-empate">
-                <span>🤝 {{estado.propostaEmpate === 'BRANCAS' ? estado.usernameBrancas : estado.usernamePretas}} propôs empate.</span>
+                <span>&#129309; {{estado.propostaEmpate === 'BRANCAS' ? estado.usernameBrancas : estado.usernamePretas}} prop&#244;s empate.</span>
                 @if (meuLado && meuLado !== estado.propostaEmpate) {
                   <button class="btn btn-sm btn-success" (click)="responderEmpate(true)">Aceitar</button>
                   <button class="btn btn-sm btn-secondary" (click)="responderEmpate(false)">Recusar</button>
@@ -178,55 +199,125 @@
               </div>
             }
 
-            <div class="xadrez-pgn" #pgnContainer>
-              @for (linha of pgnFormatado; track $index) {
-                <div class="pgn-linha">{{linha}}</div>
+            <!-- MODO VISUAL -->
+            @if (modoVisual) {
+              @if (avisoPreLanceCancelado) {
+                <div class="xadrez-aviso">
+                  &#9193; Seu pr&#233;-lance n&#227;o era poss&#237;vel na posi&#231;&#227;o que apareceu &#8212; a fila foi cancelada.
+                </div>
               }
-              @if (pgnFormatado.length === 0) {
-                @if (meuLado === 'BRANCAS' && estado.vezDasBrancas) {
-                  <div class="pgn-vazio">Faça o primeiro lance...</div>
-                } @else {
-                  <div class="pgn-vazio">Aguardando primeiro lance...</div>
-                }
+              @if (partida.lancesCorrompidos > 0) {
+                <div class="xadrez-erro">
+                  &#9888; {{partida.lancesCorrompidos}} lance(s) do servidor n&#227;o puderam ser reproduzidos. Recarregue a p&#225;gina.
+                </div>
               }
-            </div>
 
-            @if (estado.lancesIlegaisBrancas > 0 || estado.lancesIlegaisPretas > 0) {
-              <div class="xadrez-ilegais">
-                ⚠️ Lances ilegais — ⬜ {{estado.lancesIlegaisBrancas}} | ⬛ {{estado.lancesIlegaisPretas}}
+              <div class="area-tabuleiro">
+                <div class="coluna-tabuleiro">
+                  <!-- Advers&#225;rio em cima, eu embaixo: &#233; como se olha um tabuleiro. -->
+                  <div class="barra-jogador">
+                    <span class="nome">
+                      {{ orientacao === 'w' ? '&#11035;' : '&#11036;' }}
+                      <b>{{ orientacao === 'w' ? estado.usernamePretas : estado.usernameBrancas }}</b>
+                    </span>
+                    <span class="capturas">
+                      @for (peca of capturadasPor(orientacao === 'w' ? 'b' : 'w'); track $index) {
+                        <span class="peca-capturada" [class.branca]="orientacao === 'b'">{{glifo(peca)}}</span>
+                      }
+                      @if (vantagemDe(orientacao === 'w' ? 'b' : 'w'); as vantagem) {
+                        <span class="vantagem">+{{vantagem}}</span>
+                      }
+                    </span>
+                  </div>
+
+                  <app-tabuleiro-xadrez
+                    [fen]="fenVisivel"
+                    [orientacao]="orientacao"
+                    [destinosLegais]="destinosLegais"
+                    [fila]="fila"
+                    [ultimoLance]="ultimoLanceVisivel"
+                    [casaXeque]="casaXeque"
+                    [tamanho]="tamanhoTabuleiro"
+                    (lance)="onLanceDoTabuleiro($event)"
+                    (preLanceEscolhido)="onPreLanceDoTabuleiro($event)"
+                    (preLancesCancelados)="onCancelarPreLances()"
+                    (tamanhoAlterado)="onTamanhoTabuleiro($event)" />
+
+                  <div class="barra-jogador">
+                    <span class="nome">
+                      {{ orientacao === 'w' ? '&#11036;' : '&#11035;' }}
+                      <b>{{ orientacao === 'w' ? estado.usernameBrancas : estado.usernamePretas }}</b>
+                    </span>
+                    <span class="capturas">
+                      @for (peca of capturadasPor(orientacao); track $index) {
+                        <span class="peca-capturada" [class.branca]="orientacao === 'w'">{{glifo(peca)}}</span>
+                      }
+                      @if (vantagemDe(orientacao); as vantagem) {
+                        <span class="vantagem">+{{vantagem}}</span>
+                      }
+                    </span>
+                  </div>
+                </div>
+
+                <app-navegador-lances
+                  [lances]="partida.lances"
+                  [ply]="ply"
+                  (irParaPly)="irParaPly($event)" />
               </div>
             }
 
-            @if (meuLado) {
-              <div class="xadrez-input">
-                <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  noAutocomplete
-                  [placeholder]="minhaVez ? (estado.notacao === 'PORTUGUESA' ? 'Lance (ex: e4, Cf3, O-O)' : 'Lance (ex: e4, Nf3, O-O)') : 'Aguardando sua vez...'"
-                  [(ngModel)]="sanInput"
-                  (input)="onSanInput($event)"
-                  (keydown)="onKeyEnter($event)"
-                  maxlength="10"
-                  style="width:180px; background-color:var(--background-color2); color:var(--text-color); border-color:var(--text-color2);">
-                @if (!enviandoLance) {
-                  <button class="btn btn-sm btn-primary" 
-                    (click)="enviarLance()" 
-                    [disabled]="!sanInput.trim() || !minhaVez"
-                    [title]="!minhaVez ? 'Aguarde sua vez para jogar' : 'Enviar lance'">
-                    {{minhaVez ? 'Jogar' : 'Aguarde'}}
-                  </button>
-                } @else {
-                  <button class="btn btn-sm btn-secondary" disabled>
-                    <span class="spinner-border spinner-border-sm"></span>
-                  </button>
+            <!-- MODO AS CEGAS -->
+            @if (!modoVisual) {
+              <div class="xadrez-pgn" #pgnContainer>
+                @for (linha of pgnFormatado; track $index) {
+                  <div class="pgn-linha">{{linha}}</div>
+                }
+                @if (pgnFormatado.length === 0) {
+                  @if (meuLado === 'BRANCAS' && estado.vezDasBrancas) {
+                    <div class="pgn-vazio">Fa&#231;a o primeiro lance...</div>
+                  } @else {
+                    <div class="pgn-vazio">Aguardando primeiro lance...</div>
+                  }
                 }
               </div>
-              @if (erroLance) {
-                <div class="xadrez-erro">⚠️ {{erroLance}}</div>
+
+              @if (estado.lancesIlegaisBrancas > 0 || estado.lancesIlegaisPretas > 0) {
+                <div class="xadrez-ilegais">
+                  &#9888; Lances ilegais &#8212; &#11036; {{estado.lancesIlegaisBrancas}} | &#11035; {{estado.lancesIlegaisPretas}}
+                </div>
               }
-              @if (avisoLance) {
-                <div class="xadrez-aviso">⚠️ {{avisoLance}}</div>
+
+              @if (meuLado) {
+                <div class="xadrez-input">
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    noAutocomplete
+                    [placeholder]="minhaVez ? (estado.notacao === 'PORTUGUESA' ? 'Lance (ex: e4, Cf3, O-O)' : 'Lance (ex: e4, Nf3, O-O)') : 'Aguardando sua vez...'"
+                    [(ngModel)]="sanInput"
+                    (input)="onSanInput($event)"
+                    (keydown)="onKeyEnter($event)"
+                    maxlength="10"
+                    style="width:180px; background-color:var(--background-color2); color:var(--text-color); border-color:var(--text-color2);">
+                  @if (!enviandoLance) {
+                    <button class="btn btn-sm btn-primary"
+                      (click)="enviarLance()"
+                      [disabled]="!sanInput.trim() || !minhaVez"
+                      [title]="!minhaVez ? 'Aguarde sua vez para jogar' : 'Enviar lance'">
+                      {{minhaVez ? 'Jogar' : 'Aguarde'}}
+                    </button>
+                  } @else {
+                    <button class="btn btn-sm btn-secondary" disabled>
+                      <span class="spinner-border spinner-border-sm"></span>
+                    </button>
+                  }
+                </div>
+                @if (erroLance) {
+                  <div class="xadrez-erro">&#9888; {{erroLance}}</div>
+                }
+                @if (avisoLance) {
+                  <div class="xadrez-aviso">&#9888; {{avisoLance}}</div>
+                }
               }
             }
 
@@ -268,6 +359,9 @@
                   </div>
                   <div class="historico-resultado">
                     {{p.resultado}} {{p.motivo ? '/ ' + p.motivo : ''}}
+                    @if (p.modoVisual !== null) {
+                      <span class="badge-modo">{{ p.modoVisual ? '&#128065;&#65039; Visual' : '&#128584; &#192;s cegas' }}</span>
+                    }
                   </div>
                   <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <button class="btn btn-sm btn-outline-secondary" style="width:fit-content;" (click)="copiarPgn(p)">
@@ -377,6 +471,9 @@
             <p>⬛ Pretas: <b>{{partidaInfoSelecionada.usernamePretas ?? 'N/A'}}</b></p>
             <p style="font-size:12px; color:var(--text-color2); margin-top:4px;">
               📝 {{partidaInfoSelecionada.notacao === 'PORTUGUESA' ? 'Português' : partidaInfoSelecionada.notacao === 'INGLESA' ? 'Inglês' : 'N/A'}}
+            </p>
+            <p style="font-size:12px; color:var(--text-color2);">
+              {{ partidaInfoSelecionada.modoVisual ? '👁️ Jogada com tabuleiro' : '🙈 Jogada às cegas' }}
             </p>
           </div>
 

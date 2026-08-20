@@ -1,0 +1,119 @@
+<div class="tabuleiro-wrapper" [style.width.px]="tamanho">
+
+  <div class="grade"
+       #grade
+       [class.arrastando]="!!arrastando"
+       [class.modo-pre-lance]="podePreLancar && !podeJogar"
+       (pointerdown)="onPointerDown($event)"
+       (pointermove)="onPointerMove($event)"
+       (pointerup)="onPointerUp($event)"
+       (pointercancel)="onPointerCancel()"
+       (contextmenu)="onContextMenu($event)">
+
+    <!-- ── Casas ── -->
+    @for (casa of casasNaOrdem; track casa) {
+      <!-- data-casa: âncora estável para o e2e. A grade é só uma sequência de
+           divs, e sem isso um teste teria de contar posições e recontar toda vez
+           que o tabuleiro virasse. -->
+      <div class="casa"
+           [attr.data-casa]="casa"
+           [class.clara]="ehClara(casa)"
+           [class.ultimo-lance]="ehUltimoLance(casa)"
+           [class.selecionada]="selecionada === casa"
+           [class.xeque]="casaXeque === casa"
+           [class.marcada]="marcadas.has(casa)"
+           [class.pre-lance]="ehCasaDePreLance(casa)">
+
+        @if (mostrarCoordenadas) {
+          @if (rotuloLinha(casa); as linha) {
+            <span class="coordenada linha">{{ linha }}</span>
+          }
+          @if (rotuloColuna(casa); as coluna) {
+            <span class="coordenada coluna">{{ coluna }}</span>
+          }
+        }
+
+        @if (ehDestino(casa)) {
+          <span class="destino" [class.captura]="ehDestinoDeCaptura(casa)"></span>
+        }
+      </div>
+    }
+
+    <!-- ── Peças ──
+         Posicionadas em % sobre a grade (e não dentro das casas) para que a
+         transição de `left`/`top` faça a peça DESLIZAR de uma casa à outra. -->
+    @for (p of pecas; track p.id) {
+      @if (ehArrastada(p)) {
+        <span class="peca arrastada"
+              [attr.data-casa]="p.casa"
+              [attr.data-peca]="p.peca.cor + p.peca.tipo"
+              [class.preta]="p.peca.cor === 'b'"
+              [style.left.px]="arrastando!.x"
+              [style.top.px]="arrastando!.y">{{ glifo(p.peca) }}</span>
+      } @else {
+        <span class="peca"
+              [attr.data-casa]="p.casa"
+              [attr.data-peca]="p.peca.cor + p.peca.tipo"
+              [class.preta]="p.peca.cor === 'b'"
+              [style.left.%]="posicao(p.casa).esquerda"
+              [style.top.%]="posicao(p.casa).topo">{{ glifo(p.peca) }}</span>
+      }
+    }
+
+    <!-- ── Setas ── -->
+    <svg class="setas" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <marker id="ponta-seta" viewBox="0 0 10 10" refX="6" refY="5"
+                markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <marker id="ponta-seta-pre" viewBox="0 0 10 10" refX="6" refY="5"
+                markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+      </defs>
+      @for (seta of setasVisiveis; track idDaSeta($index, seta)) {
+        <line [class.seta-pre-lance]="ehSetaDePreLance(seta)"
+              [attr.x1]="centro(seta.de).x"
+              [attr.y1]="centro(seta.de).y"
+              [attr.x2]="pontaDaSeta(seta).x"
+              [attr.y2]="pontaDaSeta(seta).y"
+              [attr.marker-end]="ehSetaDePreLance(seta) ? 'url(#ponta-seta-pre)' : 'url(#ponta-seta)'" />
+      }
+    </svg>
+
+    <!-- ── Promoção ── -->
+    @if (promocaoPendente) {
+      <div class="promocao-fundo" (pointerdown)="cancelarPromocao(); $event.stopPropagation()"></div>
+      <div class="promocao"
+           [style.left.%]="posicao(promocaoPendente.to).esquerda"
+           [style.top.%]="posicao(promocaoPendente.to).topo < 50 ? 0 : 50"
+           (pointerdown)="$event.stopPropagation()">
+        @for (opcao of opcoesPromocao; track opcao) {
+          <button type="button"
+                  class="opcao-promocao"
+                  [class.preta]="corDaPromocao === 'b'"
+                  (click)="escolherPromocao(opcao)">{{ glifo({ tipo: opcao, cor: corDaPromocao }) }}</button>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- ── Alça de redimensionar ── -->
+  <div class="alca-redimensionar"
+       title="Arraste para redimensionar o tabuleiro"
+       (pointerdown)="onRedimensionarInicio($event)"
+       (pointermove)="onRedimensionarMove($event)"
+       (pointerup)="onRedimensionarFim($event)"
+       (pointercancel)="onRedimensionarFim($event)"></div>
+
+  <!-- ── Aviso de pré-lances ── -->
+  @if (fila && !fila.vazia) {
+    <div class="aviso-pre-lance">
+      <span>⏩ {{ fila.itens.length }} pré-lance{{ fila.itens.length > 1 ? 's' : '' }} na fila</span>
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="cancelarPreLances()">
+        Cancelar
+      </button>
+    </div>
+  }
+</div>

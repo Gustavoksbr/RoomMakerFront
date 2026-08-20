@@ -1,7 +1,11 @@
+import { PreLance } from '../../services/xadrez/pre-lance';
+
 export interface XadrezResponse {
     usernameBrancas: string | null;
     usernamePretas: string | null;
     notacao: 'PORTUGUESA' | 'INGLESA' | null;
+    /** true = tabuleiro com peças; false = às cegas, só notação. */
+    modoVisual: boolean | null;
 
     partidaEmAndamento: boolean;
     partidaId: number | null;
@@ -12,6 +16,14 @@ export interface XadrezResponse {
     lancesIlegaisBrancas: number;
     lancesIlegaisPretas: number;
     vezDasBrancas: boolean | null;
+
+    /**
+     * A fila de pré-lances de QUEM RECEBEU esta resposta. O servidor nunca manda
+     * a do adversário — saber que o outro pré-lançou entregaria a resposta dele.
+     */
+    meusPreLances: PreLance[] | null;
+    /** A minha fila foi descartada porque o primeiro pré-lance caiu ilegal. */
+    preLancesCancelados: boolean | null;
 
     // Controle de tempo
     tempoInicialBrancas: number | null; // segundos (null = infinito)
@@ -38,6 +50,8 @@ export interface PartidaXadrezResumo {
     usernameBrancas: string | null;
     usernamePretas: string | null;
     notacao: 'PORTUGUESA' | 'INGLESA' | null;
+    /** Como esta partida foi jogada — o histórico não deve mentir sobre isso. */
+    modoVisual: boolean | null;
 
     // Informações de tempo
     tempoInicialBrancas: number | null;

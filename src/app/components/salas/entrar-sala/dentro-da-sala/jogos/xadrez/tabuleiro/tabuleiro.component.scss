@@ -1,0 +1,276 @@
+:host {
+  // Paleta do tabuleiro. Fica em variáveis para caber no tema claro e no escuro
+  // do RoomMaker sem duplicar regra.
+  --casa-clara: #ebe3d4;
+  --casa-escura: #7d6a52;
+  --destaque: rgba(170, 200, 80, 0.55);
+  --selecao: rgba(130, 151, 63, 0.85);
+  --marca: rgba(235, 97, 80, 0.8);
+  --pre-lance: rgba(70, 130, 200, 0.55);
+  --seta: rgba(255, 170, 0, 0.75);
+  --seta-pre: rgba(70, 150, 230, 0.8);
+  --peca-clara: #f8f8f8;
+  --peca-escura: #2a2a2a;
+  --contorno-clara: #40382c;
+  --contorno-escura: #d8d0c4;
+
+  display: block;
+}
+
+.tabuleiro-wrapper {
+  position: relative;
+  max-width: 100%;
+}
+
+.grade {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  touch-action: none; // o arrasto é nosso, não do navegador
+  user-select: none;
+  cursor: default;
+
+  &.modo-pre-lance {
+    cursor: crosshair;
+  }
+
+  &.arrastando {
+    cursor: grabbing;
+  }
+}
+
+// ── Casas ──────────────────────────────────────────────────────────────────
+
+.casa {
+  position: relative;
+  background-color: var(--casa-escura);
+
+  &.clara {
+    background-color: var(--casa-clara);
+  }
+
+  &.ultimo-lance::after,
+  &.selecionada::after,
+  &.marcada::after,
+  &.pre-lance::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  &.ultimo-lance::after {
+    background: var(--destaque);
+  }
+
+  &.pre-lance::after {
+    background: var(--pre-lance);
+  }
+
+  // A seleção vem depois na cascata de propósito: ela deve cobrir os demais.
+  &.selecionada::after {
+    background: var(--selecao);
+  }
+
+  &.marcada::after {
+    background: var(--marca);
+  }
+
+  &.xeque {
+    background-image: radial-gradient(circle,
+        rgba(220, 40, 40, 0.9) 12%,
+        rgba(220, 40, 40, 0.2) 70%,
+        transparent 72%);
+  }
+}
+
+.coordenada {
+  position: absolute;
+  font-size: clamp(7px, 1.6cqw, 11px);
+  font-weight: 700;
+  opacity: 0.65;
+  pointer-events: none;
+  color: var(--casa-escura);
+
+  .casa:not(.clara) & {
+    color: var(--casa-clara);
+  }
+
+  &.linha {
+    top: 2px;
+    left: 3px;
+  }
+
+  &.coluna {
+    bottom: 1px;
+    right: 3px;
+  }
+}
+
+// Ponto para casa vazia, anel para casa com peça capturável.
+.destino {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(20, 40, 10, 0.42) 19%, transparent 21%);
+
+  &.captura {
+    background: radial-gradient(circle, transparent 52%, rgba(20, 40, 10, 0.42) 54%);
+  }
+}
+
+// ── Peças ──────────────────────────────────────────────────────────────────
+
+.peca {
+  position: absolute;
+  width: 12.5%;
+  height: 12.5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+  line-height: 1;
+
+  // O contorno é o que separa a peça do fundo: sem ele, peça branca em casa
+  // clara (e preta em casa escura) some.
+  color: var(--peca-clara);
+  -webkit-text-stroke: 0.035em var(--contorno-clara);
+  paint-order: stroke fill;
+  transition: left 0.14s ease-out, top 0.14s ease-out;
+
+  &.preta {
+    color: var(--peca-escura);
+    -webkit-text-stroke: 0.035em var(--contorno-escura);
+  }
+
+  // Sob o cursor: sai da grade das casas e passa a ser posicionada em pixels,
+  // com a margem negativa centrando-a no ponteiro.
+  &.arrastada {
+    margin-left: -6.25%;
+    margin-top: -6.25%;
+    z-index: 6;
+    transition: none;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+    transform: scale(1.08);
+  }
+}
+
+// O tamanho do glifo acompanha o do tabuleiro: 1 casa = 12.5% da largura.
+.grade {
+  container-type: inline-size;
+}
+
+.peca {
+  font-size: 10.5cqw;
+}
+
+// ── Setas ──────────────────────────────────────────────────────────────────
+
+.setas {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+
+  line {
+    stroke: var(--seta);
+    stroke-width: 2.1;
+    stroke-linecap: round;
+
+    &.seta-pre-lance {
+      stroke: var(--seta-pre);
+      stroke-dasharray: 3 2;
+    }
+  }
+
+  marker path {
+    fill: var(--seta);
+  }
+
+  #ponta-seta-pre path {
+    fill: var(--seta-pre);
+  }
+}
+
+// ── Promoção ───────────────────────────────────────────────────────────────
+
+.promocao-fundo {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.promocao {
+  position: absolute;
+  z-index: 8;
+  width: 12.5%;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-color2);
+  border: 1px solid var(--text-color2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.opcao-promocao {
+  aspect-ratio: 1 / 1;
+  border: none;
+  background: var(--background-color2);
+  color: var(--peca-clara);
+  -webkit-text-stroke: 0.03em var(--contorno-clara);
+  paint-order: stroke fill;
+  font-size: 8cqw;
+  line-height: 1;
+  cursor: pointer;
+
+  &.preta {
+    color: var(--peca-escura);
+    -webkit-text-stroke: 0.03em var(--contorno-escura);
+  }
+
+  &:hover {
+    background: var(--highlight-color);
+  }
+}
+
+// ── Alça de redimensionar ──────────────────────────────────────────────────
+
+.alca-redimensionar {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 18px;
+  height: 18px;
+  cursor: nwse-resize;
+  touch-action: none;
+  border-right: 3px solid var(--text-color2);
+  border-bottom: 3px solid var(--text-color2);
+  border-bottom-right-radius: 6px;
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// ── Aviso de pré-lances ────────────────────────────────────────────────────
+
+.aviso-pre-lance {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--text-color);
+  background: var(--background-color2);
+  border-left: 3px solid var(--seta-pre);
+  border-radius: 3px;
+}

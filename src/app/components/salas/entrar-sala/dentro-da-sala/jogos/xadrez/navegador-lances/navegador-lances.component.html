@@ -1,0 +1,37 @@
+<div class="lista-lances">
+  @for (par of pares; track par.numero) {
+    <div class="par-lances">
+      <span class="numero">{{ par.numero }}.</span>
+      <button type="button" class="lance-botao"
+              [class.atual]="ehAtual(par.numero, true)"
+              (click)="selecionar(par.numero, true)">{{ par.brancas }}</button>
+      @if (par.pretas) {
+        <button type="button" class="lance-botao"
+                [class.atual]="ehAtual(par.numero, false)"
+                (click)="selecionar(par.numero, false)">{{ par.pretas }}</button>
+      } @else {
+        <span></span>
+      }
+    </div>
+  }
+  @if (pares.length === 0) {
+    <div class="sem-lances">Sem lances ainda.</div>
+  }
+</div>
+
+<div class="navegador">
+  <button class="btn btn-sm btn-outline-secondary" [disabled]="!podeVoltar"
+          (click)="primeiro()" title="Início (Home)">&#9198;</button>
+  <button class="btn btn-sm btn-outline-secondary" [disabled]="!podeVoltar"
+          (click)="anterior()" title="Anterior (seta esquerda)">&#9664;</button>
+  <button class="btn btn-sm btn-outline-secondary" [disabled]="!vendoHistorico"
+          (click)="proximo()" title="Próximo (seta direita)">&#9654;</button>
+  <button class="btn btn-sm btn-outline-secondary" [disabled]="!vendoHistorico"
+          (click)="ultimo()" title="Última posição (End)">&#9197;</button>
+</div>
+
+@if (vendoHistorico) {
+  <button class="btn btn-sm btn-warning voltar-ao-vivo" (click)="ultimo()">
+    Vendo lance {{ ply }} de {{ total }} &#183; voltar ao vivo
+  </button>
+}

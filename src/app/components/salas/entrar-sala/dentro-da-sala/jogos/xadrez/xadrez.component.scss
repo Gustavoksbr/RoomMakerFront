@@ -467,3 +467,108 @@
     }
   }
 }
+// ═══════════════════════════════════════════════════════════════════════════
+// Modo visual
+// ═══════════════════════════════════════════════════════════════════════════
+
+.area-tabuleiro {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.coluna-tabuleiro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.barra-jogador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: var(--background-color2);
+  font-size: 13px;
+  color: var(--text-color);
+
+  .nome {
+    white-space: nowrap;
+  }
+
+  .capturas {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    margin-left: auto;
+    line-height: 1;
+  }
+
+  .peca-capturada {
+    font-size: 15px;
+    color: #2a2a2a;
+    -webkit-text-stroke: 0.5px #b9b2a6;
+
+    &.branca {
+      color: #f2f2f2;
+      -webkit-text-stroke: 0.5px #4a4238;
+    }
+  }
+
+  .vantagem {
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6cc36c;
+  }
+}
+
+// ── Escolha do modo, na configuração ──
+
+.modo-escolha {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.modo-opcao {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 9px;
+  border: 1px solid var(--text-color2);
+  border-radius: 5px;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
+
+  &.ativa {
+    border-color: var(--highlight-color);
+    background: var(--background-color3);
+  }
+
+  .modo-titulo {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .modo-descricao {
+    font-size: 11px;
+    color: var(--text-color2);
+  }
+}
+
+.badge-modo {
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  background: var(--background-color3);
+  color: var(--text-color);
+}
