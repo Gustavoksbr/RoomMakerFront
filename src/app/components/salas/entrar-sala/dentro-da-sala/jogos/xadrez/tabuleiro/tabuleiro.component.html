@@ -60,25 +60,20 @@
       }
     }
 
-    <!-- ── Setas ── -->
+    <!-- ── Setas (só anotação manual — pré-lance vira destaque de casa, não seta) ── -->
     <svg class="setas" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
       <defs>
         <marker id="ponta-seta" viewBox="0 0 10 10" refX="6" refY="5"
                 markerWidth="4" markerHeight="4" orient="auto-start-reverse">
           <path d="M 0 0 L 10 5 L 0 10 z" />
         </marker>
-        <marker id="ponta-seta-pre" viewBox="0 0 10 10" refX="6" refY="5"
-                markerWidth="4" markerHeight="4" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" />
-        </marker>
       </defs>
       @for (seta of setasVisiveis; track idDaSeta($index, seta)) {
-        <line [class.seta-pre-lance]="ehSetaDePreLance(seta)"
-              [attr.x1]="centro(seta.de).x"
+        <line [attr.x1]="centro(seta.de).x"
               [attr.y1]="centro(seta.de).y"
               [attr.x2]="pontaDaSeta(seta).x"
               [attr.y2]="pontaDaSeta(seta).y"
-              [attr.marker-end]="ehSetaDePreLance(seta) ? 'url(#ponta-seta-pre)' : 'url(#ponta-seta)'" />
+              marker-end="url(#ponta-seta)" />
       }
     </svg>
 

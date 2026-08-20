@@ -6,6 +6,37 @@ import {AuthService} from '../auth/auth.service';
 import {GlobalErrorHandler} from '../../providers/exceptions/GlobalErrorHandler';
 import {API_CONFIG} from '../config/api.config';
 
+/**
+ * Mensagens de erro que NÃO devem virar um toast global, mesmo vindo do canal
+ * genérico de erros (`/topic/{username}/erro`, compartilhado por todos os
+ * jogos da sala).
+ *
+ * Função pura e exportada — sem isto, testar esta regra exigiria montar
+ * `WebSocketService` inteiro com `AuthService` e `GlobalErrorHandler` (que por
+ * sua vez arrastam `Router`, `HttpClient`, `Injector`...) só para checar um
+ * `includes()` em string.
+ */
+export function deveSerSuprimidoGlobalmente(mensagem: string): boolean {
+  const msg = mensagem.toLowerCase();
+
+  // Erros de digitação/notação: o próprio jogo mostra aviso local (amarelo)
+  if (msg.includes('notação inválida') || msg.includes('caracteres inválidos')) {
+    return true;
+  }
+
+  // Lance ilegal no TABULEIRO VISUAL: só acontece por desync de rede (o
+  // cliente só deixa arrastar pra casas que ele já validou como legais). O
+  // próprio tabuleiro já reverte a peça sozinho — não precisa de um toast
+  // alarmando um problema de timing como se fosse erro do jogador. O
+  // marcador "(tabuleiro visual)" existe justamente para não calar a mesma
+  // frase no modo às cegas, onde ela É um erro de verdade do jogador.
+  if (msg.includes('lance ilegal na posição atual (tabuleiro visual)')) {
+    return true;
+  }
+
+  return false;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -23,14 +54,7 @@ export class WebSocketService {
       ?? parsed?.message
       ?? '';
 
-    const msg = String(rawMessage).toLowerCase();
-
-    // Erros de digitação/notação: o próprio jogo mostra aviso local (amarelo)
-    if (msg.includes('notação inválida') || msg.includes('caracteres inválidos')) {
-      return false;
-    }
-
-    return true;
+    return !deveSerSuprimidoGlobalmente(String(rawMessage));
   }
 
   private convertToObject(message: any, topic: string, handleErrorsGlobally: boolean = true): any {

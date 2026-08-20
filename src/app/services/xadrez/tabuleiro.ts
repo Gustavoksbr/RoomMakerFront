@@ -104,6 +104,39 @@ export function ocupacaoDeFen(fen: string): Map<Casa, Peca> {
     return mapa;
 }
 
+/**
+ * O inverso de {@link ocupacaoDeFen}: serializa uma ocupação de volta para o
+ * campo de peças do FEN (a parte antes do primeiro espaço).
+ *
+ * Existe para desenhar posições HIPOTÉTICAS — a posição projetada de uma fila
+ * de pré-lances, por exemplo — que não têm vez, direitos de roque ou contador
+ * de lances fazendo sentido nenhum. Quem usa esta string (o tabuleiro) só lê o
+ * campo de peças mesmo, então o resto do FEN pode ser preenchido com qualquer
+ * placeholder válido.
+ */
+export function ocupacaoParaFenPecas(ocupacao: Ocupacao): string {
+    const linhas: string[] = [];
+    for (let linha = 7; linha >= 0; linha--) {
+        let linhaTexto = '';
+        let vazias = 0;
+        for (let coluna = 0; coluna < 8; coluna++) {
+            const peca = ocupacao.get(paraCasa(coluna, linha)!);
+            if (!peca) {
+                vazias++;
+                continue;
+            }
+            if (vazias > 0) {
+                linhaTexto += vazias;
+                vazias = 0;
+            }
+            linhaTexto += peca.cor === 'w' ? peca.tipo.toUpperCase() : peca.tipo;
+        }
+        if (vazias > 0) linhaTexto += vazias;
+        linhas.push(linhaTexto);
+    }
+    return linhas.join('/');
+}
+
 /** De quem é a vez, segundo o FEN. */
 export function vezDeFen(fen: string): Cor {
     return (fen ?? '').trim().split(/\s+/)[1] === 'b' ? 'b' : 'w';

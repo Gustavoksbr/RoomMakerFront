@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { deIngles, paraIngles } from './notacao';
-import { FEN_INICIAL, PartidaTabuleiro } from './partida';
+import { FEN_INICIAL, PartidaTabuleiro, casaDoReiEmXequeDeFen } from './partida';
 import { ocupacaoDeFen } from './tabuleiro';
 
 /** Mate do pastor. */
@@ -190,5 +190,55 @@ describe('material', () => {
         // Três peões pretos e uma torre: 1+1+1+5 = 8.
         expect(partida.material.saldo).toBe(8);
         expect(partida.material.capturadasPelasBrancas).toEqual(['p', 'p', 'p', 'r']);
+    });
+});
+
+describe('lance otimista (UI instantânea, antes da confirmação do servidor)', () => {
+    it('devolve o FEN como se o lance já tivesse acontecido', () => {
+        const partida = PartidaTabuleiro.de([], 'INGLESA');
+        const fen = partida.tentarLanceOtimista('e2', 'e4');
+
+        expect(fen).not.toBeNull();
+        expect(ocupacaoDeFen(fen!).get('e4')).toEqual({ tipo: 'p', cor: 'w' });
+        expect(ocupacaoDeFen(fen!).has('e2')).toBe(false);
+    });
+
+    it('NÃO grava o lance na partida — é só para exibição', () => {
+        const partida = PartidaTabuleiro.de([], 'INGLESA');
+        partida.tentarLanceOtimista('e2', 'e4');
+
+        expect(partida.totalLances).toBe(0);
+        expect(partida.fenAtual).toBe(FEN_INICIAL);
+    });
+
+    it('devolve null para um lance ilegal, em vez de lançar exceção', () => {
+        const partida = PartidaTabuleiro.de([], 'INGLESA');
+        expect(partida.tentarLanceOtimista('e2', 'e5')).toBeNull();
+        expect(partida.tentarLanceOtimista('a1', 'a2')).toBeNull(); // torre bloqueada
+    });
+
+    it('aplica a promoção pedida', () => {
+        const partida = PartidaTabuleiro.de(
+            ['e4', 'd5', 'exd5', 'c6', 'dxc6', 'h6', 'cxb7', 'h5'], 'INGLESA');
+
+        const fen = partida.tentarLanceOtimista('b7', 'a8', 'n');
+        expect(ocupacaoDeFen(fen!).get('a8')).toEqual({ tipo: 'n', cor: 'w' });
+    });
+});
+
+describe('casaDoReiEmXequeDeFen', () => {
+    it('acha o rei em xeque numa posição qualquer, sem precisar de uma partida', () => {
+        // Torre branca em e1 ataca o rei preto em e8 pela coluna e; é a vez das
+        // pretas, que é quem precisa estar em xeque para inCheck() acusar.
+        const fenComXeque = '4k3/8/8/8/8/8/8/3KR3 b - - 0 1';
+        expect(casaDoReiEmXequeDeFen(fenComXeque)).toBe('e8');
+
+        // A mesma torre, mas é a vez das BRANCAS: ninguém está em xeque agora.
+        const fenSemXeque = '4k3/8/8/8/8/8/8/3KR3 w - - 0 1';
+        expect(casaDoReiEmXequeDeFen(fenSemXeque)).toBeNull();
+    });
+
+    it('devolve null numa posição sem xeque', () => {
+        expect(casaDoReiEmXequeDeFen(FEN_INICIAL)).toBeNull();
     });
 });

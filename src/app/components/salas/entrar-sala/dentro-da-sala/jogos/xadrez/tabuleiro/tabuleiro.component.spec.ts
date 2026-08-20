@@ -383,17 +383,18 @@ describe('pré-lances no tabuleiro', () => {
         expect(c.ehCasaDePreLance('a1')).toBe(false);
     });
 
-    it('desenha uma seta por pré-lance enfileirado', () => {
+    it('pré-lance NÃO desenha seta — só o destaque de casa', () => {
+        // Setas ficam reservadas para a anotação manual do jogador; um
+        // pré-lance enfileirado não deve competir visualmente com elas.
         c.fila = c.fila!
             .enfileirar({ from: 'g1', to: 'f3' })
             .enfileirar({ from: 'f1', to: 'c4' });
         aplicar(c, { fila: true });
 
-        expect(c.setasVisiveis).toEqual([
-            { de: 'g1', para: 'f3' },
-            { de: 'f1', para: 'c4' },
-        ]);
-        expect(c.ehSetaDePreLance({ de: 'g1', para: 'f3' })).toBe(true);
+        expect(c.setasVisiveis).toEqual([]);
+        expect(c.ehCasaDePreLance('g1')).toBe(true);
+        expect(c.ehCasaDePreLance('f3')).toBe(true);
+        expect(c.ehCasaDePreLance('c4')).toBe(true);
     });
 });
 

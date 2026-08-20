@@ -235,16 +235,16 @@ export class TabuleiroComponent implements OnChanges {
         return (this.fila?.itens ?? []).some(p => p.from === casa || p.to === casa);
     }
 
-    /** As setas dos pré-lances, desenhadas junto com as que o jogador fez à mão. */
+    /**
+     * As setas que o próprio jogador desenhou (botão direito), sem as de
+     * pré-lance — essas viraram só o destaque azul nas casas
+     * ({@link ehCasaDePreLance}), sem seta, para não competir visualmente com
+     * as anotações de verdade do jogador.
+     */
     get setasVisiveis(): Seta[] {
-        const dePreLances = (this.fila?.itens ?? []).map(p => ({ de: p.from, para: p.to }));
         const emCurso = this.setaEmCurso && this.setaEmCurso.de !== this.setaEmCurso.para
             ? [this.setaEmCurso] : [];
-        return [...this.setas, ...dePreLances, ...emCurso];
-    }
-
-    ehSetaDePreLance(seta: Seta): boolean {
-        return (this.fila?.itens ?? []).some(p => p.from === seta.de && p.to === seta.para);
+        return [...this.setas, ...emCurso];
     }
 
     /** Centro da casa em % — a origem das setas no SVG. */

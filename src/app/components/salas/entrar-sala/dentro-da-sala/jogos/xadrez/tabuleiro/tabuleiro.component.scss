@@ -7,8 +7,10 @@
   --selecao: rgba(130, 151, 63, 0.85);
   --marca: rgba(235, 97, 80, 0.8);
   --pre-lance: rgba(70, 130, 200, 0.55);
+  // Mesmo azul do --pre-lance, mais opaco: usado só como acento sólido (a
+  // borda do aviso "N pré-lances na fila"), não em cima de nada.
+  --acento-pre-lance: rgba(70, 150, 230, 0.8);
   --seta: rgba(255, 170, 0, 0.75);
-  --seta-pre: rgba(70, 150, 230, 0.8);
   --peca-clara: #f8f8f8;
   --peca-escura: #2a2a2a;
   --contorno-clara: #40382c;
@@ -171,6 +173,9 @@
 }
 
 // ── Setas ──────────────────────────────────────────────────────────────────
+// Só a anotação manual do jogador (botão direito). Pré-lance não desenha seta
+// nenhuma — vira só o destaque azul nas casas envolvidas, mais parecido com
+// uma seleção do que com uma anotação.
 
 .setas {
   position: absolute;
@@ -182,19 +187,10 @@
     stroke: var(--seta);
     stroke-width: 2.1;
     stroke-linecap: round;
-
-    &.seta-pre-lance {
-      stroke: var(--seta-pre);
-      stroke-dasharray: 3 2;
-    }
   }
 
   marker path {
     fill: var(--seta);
-  }
-
-  #ponta-seta-pre path {
-    fill: var(--seta-pre);
   }
 }
 
@@ -271,6 +267,6 @@
   font-size: 12px;
   color: var(--text-color);
   background: var(--background-color2);
-  border-left: 3px solid var(--seta-pre);
+  border-left: 3px solid var(--acento-pre-lance);
   border-radius: 3px;
 }

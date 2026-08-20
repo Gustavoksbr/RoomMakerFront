@@ -11,9 +11,9 @@ import { XadrezService } from '../../../../../../services/xadrez/xadrez.service'
 import { PartidaXadrezResumo, XadrezResponse } from '../../../../../../models/xadrez/XadrezResponse';
 import { NoAutocompleteDirective } from '../../../../../../diretivas/no-autocomplete/no-autocomplete.directive';
 
-import { LanceLegal, PartidaTabuleiro } from '../../../../../../services/xadrez/partida';
+import { LanceLegal, PartidaTabuleiro, casaDoReiEmXequeDeFen } from '../../../../../../services/xadrez/partida';
 import { FilaPreLances } from '../../../../../../services/xadrez/pre-lance';
-import { Casa, Cor, TipoPeca, VALOR_PECA } from '../../../../../../services/xadrez/tabuleiro';
+import { Casa, Cor, TipoPeca, VALOR_PECA, ocupacaoParaFenPecas } from '../../../../../../services/xadrez/tabuleiro';
 import { LanceEscolhido, TabuleiroComponent } from './tabuleiro/tabuleiro.component';
 import { NavegadorLancesComponent } from './navegador-lances/navegador-lances.component';
 
@@ -101,6 +101,22 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
     private orientacaoManual: Cor | null = null;
     avisoPreLanceCancelado: boolean = false;
     private timerAvisoPreLance: any = null;
+
+    /**
+     * O MEU lance que acabei de mandar, mas o servidor ainda não confirmou.
+     *
+     * Existe só para a sensação de resposta instantânea: sem isto, a peça volta
+     * pra casa de origem no instante em que o mouse solta (porque `fenVisivel`
+     * ainda reflete a última posição confirmada) e só "anda de verdade" quando a
+     * mensagem de volta chega — um efeito de "quicar" que qualquer lance sente,
+     * mesmo numa rede rápida. Não é um pré-lance: não fica numa fila, é resolvido
+     * num round-trip só, e volta sozinho ao estado confirmado se o servidor não
+     * confirmar exatamente isto (ver os três lugares que chamam
+     * `limparLanceOtimista`).
+     */
+    private lanceOtimista: { fen: string; from: Casa; to: Casa } | null = null;
+    /** Rede de segurança: se a resposta nunca chegar, não fica preso pra sempre. */
+    private timeoutLanceOtimista: any = null;
 
     // histórico expandido + paginação
     historicoExpandido: boolean = false;
@@ -439,6 +455,11 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
             );
 
             const lancesNovos = (msg.lances?.length ?? 0) !== (this.estado?.lances?.length ?? 0);
+            // Qualquer mensagem confirmada do servidor é mais atual do que meu
+            // palpite otimista — se o lance realmente aconteceu, a posição
+            // confirmada já mostra a mesma coisa; se não aconteceu (corrida rara
+            // com outro evento), ela mostra a verdade em vez do meu palpite.
+            this.limparLanceOtimista();
             this.estado = msg;
             this.enviandoLance = false;
 
@@ -507,6 +528,16 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.stompClient,
             `/topic/${this.username}/erro`,
             (err: any) => {
+                // O servidor recusou o lance que eu já tinha certeza que ia dar
+                // certo (desync de rede — o tabuleiro estava mostrando algo
+                // diferente do que o servidor via). Sem toast, sem banner: a
+                // peça só volta pro lugar de verdade, como um pré-lance que não
+                // colou.
+                if (this.lanceOtimista) {
+                    this.limparLanceOtimista();
+                    this.recalcularDerivados();
+                }
+
                 if (err?.error) {
                     const msg = err.error as string;
                     // Verifica se é um erro de notação inválida ou caracteres inválidos (não contabilizado)
@@ -526,6 +557,7 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
     ngOnDestroy(): void {
         this.pararRelogio();
         clearTimeout(this.timerAvisoPreLance);
+        clearTimeout(this.timeoutLanceOtimista);
         this.xadrezSubscription?.unsubscribe?.();
         this.erroSubscription?.unsubscribe?.();
         this.xadrezSubscription = null;
@@ -575,6 +607,24 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.partida = PartidaTabuleiro.de(this.estado?.lances ?? [], this.estado?.notacao ?? 'INGLESA');
 
         const ply = this.ply;
+        const emAndamento = !!this.estado?.partidaEmAndamento;
+        const souJogador = this.minhaCor !== null;
+
+        // Meu próprio lance, mandado mas ainda não confirmado: mostra ele já
+        // feito, sem esperar a rede. Só vale enquanto se está olhando a posição
+        // AO VIVO — se o jogador foi rever o histórico nesse meio-tempo, o
+        // overlay continua guardado (ver limparLanceOtimista), só não aparece
+        // aqui até ele voltar pro presente.
+        if (this.lanceOtimista && !this.vendoHistorico) {
+            this.fenVisivel = this.lanceOtimista.fen;
+            this.ultimoLanceVisivel = { from: this.lanceOtimista.from, to: this.lanceOtimista.to };
+            this.casaXeque = casaDoReiEmXequeDeFen(this.lanceOtimista.fen);
+            // Já joguei; não é a vez de jogar de novo nem de pré-lançar.
+            this.destinosLegais = new Map();
+            this.fila = null;
+            return;
+        }
+
         this.fenVisivel = this.partida.fenNoLance(ply);
 
         const lance = this.partida.lanceNoLance(ply);
@@ -584,9 +634,6 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.casaXeque = this.vendoHistorico
             ? (lance?.xeque ? this.casaDoReiEm(ply) : null)
             : this.partida.casaDoReiEmXeque;
-
-        const emAndamento = !!this.estado?.partidaEmAndamento;
-        const souJogador = this.minhaCor !== null;
 
         // Só entrega lances legais quando o jogador pode mesmo jogar: o tabuleiro
         // usa "a lista está vazia" como sinal de somente-leitura.
@@ -598,6 +645,16 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.fila = (emAndamento && souJogador && !this.minhaVez && !this.vendoHistorico)
             ? FilaPreLances.restaurar(this.partida.fenAtual, this.minhaCor!, this.estado?.meusPreLances ?? [])
             : null;
+
+        // Enquanto há pré-lances enfileirados, o tabuleiro mostra a posição
+        // PROJETADA (como se todos já tivessem sido jogados) — é a peça já
+        // aparecendo no destino final, e não só a casa de origem destacada.
+        if (this.fila && !this.fila.vazia) {
+            this.fenVisivel = ocupacaoParaFenPecas(this.fila.ocupacaoProjetada) + ' w - - 0 1';
+            // Essa posição é uma hipótese geométrica, não uma sequência de
+            // lances validada: xeque nela seria ruído, não informação.
+            this.casaXeque = null;
+        }
     }
 
     private casaDoReiEm(ply: number): Casa | null {
@@ -609,13 +666,48 @@ export class XadrezComponent implements OnInit, OnDestroy, AfterViewChecked {
     // ── Lances vindos do tabuleiro ──
 
     onLanceDoTabuleiro(lance: LanceEscolhido): void {
-        if (!this.minhaVez || this.vendoHistorico) return;
+        // `this.lanceOtimista` bloqueia reenvio: com o primeiro lance já em
+        // trânsito, um segundo clique não pode disparar outro antes de saber se
+        // o primeiro colou.
+        if (!this.minhaVez || this.vendoHistorico || this.lanceOtimista) return;
         this.erroLance = null;
+
+        const fen = this.partida.tentarLanceOtimista(lance.from, lance.to, lance.promocao);
+        if (fen) {
+            this.lanceOtimista = { fen, from: lance.from, to: lance.to };
+            this.recalcularDerivados();
+            this.armarTimeoutLanceOtimista();
+        }
+
         this.websocketService.sendMessage(
             this.stompClient,
             this.app + '/xadrez/lance',
             JSON.stringify({ from: lance.from, to: lance.to, promocao: lance.promocao ?? null })
         );
+    }
+
+    /**
+     * Descarta o overlay otimista, sem recalcular nada — quem chama decide se
+     * (e quando) chamar `recalcularDerivados()` depois. Separado para o caso
+     * mais comum (uma mensagem confirmada acabou de chegar) poder reusar o
+     * `recalcularDerivados()` que já ia rodar de qualquer jeito, em vez de
+     * calcular tudo duas vezes.
+     */
+    private limparLanceOtimista(): void {
+        this.lanceOtimista = null;
+        clearTimeout(this.timeoutLanceOtimista);
+        this.timeoutLanceOtimista = null;
+    }
+
+    private armarTimeoutLanceOtimista(): void {
+        clearTimeout(this.timeoutLanceOtimista);
+        this.timeoutLanceOtimista = setTimeout(() => {
+            // Se ainda está aqui depois desse tempo todo, a resposta se perdeu —
+            // melhor voltar pro estado confirmado do que fingir pra sempre que
+            // aquele lance aconteceu.
+            this.limparLanceOtimista();
+            this.recalcularDerivados();
+        }, 8000);
     }
 
     onPreLanceDoTabuleiro(lance: LanceEscolhido): void {

@@ -53,6 +53,28 @@ export interface Material {
     readonly saldo: number;
 }
 
+/**
+ * A casa do rei em xeque nesta posição, ou null.
+ *
+ * Independente de qualquer {@link PartidaTabuleiro}: serve tanto para a posição
+ * confirmada quanto para uma posição hipotética — o resultado de um lance
+ * otimista que ainda não voltou confirmado do servidor, por exemplo.
+ */
+export function casaDoReiEmXequeDeFen(fen: string): Casa | null {
+    const jogo = new Chess(fen);
+    if (!jogo.inCheck()) return null;
+
+    const corEmXeque = jogo.turn();
+    for (const linha of jogo.board()) {
+        for (const casa of linha) {
+            if (casa && casa.type === 'k' && casa.color === corEmXeque) {
+                return casa.square;
+            }
+        }
+    }
+    return null;
+}
+
 export class PartidaTabuleiro {
 
     private constructor(
@@ -167,18 +189,33 @@ export class PartidaTabuleiro {
 
     /** A casa do rei em xeque na posição atual, ou null. */
     get casaDoReiEmXeque(): Casa | null {
-        const jogo = new Chess(this.fenAtual);
-        if (!jogo.inCheck()) return null;
+        return casaDoReiEmXequeDeFen(this.fenAtual);
+    }
 
-        const corEmXeque = jogo.turn();
-        for (const linha of jogo.board()) {
-            for (const casa of linha) {
-                if (casa && casa.type === 'k' && casa.color === corEmXeque) {
-                    return casa.square;
-                }
-            }
+    /**
+     * Aplica um lance por coordenadas sobre a posição atual, SEM alterar a
+     * partida — só devolve o FEN resultante.
+     *
+     * Existe para a UI "otimista": mostrar a peça já no lugar novo assim que o
+     * jogador solta o mouse, antes do servidor confirmar. Não participa do
+     * histórico nem decide legalidade de verdade — quem decide isso continua
+     * sendo o servidor. Se ele recusar, o chamador descarta o resultado e a
+     * posição confirmada (sempre reconstruída a partir de `estado.lances`)
+     * volta a valer sozinha.
+     *
+     * @return o FEN resultante, ou null se o lance não for legal na posição
+     *         atual — não deveria acontecer, já que só se chama isto com um
+     *         lance que já veio de {@link destinosLegaisPorOrigem}, mas
+     *         descreve o caso de borda sem lançar.
+     */
+    tentarLanceOtimista(from: Casa, to: Casa, promocao?: TipoPeca): string | null {
+        const jogo = new Chess(this.fenAtual);
+        try {
+            const resultado = jogo.move({ from, to, promotion: promocao });
+            return resultado ? jogo.fen() : null;
+        } catch {
+            return null;
         }
-        return null;
     }
 
     /**

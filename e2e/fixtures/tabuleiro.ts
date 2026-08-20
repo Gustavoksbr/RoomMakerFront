@@ -99,8 +99,12 @@ export class Tabuleiro {
         return this.raiz.locator('.casa.pre-lance');
     }
 
-    get setasDePreLance(): Locator {
-        return this.raiz.locator('.setas line.seta-pre-lance');
+    /**
+     * Setas na tela — só as manuais (botão direito). Pré-lance não desenha
+     * seta nenhuma; vira só o destaque azul em {@link casasDePreLance}.
+     */
+    get setasNaTela(): Locator {
+        return this.raiz.locator('.setas line');
     }
 
     get avisoDeFila(): Locator {

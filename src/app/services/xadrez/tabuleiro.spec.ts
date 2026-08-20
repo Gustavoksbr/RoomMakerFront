@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
-    alcanceGeometrico, ehCasaClara, ocupacaoDeFen, paraCasa, paraCoordenada,
+    alcanceGeometrico, ehCasaClara, ocupacaoDeFen, ocupacaoParaFenPecas, paraCasa, paraCoordenada,
     roquesDeFen, todasAsCasas, vezDeFen,
 } from './tabuleiro';
 
@@ -157,5 +157,26 @@ describe('alcance geométrico', () => {
             expect(alcanceGeometrico({ tipo: 'k', cor: 'b' }, 'e8', true)).toContain('g8');
             expect(alcanceGeometrico({ tipo: 'k', cor: 'b' }, 'e1', true)).not.toContain('g1');
         });
+    });
+});
+
+describe('ocupacaoParaFenPecas', () => {
+    it('é o inverso de ocupacaoDeFen para a posição inicial', () => {
+        const campoDePecas = FEN_INICIAL.split(' ')[0];
+        expect(ocupacaoParaFenPecas(ocupacaoDeFen(FEN_INICIAL))).toBe(campoDePecas);
+    });
+
+    it('faz ida e volta com uma posição esparsa qualquer', () => {
+        const campo = 'r3k2r/8/8/3pP3/8/8/8/4K2R';
+        expect(ocupacaoParaFenPecas(ocupacaoDeFen(campo + ' w - - 0 1'))).toBe(campo);
+    });
+
+    it('tabuleiro vazio vira oito linhas de "8"', () => {
+        expect(ocupacaoParaFenPecas(new Map())).toBe('8/8/8/8/8/8/8/8');
+    });
+
+    it('uma peça só numa casa qualquer', () => {
+        expect(ocupacaoParaFenPecas(new Map([['e4', { tipo: 'n' as const, cor: 'w' as const }]])))
+            .toBe('8/8/8/8/4N3/8/8/8');
     });
 });

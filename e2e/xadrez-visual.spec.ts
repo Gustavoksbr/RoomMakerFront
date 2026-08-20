@@ -147,9 +147,19 @@ test.describe('Xadrez visual', () => {
         await tabPretas.arrastar('e7', 'e5');
         await expect(tabPretas.avisoDeFila).toContainText('1 pré-lance');
 
+        // A peça já aparece na casa final da fila — não só a origem destacada.
+        // Isto já foi um bug de verdade (a fila era atualizada, mas o tabuleiro
+        // continuava desenhando a posição confirmada, sem projetar a fila).
+        await expect(tabPretas.peca('e5')).toHaveAttribute('data-peca', 'bp');
+        await expect(tabPretas.peca('e7')).toHaveCount(0);
+
         await tabPretas.arrastar('b8', 'c6');
         await expect(tabPretas.avisoDeFila).toContainText('2 pré-lances');
-        await expect(tabPretas.setasDePreLance).toHaveCount(2);
+        await expect(tabPretas.peca('c6')).toHaveAttribute('data-peca', 'bn');
+
+        // Pré-lance não desenha seta — só o destaque azul nas casas envolvidas.
+        await expect(tabPretas.setasNaTela).toHaveCount(0);
+        await expect(tabPretas.casasDePreLance).toHaveCount(4); // e7,e5,b8,c6
 
         // Nada disso virou lance ainda.
         expect(await lancesPretas.lances()).toEqual([]);
